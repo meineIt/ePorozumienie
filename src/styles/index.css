@@ -1,0 +1,14 @@
+/* Main Styles Index - Imports all style modules */
+
+/* Import CSS Variables first */
+@import './variables.css';
+
+/* Import component styles */
+@import './components.css';
+
+/* Import utility classes */
+@import './utilities.css';
+
+/* Import authentication styles */
+@import './auth.css';
+

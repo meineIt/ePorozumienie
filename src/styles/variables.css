@@ -1,0 +1,55 @@
+/* CSS Variables - Design Tokens */
+
+:root {
+  /* Colors - Primary */
+  --primary: #0A2463;
+  --primary-light: #3E5C95;
+  --primary-dark: #051740;
+  
+  /* Colors - Accent */
+  --accent: #1E88E5;
+  --accent-light: #BBDEFB;
+  --accent-dark: #0D47A1;
+  
+  /* Colors - Neutral */
+  --light: #FAFAFA;
+  --light-200: #F5F5F5;
+  --light-300: #EEEEEE;
+  --dark: #212121;
+  --dark-200: #424242;
+  --dark-300: #616161;
+  
+  /* Colors - Status */
+  --success: #4CAF50;
+  --info: #2196F3;
+  --warning: #FFC107;
+  --error: #F44336;
+  
+  /* Colors - Glass effects */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-dark: rgba(0, 0, 0, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(10, 36, 99, 0.25);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%);
+  --gradient-accent: linear-gradient(135deg, #1E88E5 0%, #64B5F6 100%);
+  --gradient-neutral: linear-gradient(135deg, #F5F5F5 0%, #FAFAFA 100%);
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+}
+
