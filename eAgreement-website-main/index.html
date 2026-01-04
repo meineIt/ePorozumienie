@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Porozumienie | Ugoda w 3 kliknięcia - Inwestycja</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://e-porozumienie.pl/">
+    <meta property="og:title" content="e-Porozumienie | Ugoda w 3 kliknięcia">
+    <meta property="og:description" content="Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!">
+    <meta property="og:image" content="https://e-porozumienie.pl/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="pl_PL">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://e-porozumienie.pl/">
+    <meta name="twitter:title" content="e-Porozumienie | Ugoda w 3 kliknięcia">
+    <meta name="twitter:description" content="Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!">
+    <meta name="twitter:image" content="https://e-porozumienie.pl/images/og-image.jpg">
+    
+    <!-- Additional SEO -->
+    <meta name="description" content="Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+      
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #0056b3 0%, #00377a 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-card {
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: scale(1.03);
+        }
+
+        .testimonial-card {
+            background-color: #f8fafc;
+            border-left: 4px solid #0056b3;
+        }
+
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        /* Wzór z plusikami */
+        .element-with-pattern {
+            position: relative;
+            background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%);
+        }
+
+        .element-with-pattern::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 60px 60px;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+
+        .element-with-pattern > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Aktualizacja kolorystyki */
+        .gradient-bg {
+            background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+        }
+
+        .bg-blue-700 {
+            background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+        }
+
+        .bg-blue-600 {
+            background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+        }
+
+        .hover\:bg-blue-800:hover, .hover\:bg-blue-700:hover {
+            background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+            box-shadow: 0 10px 25px rgba(10, 36, 99, 0.35) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        .text-blue-700, .text-blue-800 {
+            color: #0A2463 !important;
+        }
+
+        .bg-blue-50 {
+            background: linear-gradient(135deg, rgba(10, 36, 99, 0.05) 0%, rgba(62, 92, 149, 0.05) 100%) !important;
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: scale(1);
+        }
+
+    </style>
+
+    <script src="https://cdn.botpress.cloud/webchat/v3.1/inject.js" defer></script>
+    <script src="https://files.bpcontent.cloud/2025/07/08/19/20250708193134-EF43EO59.js" defer></script>
+    
+</head>
+<body class="bg-gray-50">
+    <!-- Popup Modal -->
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content relative">
+            <!-- Close button -->
+            <button id="close-popup" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Odbierz zniżkę!</h3>
+                <p class="text-gray-600">Zapisz się, aby otrzymać 30% zniżki na pierwszą mediację</p>
+            </div>
+            <form id="popup-form" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Imię</label>
+                    <input type="text" id="name" name="name" required 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <button type="submit" 
+                        class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 px-6 rounded-lg font-semibold transition duration-300">
+                    Zapisz
+                </button>
+            </form>
+            <footer class="mt-4 text-center text-sm text-gray-500">
+                <p>Zapisując się, wyrażasz zgodę na przetwarzanie danych osobowych (imię, email) przez e-Porozumienie w celu wysyłki kodów rabatowych.</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-xl font-bold text-blue-800">e-Porozumienie</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#jak-to-dziala" class="text-gray-700 hover:text-blue-700 font-medium">Jak to działa</a>
+                <a href="#korzysci" class="text-gray-700 hover:text-blue-700 font-medium">Korzyści</a>
+                <a href="#kredyty-frankowe" class="text-gray-700 hover:text-blue-700 font-medium">Kredyty frankowe</a>
+                <a href="#cennik" class="text-gray-700 hover:text-blue-700 font-medium">Model biznesowy</a>
+                <a href="#zespol" class="text-gray-700 hover:text-blue-700 font-medium">Zespół</a>
+            </div>
+            <div>
+                <a href="/login.html" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-lg font-medium transition duration-300">
+                    Logowanie
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-28 pb-20 element-with-pattern">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="w-full text-center text-white mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Ugoda w 3 kliknięcia</h1>
+<p class="text-xl mb-8">Pierwsza platforma do <strong>mediacji online</strong>, która wykorzystując AI<br>rozwiązuje spory frankowe w <strong>3 dni</strong> zamiast w 15 miesięcy!</p>
+<div>
+    <button id="hero-cta" class="bg-white text-blue-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 animate-pulse">Odbierz zniżkę</button>
+</div>
+</div>
+<!-- <div class="md:w-1/2 flex justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+        <div class="flex items-center mb-6">
+            <svg class="h-10 w-10 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2 .9 2 2v.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
+            </svg>
+            <h3 class="ml-2 text-xl font-semibold text-gray-800">Demo mediacji</h3>
+        </div>
+        <div class="bg-gray-100 rounded-lg p-4 mb-4">
+            <p class="text-gray-700 mb-2"><span class="font-semibold">Bank:</span> Proponujemy spłatę kredytu po kursie średnim NBP.</p>
+            <p class="text-gray-700"><span class="font-semibold">AI-Mediator:</span> Aktualne orzecznictwo TSUE sugeruje unieważnienie umowy. Proponuję kompromis: spłata kapitału w PLN bez odsetek.</p>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="ml-2 text-gray-700">Analiza dokumentów w 5 minut</span>
+            </div>
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="ml-2 text-gray-700">Propozycja ugody w 24h</span>
+            </div>
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="ml-2 text-gray-700">Podpisanie e-dokumentu w 72h</span>
+            </div>
+        </div>
+    </div>
+</div> -->
+</div>
+</header>
+
+<!-- Stats Section -->
+<section class="py-16 bg-white">
+<div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-blue-50 p-6 rounded-lg text-center card-hover transition-all duration-300">
+            <h3 class="text-4xl font-bold text-blue-800 mb-2">18 mln+</h3>
+            <p class="text-gray-700">spraw sądowych rocznie w Polsce</p>
+        </div>
+        <div class="bg-blue-50 p-6 rounded-lg text-center card-hover transition-all duration-300">
+            <h3 class="text-4xl font-bold text-blue-800 mb-2">72h</h3>
+            <p class="text-gray-700">zamiast 72 tygodni oczekiwania</p>
+        </div>
+        <div class="bg-blue-50 p-6 rounded-lg text-center card-hover transition-all duration-300">
+            <h3 class="text-4xl font-bold text-blue-800 mb-2">90 000+</h3>
+            <p class="text-gray-700">nowych pozwów frankowych w 2024</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- How it Works Section -->
+<section id="jak-to-dziala" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Jak działa e-Porozumienie?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md step-card">
+            <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">1</div>
+            <h3 class="text-xl font-semibold mb-3 text-gray-800">Rejestracja i weryfikacja</h3>
+            <p class="text-gray-600">Załóż konto, zweryfikuj tożsamość przez <strong>Profil Zaufany</strong> i wgraj dokumenty, które zostaną <strong>automatycznie zweryfikowane</strong> pod kątem autentyczności.</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md step-card">
+        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">2</div>
+        <h3 class="text-xl font-semibold mb-3 text-gray-800">AI-mediacja</h3>
+        <p class="text-gray-600"><strong>AI-mediator</strong> analizuje dokumenty, identyfikuje punkty sporne i proponuje kompromisowe rozwiązania zgodne z aktualnym <strong>orzecznictwem</strong>.</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md step-card">
+        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">3</div>
+        <h3 class="text-xl font-semibold mb-3 text-gray-800">Ugoda i e-podpis</h3>
+        <p class="text-gray-600">Po osiągnięciu porozumienia, system generuje gotową ugodę do podpisania za pomocą <strong>podpisu elektronicznego</strong> bez wychodzenia z domu.</p>
+    </div>
+</div>
+</div>
+</section>
+
+<!-- Benefits Section -->
+<section id="korzysci" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Dlaczego e-Porozumienie?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-gray-50 p-6 rounded-lg">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b border-gray-200 pb-2">Tradycyjny sąd</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                  <svg class="h-6 w-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586l-1.293-1.293z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700"><strong>18-36 miesięcy</strong> oczekiwania</span>
+              </li>
+              <li class="flex items-start">
+                  <svg class="h-6 w-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586l-1.293-1.293z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">Koszt <strong>7.000-14.000 zł</strong></span>
+              </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586l-1.293-1.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700">Stres i skomplikowane formalności</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586l-1.293-1.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700">Niszczenie relacji między stronami</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="h-6 w-6 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586l-1.293-1.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700">Czasochłonny proces sądowy</span>
+                </li>
+            </ul>
+        </div>
+        <div class="bg-blue-50 p-6 rounded-lg">
+            <h3 class="text-2xl font-semibold mb-6 text-blue-800 border-b border-blue-200 pb-2">e-Porozumienie</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                  <svg class="h-6 w-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">Tylko <strong>72 godziny</strong> do rozwiązania</span>
+              </li>
+              <li class="flex items-start">
+                  <svg class="h-6 w-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">Tylko <strong>199 PLN</strong></span>
+              </li>
+              <li class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Prosta i zrozumiała procedura</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Polubowne rozwiązanie sporu</span>
+              </li>
+              <li class="flex items-start">
+                  <svg class="h-6 w-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">Wygoda online z <strong>AI asystentem</strong></span>
+              </li>
+    </ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Swiss Franc Loans Section -->
+<section id="kredyty-frankowe" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Kredyty frankowe - rozwiązujemy Twój problem</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Skala problemu</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>290 000+</strong> aktywnych umów frankowych w Polsce</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>90 000+</strong> nowych pozwów frankowych w 2024 roku</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Średnia wartość sporu: <strong>120 000 - 350 000 zł</strong></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Nasze rozwiązanie</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700"><strong>AI-mediator</strong> przeszkolony na tysiącach wyroków i ugód</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Automatyczne generowanie propozycji ugody zgodnych z orzecznictwem <strong>SN/TSUE</strong></span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700">Bezpieczny czat z bankiem z szyfrowaniem <strong>end-to-end</strong></span>
+      </li>
+      <li class="flex items-start">
+        <svg class="h-6 w-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><strong>Weryfikacja autentyczności</strong> wszystkich wprowadzonych dokumentów</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+  <div class="mb-6">
+    <h3 class="text-xl font-semibold mb-4 text-blue-800">Potencjał rynkowy</h3>
+    <ul class="space-y-3">
+      <li class="flex items-start">
+        <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586a2 2 0 011.414.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><span class="font-semibold">TAM:</span> >18 mln spraw/rok, wartość rynku <strong>>54 mld zł</strong></span>
+      </li>
+      <li class="flex items-start">
+        <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586a2 2 0 011.414.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><span class="font-semibold">SAM:</span> 2,5 mln spraw/rok (<strong>>7,5 mld zł</strong>)</span>
+      </li>
+      <li class="flex items-start">
+        <svg class="h-5 w-5 text-blue-700 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586a2 2 0 011.414.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><span class="font-semibold">SOM (3 lata):</span> >250 tys. spraw/rok (<strong><250 mln zł</strong>)</span>
+      </li>
+    </ul>
+  </div>
+  <div class="bg-blue-50 p-4 rounded-lg">
+    <h4 class="font-semibold text-blue-800 mb-2">Kluczowe wskaźniki finansowe</h4>
+    <ul class="space-y-2">
+      <li class="flex items-center">
+        <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><strong>Break-even:</strong> po 18 miesiącach działalności</span>
+      </li>
+      <li class="flex items-center">
+        <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><strong>Marża EBITDA:</strong> do 27% (2027)</span>
+      </li>
+      <li class="flex items-center">
+        <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700"><strong>LTV/CAC:</strong> 3,9-15x</span>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Kluczowe funkcje platformy</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Karta 1: Dedykowany AI-mediator -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 relative">
+        <div class="badge">Polskie rozwiązanie</div>
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">Dedykowany AI-mediator</h3>
+        <p class="text-gray-600">Model przeszkolony na tysiącach wyroków i ugód z bankami, wykorzystujący polski model językowy <strong>Bielik</strong>.</p>
+      </div>
+
+      <!-- Karta 2: Generator dokumentów -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V8.414a2 2 0 00-.586-1.414l-4.828-4.828A2 2 0 0011.586 2H4zm3 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">Generator dokumentów</h3>
+        <p class="text-gray-600">Automatyczne tworzenie gotowych do podpisu ugód, pozwów i wniosków o zabezpieczenie z mocą prawną, zgodnie z <strong>aktualnym stanem prawnym</strong>.</p>
+      </div>
+
+      <!-- Karta 3: Bezpieczeństwo -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zM13 9V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">Bezpieczeństwo</h3>
+        <p class="text-gray-600">Szyfrowanie <strong>end-to-end</strong>, pełna zgodność z RODO, dane przetwarzane wyłącznie na serwerach w UE. <strong>Osoby trzecie nigdy nie będą mieć dostępu do danych</strong>.</p>
+      </div>
+      
+      <!-- Karta 4: Integracja z Profilem Zaufanym -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+
+
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">Integracja z Profilem Zaufanym</h3>
+        <p class="text-gray-600">Uwierzytelnianie użytkowników przez <strong>Profil Zaufany</strong> i <strong>ePUAP</strong> i integracja z <strong>podpisem elektronicznym</strong> umożliwiającym podpisanie ugody bez wychodzenia z domu.</p>
+      </div>
+
+      <!-- Karta 5: Integracja z rejestrami -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
+            <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
+            <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">Integracja z rejestrami</h3>
+        <p class="text-gray-600">Integracja z rejestrami państwowymi (<strong>CEIDG</strong>, <strong>PESEL</strong>) i komercyjnymi bazami danych w celu zdobywania i weryfikacji informacji o drugim podmiocie.</p>
+      </div>
+
+      <!-- Karta 6: System płatności -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">System płatności</h3>
+        <p class="text-gray-600">Bezpieczny system płatności z logiką warunkową - dostęp do dokumentów po opłaceniu przez obie strony z <strong>automatycznym rozliczeniem</strong>.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Pricing Section -->
+<section id="cennik" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Model biznesowy</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Klient indywidualny</h3>
+                    <div class="text-3xl font-bold text-blue-700">199 zł</div>
+                    <p class="text-gray-600 mt-2">za sprawę</p>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">Mediacja online w sprawie frankowej</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">Wsparcie AI-mediatora</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">Generowanie dokumentów</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">E-podpis dokumentów</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="element-with-pattern p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform scale-105">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-white mb-2">Kancelarie prawne</h3>
+                    <div class="text-3xl font-bold text-white">399-1999 zł</div>
+                    <p class="text-blue-100 mt-2">miesięcznie</p>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-blue-200 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-white">Abonament na obsługę wielu spraw</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-blue-200 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-white">Panel zarządzania sprawami</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-blue-200 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-white">Zaawansowana analityka</span>
+                    </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-blue-200 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-white">Priorytetowe wsparcie</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-blue-200 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-white">Branding kancelarii</span>
+        </li>
+      </ul>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Instytucje</h3>
+        <div class="text-3xl font-bold text-blue-700">cena indywidualna</div>
+        <p class="text-gray-600 mt-2">rocznie</p>
+      </div>
+      <ul class="space-y-3 mb-8">
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700">Licencje dla banków i instytucji</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700">Integracja z systemami wewnętrznymi</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-700">Dedykowane rozwiązania</span>
+      </li>
+      <li class="flex items-start">
+        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L9 12a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700">Wsparcie 24/7</span>
+      </li>
+      <li class="flex items-start">
+        <svg class="h-5 w-5 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L9 12a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-gray-700">Raportowanie i compliance</span>
+      </li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- Team Section -->
+<section id="zespol" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Founderzy</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
+        <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+          <img src="images/1.jpg" alt="Simone Barszczak" class="w-full h-full object-cover">
+        </div>
+        <h3 class="text-xl font-semibold mb-1 text-gray-800">Simone Barszczak</h3>
+        <p class="text-blue-700 font-medium mb-3">Prawnik nowych technologii</p>
+        <p class="text-gray-600">Prawnik Nowych Technologii specjalizujący się w <strong>FinTech, Cyberbezpieczeństwie</strong> i Legal Design
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
+        <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+          <img src="images/2.jpg" alt="Paweł Urzenitzok" class="w-full h-full object-cover">
+        </div>
+        <h3 class="text-xl font-semibold mb-1 text-gray-800">Paweł Urzenitzok</h3>
+        <p class="text-blue-700 font-medium mb-3">Doktorant</p>
+        <p class="text-gray-600">Doktorant <strong>prawa nowych technologii</strong> badający legaltech.</p>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
+        <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+          <img src="images/3.jpg" alt="Mikołaj Uroda" class="w-full h-full object-cover">
+        </div>
+        <h3 class="text-xl font-semibold mb-1 text-gray-800">Mikołaj Uroda</h3>
+        <p class="text-blue-700 font-medium mb-3">Prawnik, informatyk</p>
+        <p class="text-gray-600">Specjalista łączący wiedzę prawniczą z umiejętnościami <strong>programistycznymi</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 element-with-pattern">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 text-white">Zainwestuj w przyszłość mediacji online</h2>
+    <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">e-Porozumienie to <strong>innowacyjne rozwiązanie</strong> z potencjałem transformacji rynku mediacji w Polsce i Europie. Nasza strategia rozwoju zakłada:</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+        <h3 class="text-white font-semibold mb-2">6 miesięcy</h3>
+        <p class="text-blue-100"><strong>MVP</strong>, pilotaż, 50 mediacji, partnerstwa z 3 bankami i 5 kancelariami</p>
+      </div>
+      <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+        <h3 class="text-white font-semibold mb-2">12 miesięcy</h3>
+        <p class="text-blue-100"><strong>Komercjalizacja</strong>, 200 mediacji/mies., pierwsze płatne wdrożenia B2B</p>
+      </div>
+        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+            <h3 class="text-white font-semibold mb-2">24 miesiące</h3>
+            <p class="text-blue-100"><strong>2000+ mediacji/mies.</strong>, ekspansja na rynki zagraniczne (CEE, UE)</p>
+        </div>
+    </div>
+    <div>
+        <button id="cta-bottom" class="bg-white text-blue-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 animate-pulse">Odbierz zniżkę</button>
+    </div>
+</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="bg-white text-gray-800 py-12 border-t border-gray-200">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Logo i opis -->
+            <!-- <div>
+                <h3 class="text-xl font-bold mb-4 text-gray-900">e-Porozumienie</h3>
+                <p class="text-gray-600 mb-4">Pierwsza platforma do mediacji online wykorzystująca AI do rozwiązywania sporów frankowych w 3 dni zamiast w 15 miesięcy.</p>
+            </div> -->
+            
+            <!-- Informacje kontaktowe -->
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-gray-900">Kontakt</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <svg class="h-5 w-5 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                        </svg>
+                        <a href="mailto:kontakt@e-porozumienie.pl" class="text-gray-600 hover:text-blue-700 transition duration-300">
+                            eporozumienie@protonmail.com
+                        </a>
+                    </div>
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-blue-600 mr-3 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div class="text-gray-600">
+                            <p>ul. Rynek 1</p>
+                            <p>48-081 Katowice</p>
+                            <p>Polska</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Szybkie linki -->
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-gray-900">O nas</h4>
+                <ul class="space-y-2">
+                    <li><a href="#jak-to-dziala" class="text-gray-600 hover:text-blue-700 transition duration-300">Jak to działa</a></li>
+                    <li><a href="#korzysci" class="text-gray-600 hover:text-blue-700 transition duration-300">Korzyści</a></li>
+                    <li><a href="#kredyty-frankowe" class="text-gray-600 hover:text-blue-700 transition duration-300">Kredyty frankowe</a></li>
+                    <li><a href="#cennik" class="text-gray-600 hover:text-blue-700 transition duration-300">Model biznesowy</a></li>
+                    <li><a href="#zespol" class="text-gray-600 hover:text-blue-700 transition duration-300">Zespół</a></li>
+                </ul>
+            </div>
+
+            <!-- Hyperlinki do linkedin -->
+            <div>
+              <h4 class="text-lg font-semibold mb-4 text-gray-800">Znajdź nas na LinkedIn</h4>
+                <ul class="space-y-2">
+                  <li>
+                    <a href="https://www.linkedin.com/in/simonebarszczak/" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-blue-700 transition duration-300">
+                      <img src="images/linkedin.svg" alt="LinkedIn" class="w-5 h-5">
+                      <span>Simone Barszczak</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.linkedin.com/in/urzenitzok/" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-blue-700 transition duration-300">
+                      <img src="images/linkedin.svg" alt="LinkedIn" class="w-5 h-5">
+                      <span>Paweł Urzenitzok</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.linkedin.com/in/mikolaj-uroda/" target="_blank" class="flex items-center space-x-2 text-gray-600 hover:text-blue-700 transition duration-300">
+                      <img src="images/linkedin.svg" alt="LinkedIn" class="w-5 h-5">
+                      <span>Mikołaj Uroda</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+        </div>
+        
+        <!-- Dolna linia -->
+        <div class="border-t border-gray-200 mt-8 pt-8 text-center">
+            <p class="text-gray-500">&copy; 2025 e-Porozumienie. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+    
+</body>
+</html>

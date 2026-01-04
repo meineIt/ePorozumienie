@@ -11,11 +11,33 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
-  firstName  String
-  lastName   String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                String    @id @default(cuid())
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  createdAffairs    Affair[]  @relation("AffairCreator")
+  involvedAffairs   Affair[]  @relation("AffairInvolved")
+}
+
+model Affair {
+  id                String   @id @default(cuid())
+  title             String
+  category          String?
+  description       String?
+  affairCreatedAt   DateTime @default(now())
+  affairValue       Float?
+  files             String?  // Można zmienić na bardziej zaawansowany typ w przyszłości
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relacja do użytkownika, który stworzył sprawę
+  creatorId         String
+  creator           User     @relation("AffairCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  
+  // Relacja do drugiego użytkownika zaangażowanego w sprawę
+  involvedUserId    String
+  involvedUser      User     @relation("AffairInvolved", fields: [involvedUserId], references: [id], onDelete: Cascade)
 }

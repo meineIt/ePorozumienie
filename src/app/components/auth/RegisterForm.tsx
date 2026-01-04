@@ -11,7 +11,7 @@ import { useShake } from './hooks/useShake';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { shake, triggerShake } = useShake();
+  const { triggerShake } = useShake();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -96,7 +96,7 @@ export default function RegisterPage() {
   
       // Sukces - przekieruj do logowania
       router.push('/login?registered=true');
-    } catch (err) {
+    } catch {
       setError('Wystąpił błąd połączenia. Spróbuj ponownie.');
       setLoading(false);
       triggerShake();

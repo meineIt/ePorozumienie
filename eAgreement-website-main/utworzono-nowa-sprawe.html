@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Porozumienie | Sprawa utworzona</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTggOEwxNiAxNk0xNiA4TDggMTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI0IiBmaWxsPSIjMEEyNDYzIiBzdHJva2U9IiMwQTI0NjMiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" sizes="any">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Properties */
+        :root {
+            /* Core Colors - Navy Blue Palette 2025 */
+            --primary: #0A2463;
+            --primary-light: #3E5C95;
+            --primary-dark: #051740;
+            --accent: #1E88E5;
+            --accent-light: #BBDEFB;
+            --accent-dark: #0D47A1;
+            
+            /* Neutrals */
+            --light: #FAFAFA;
+            --light-200: #F5F5F5;
+            --light-300: #EEEEEE;
+            --dark: #212121;
+            --dark-200: #424242;
+            --dark-300: #616161;
+            
+            /* Utility */
+            --success: #4CAF50;
+            --info: #2196F3;
+            --warning: #FFC107;
+            --error: #F44336;
+            
+            /* Status Colors */
+            --status-new: #9C27B0;
+            --status-awaiting: #FF9800;
+            --status-active: #4CAF50;
+            --status-completed: #2196F3;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-dark: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+            --shadow-focus: 0 0 0 3px rgba(10, 36, 99, 0.25);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%);
+            --gradient-accent: linear-gradient(135deg, #1E88E5 0%, #64B5F6 100%);
+            --gradient-neutral: linear-gradient(135deg, #F5F5F5 0%, #FAFAFA 100%);
+            --gradient-success: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            
+            /* Transitions */
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Sizing & Spacing */
+            --container-width: 1280px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-full: 9999px;
+            
+            /* Layout */
+            --header-height: 70px;
+            --sidebar-width: 280px;
+            --sidebar-collapsed: 80px;
+        }
+        
+        /* Base Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            width: 100%;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            background-image: 
+                radial-gradient(circle at 90% 10%, rgba(10, 36, 99, 0.02) 0%, transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(30, 136, 229, 0.02) 0%, transparent 50%);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--dark);
+        }
+        
+        h1 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+            margin-bottom: 0.75rem;
+        }
+        
+        h3 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        h4 {
+            font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--dark-300);
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: 0.02em;
+        }
+        
+        .btn::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.6s ease-out, height 0.6s ease-out;
+        }
+        
+        .btn:hover::after {
+            width: 300%;
+            height: 300%;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 36, 99, 0.25);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(10, 36, 99, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.25);
+        }
+        
+        .btn-accent:hover {
+            box-shadow: 0 6px 16px rgba(30, 136, 229, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--light-300);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-light:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-icon {
+            padding: 0.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--light-300);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width var(--transition-normal), transform var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--light-300);
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            font-weight: 400;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--dark-300);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-link:hover {
+            background: var(--light-200);
+            color: var(--primary);
+        }
+        
+        .sidebar-menu-link.active {
+            background: var(--accent-light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .sidebar-menu-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--light-300);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+        
+        .user-role {
+            color: var(--dark-300);
+            font-size: 0.8rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin var(--transition-normal);
+        }
+        
+        .header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--light-300);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-sidebar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--light-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 1rem;
+            transition: all var(--transition-fast);
+        }
+        
+        .toggle-sidebar:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .header-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            gap: 1rem;
+        }
+        
+        .notification-bell {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--light-200);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .notification-bell:hover {
+            background: var(--light-300);
+        }
+        
+        .notification-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+        }
+        
+        /* Container for page content */
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Success Page Specific Styles */
+        .success-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+        }
+        
+        .success-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .success-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--dark-300);
+            max-width: 700px;
+        }
+        
+        .case-info {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            width: 100%;
+            margin-bottom: 2rem;
+            border: 1px solid var(--light-300);
+        }
+        
+        .case-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .case-number-label {
+            font-weight: 500;
+            color: var(--dark-300);
+        }
+        
+        .case-number-value {
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            background: var(--accent-light);
+            border-radius: var(--radius-full);
+        }
+        
+        .case-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light-300);
+        }
+        
+        .case-meta-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .case-meta-label {
+            font-size: 0.9rem;
+            color: var(--dark-300);
+            margin-bottom: 0.25rem;
+        }
+        
+        .case-meta-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .case-parties {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            gap: 2rem;
+        }
+        
+        .case-party {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .case-party-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            color: white;
+            font-weight: 600;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .case-party-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .case-party-role {
+            font-size: 0.9rem;
+            color: var(--dark-300);
+        }
+        
+        .case-status {
+            padding: 0.5rem 1.5rem;
+            background: var(--status-awaiting);
+            color: white;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
+        
+        .next-steps {
+            margin: 2rem 0;
+            width: 100%;
+        }
+        
+        .next-steps-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .steps-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 250px;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--dark-300);
+        }
+        
+        .action-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .share-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-300);
+            width: 100%;
+        }
+        
+        .share-title {
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-link {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--light-300);
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-link input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+        
+        .share-link button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+        
+        .share-link button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .case-receipt {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--light-300);
+            text-align: left;
+            width: 100%;
+        }
+        
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-300);
+        }
+        
+        .receipt-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .receipt-date {
+            color: var(--dark-300);
+            font-size: 0.9rem;
+        }
+        
+        .receipt-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .receipt-label {
+            color: var(--dark-300);
+        }
+        
+        .receipt-value {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .receipt-total {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--light-300);
+        }
+        
+        .receipt-footer {
+            font-size: 0.9rem;
+            color: var(--dark-300);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--light-300);
+        }
+        
+        .copy-tooltip {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-fast);
+        }
+        
+        .copy-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--success);
+            opacity: 0.8;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                top: 100%;
+                transform: translateX(calc(var(--random-x) * 100px)) rotate(calc(var(--random-r) * 360deg));
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .success-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+            
+            .case-meta, .case-parties {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: center;
+            }
+            
+            .steps-list {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1.5rem;
+            }
+            
+            .success-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .action-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .action-links .btn {
+                width: 100%;
+            }
+            
+            .share-link {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .share-link button {
+                width: 100%;
+                padding: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .success-icon {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .success-title {
+                font-size: 1.75rem;
+            }
+            
+            .case-number {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .header {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+    
+    <!-- Copy Tooltip -->
+    <div class="copy-tooltip" id="copyTooltip">Skopiowano do schowka!</div>
+    
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="strona-glowna.html" class="logo">e-<span>Porozumienie</span></a>
+            </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="strona-glowna.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                                    <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                                    <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                                    <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                                </svg>
+                            </span>
+                            <span>Pulpit</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="moje-sprawy.html" class="sidebar-menu-link active">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                    <path d="M12 11h4"></path>
+                                    <path d="M12 16h4"></path>
+                                    <path d="M8 11h.01"></path>
+                                    <path d="M8 16h.01"></path>
+                                </svg>
+                            </span>
+                            <span>Moje sprawy</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="dokumenty.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" x2="8" y1="13" y2="13"></line>
+                                    <line x1="16" x2="8" y1="17" y2="17"></line>
+                                    <line x1="10" x2="8" y1="9" y2="9"></line>
+                                </svg>
+                            </span>
+                            <span>Dokumenty</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="statystyki.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                                    <path d="M21.18 8.02A10 10 0 0 0 12 2v10h10c0-1.41-.34-2.73-.9-3.91"></path>
+                                </svg>
+                            </span>
+                            <span>Statystyki</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="ustawienia.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                </svg>
+                            </span>
+                            <span>Ustawienia</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">MU</div>
+                    <div class="user-details">
+                        <div class="user-name">Mikołaj Uroda</div>
+                        <div class="user-role">Użytkownik</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="toggle-sidebar" id="toggleSidebar">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" x2="21" y1="12" y2="12"></line>
+                            <line x1="3" x2="21" y1="6" y2="6"></line>
+                            <line x1="3" x2="21" y1="18" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h2 class="header-title">Utworzono nową sprawę</h2>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notification-indicator"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page Content -->
+            <div class="container">
+                <div class="success-container">
+                    <div class="success-icon">
+                        <svg width="60" height="60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    
+                    <h1 class="success-title">Sprawa została utworzona!</h1>
+                    <p class="success-subtitle">Twoja sprawa została pomyślnie utworzona. Druga strona otrzyma powiadomienie o chęci zawarcia ugody i będzie mogła dołączyć do sprawy.</p>
+                    
+                    <div class="case-info">
+                        <div class="case-number">
+                            <div class="case-number-label">Numer sprawy:</div>
+                            <div class="case-number-value">SP-2025-001</div>
+                            <button id="copyIdBtn" class="btn-icon btn-light" title="Kopiuj numer sprawy">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="case-meta">
+                            <div class="case-meta-item">
+                                <div class="case-meta-label">Tytuł sprawy</div>
+                                <div class="case-meta-value">Sprzedaż samochodu</div>
+                            </div>
+                            <div class="case-meta-item">
+                                <div class="case-meta-label">Data utworzenia</div>
+                                <div class="case-meta-value">22 marca 2025</div>
+                            </div>
+                            <div class="case-meta-item">
+                                <div class="case-meta-label">Wartość przedmiotu sporu</div>
+                                <div class="case-meta-value">15 000 PLN</div>
+                            </div>
+                        </div>
+                        
+                        <div class="case-parties">
+                            <div class="case-party">
+                                <div class="case-party-avatar">MU</div>
+                                <div class="case-party-name">Mikołaj Uroda</div>
+                                <div class="case-party-role">Inicjator</div>
+                            </div>
+                            <div class="case-party">
+                                <div class="case-party-avatar">JK</div>
+                                <div class="case-party-name">Jan Kowalski</div>
+                                <div class="case-party-role">Druga strona</div>
+                            </div>
+                        </div>
+                        
+                        <div class="case-status">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Oczekiwanie na drugą stronę
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps">
+                        <h3 class="next-steps-title">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                            Co teraz?
+                        </h3>
+                        
+                        <div class="steps-list">
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-title">Powiadomienie drugiej strony</div>
+                                <div class="step-desc">Druga strona otrzyma powiadomienie email o chęci zawarcia ugody.</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-title">Dołączenie do sprawy</div>
+                                <div class="step-desc">Po dołączeniu, druga strona będzie mogła dodać swoje dokumenty i stanowisko.</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-title">Analiza AI</div>
+                                <div class="step-desc">System przeanalizuje dokumenty i stanowiska obu stron.</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-title">Propozycja ugody</div>
+                                <div class="step-desc">AI przedstawi propozycję ugody, którą obie strony będą mogły zaakceptować.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-links">
+                        <a href="strona-glowna.html" class="btn btn-primary">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                                <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                                <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                                <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                                <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                            </svg>
+                            Przejdź do pulpitu
+                        </a>
+                        <a href="case-details.html" class="btn btn-accent">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                <path d="M12 11h4"></path>
+                                <path d="M12 16h4"></path>
+                                <path d="M8 11h.01"></path>
+                                <path d="M8 16h.01"></path>
+                            </svg>
+                            Szczegóły sprawy
+                        </a>
+                        <a href="komunikacja.html" class="btn btn-outline">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Komunikacja
+                        </a>
+                    </div>
+                    
+                    <div class="share-section">
+                        <h3 class="share-title">Udostępnij link do sprawy</h3>
+                        <div class="share-link">
+                            <input type="text" id="shareLink" value="https://e-porozumienie.pl/sp/2025-001" readonly>
+                            <button id="copyLinkBtn">Kopiuj link</button>
+                        </div>
+                        <p>Link będzie aktywny dopiero po dołączeniu drugiej strony do sprawy.</p>
+                    </div>
+                    
+                    <div class="case-receipt">
+                        <div class="receipt-header">
+                            <div class="receipt-title">Potwierdzenie płatności</div>
+                            <div class="receipt-date">22.03.2025, 14:30</div>
+                        </div>
+                        <div class="receipt-details">
+                            <div class="receipt-row">
+                                <div class="receipt-label">Utworzenie sprawy</div>
+                                <div class="receipt-value">49 PLN</div>
+                            </div>
+                            <div class="receipt-row">
+                                <div class="receipt-label">Analiza dokumentów przez AI</div>
+                                <div class="receipt-value">30 PLN</div>
+                            </div>
+                            <div class="receipt-row">
+                                <div class="receipt-label">Propozycja ugody</div>
+                                <div class="receipt-value">20 PLN</div>
+                            </div>
+                            <div class="receipt-row">
+                                <div class="receipt-label">Przechowywanie ugody (2 lata)</div>
+                                <div class="receipt-value">0 PLN</div>
+                            </div>
+                            <div class="receipt-row receipt-total">
+                                <div class="receipt-label">Razem</div>
+                                <div class="receipt-value">99 PLN</div>
+                            </div>
+                        </div>
+                        <div class="receipt-footer">
+                            Faktura została wysłana na adres email: mikolaj.uroda@example.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle sidebar
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+            });
+            
+            // Copy case ID button
+            const copyIdBtn = document.getElementById('copyIdBtn');
+            const caseNumber = document.querySelector('.case-number-value').textContent;
+            
+            copyIdBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(caseNumber)
+                .then(() => {
+                    showCopyTooltip();
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            });
+            
+            // Copy share link button
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+            const shareLink = document.getElementById('shareLink');
+            
+            copyLinkBtn.addEventListener('click', function() {
+                shareLink.select();
+                navigator.clipboard.writeText(shareLink.value)
+                .then(() => {
+                    showCopyTooltip();
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            });
+            
+            // Show copy tooltip
+            function showCopyTooltip() {
+                const tooltip = document.getElementById('copyTooltip');
+                tooltip.classList.add('show');
+                
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Create confetti effect
+            function createConfetti() {
+                const confettiContainer = document.getElementById('confettiContainer');
+                const colors = ['#4CAF50', '#1E88E5', '#0A2463', '#BBDEFB', '#3E5C95'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Random properties
+                    const randomX = Math.random() * 100 - 50; // -50 to 50
+                    const randomR = Math.random() * 10 - 5; // -5 to 5
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    const randomSize = Math.random() * 10 + 5; // 5 to 15
+                    const randomLeft = Math.random() * 100; // 0 to 100%
+                    const randomDuration = Math.random() * 3 + 2; // 2 to 5 seconds
+                    const randomDelay = Math.random() * 2; // 0 to 2 seconds
+                    const randomShape = Math.random() > 0.5 ? '50%' : '0'; // circle or square
+                    
+                    // Apply styles
+                    confetti.style.setProperty('--random-x', randomX);
+                    confetti.style.setProperty('--random-r', randomR);
+                    confetti.style.backgroundColor = randomColor;
+                    confetti.style.width = `${randomSize}px`;
+                    confetti.style.height = `${randomSize}px`;
+                    confetti.style.left = `${randomLeft}%`;
+                    confetti.style.animationDuration = `${randomDuration}s`;
+                    confetti.style.animationDelay = `${randomDelay}s`;
+                    confetti.style.borderRadius = randomShape;
+                    
+                    confettiContainer.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, (randomDuration + randomDelay) * 1000);
+                }
+            }
+            
+            // Run confetti on page load
+            createConfetti();
+            
+            // Mobile responsiveness
+            function handleResize() {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('show');
+                } else {
+                    sidebar.classList.add('show');
+                }
+            }
+            
+            // Initial call and event listener
+            handleResize();
+            window.addEventListener('resize', handleResize);
+        });
+    </script>
+</body>
+</html>

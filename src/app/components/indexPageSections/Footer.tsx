@@ -140,7 +140,7 @@ export default function Footer() {
 
         {/* Bottom Line */}
         <div className="border-t border-gray-200 mt-8 pt-8 text-center">
-          <p className="text-gray-500">&copy; 2025 e-Porozumienie. Wszelkie prawa zastrzeżone.</p>
+          <p className="text-gray-500">&copy; 2026 e-Porozumienie. Wszelkie prawa zastrzeżone.</p>
         </div>
       </div>
     </footer>

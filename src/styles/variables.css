@@ -24,6 +24,10 @@
   --info: #2196F3;
   --warning: #FFC107;
   --error: #F44336;
+  --status-new: #9C27B0;
+  --status-awaiting: #FF9800;
+  --status-active: #4CAF50;
+  --status-completed: #2196F3;
   
   /* Colors - Glass effects */
   --glass-bg: rgba(255, 255, 255, 0.08);
@@ -51,5 +55,11 @@
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-full: 9999px;
+  
+  /* Layout */
+  --container-width: 1280px;
+  --header-height: 70px;
+  --sidebar-width: 280px;
+  --sidebar-collapsed: 80px;
 }
 

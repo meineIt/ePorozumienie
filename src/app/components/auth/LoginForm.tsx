@@ -14,7 +14,7 @@ import { useShake } from './hooks/useShake';
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { shake, triggerShake } = useShake();
+  const { triggerShake } = useShake();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);

@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Porozumienie | Platforma mediacyjna</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTggOEwxNiAxNk0xNiA4TDggMTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHg9IjIiIHk9IjIiIHJ4PSI0IiBmaWxsPSIjMEEyNDYzIiBzdHJva2U9IiMwQTI0NjMiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" sizes="any">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Properties */
+        :root {
+            /* Core Colors - Navy Blue Palette 2025 */
+            --primary: #0A2463;
+            --primary-light: #3E5C95;
+            --primary-dark: #051740;
+            --accent: #1E88E5;
+            --accent-light: #BBDEFB;
+            --accent-dark: #0D47A1;
+            
+            /* Neutrals */
+            --light: #FAFAFA;
+            --light-200: #F5F5F5;
+            --light-300: #EEEEEE;
+            --dark: #212121;
+            --dark-200: #424242;
+            --dark-300: #616161;
+            
+            /* Utility */
+            --success: #4CAF50;
+            --info: #2196F3;
+            --warning: #FFC107;
+            --error: #F44336;
+            
+            /* Status Colors */
+            --status-new: #9C27B0;
+            --status-awaiting: #FF9800;
+            --status-active: #4CAF50;
+            --status-completed: #2196F3;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-dark: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+            --shadow-focus: 0 0 0 3px rgba(10, 36, 99, 0.25);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%);
+            --gradient-accent: linear-gradient(135deg, #1E88E5 0%, #64B5F6 100%);
+            --gradient-neutral: linear-gradient(135deg, #F5F5F5 0%, #FAFAFA 100%);
+            
+            /* Transitions */
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Sizing & Spacing */
+            --container-width: 1280px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-full: 9999px;
+            
+            /* Layout */
+            --header-height: 70px;
+            --sidebar-width: 280px;
+            --sidebar-collapsed: 80px;
+        }
+        
+        /* Base Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            width: 100%;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            background-image: 
+                radial-gradient(circle at 90% 10%, rgba(10, 36, 99, 0.02) 0%, transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(30, 136, 229, 0.02) 0%, transparent 50%);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--dark);
+        }
+        
+        h1 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+            margin-bottom: 0.75rem;
+        }
+        
+        h3 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        h4 {
+            font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--dark-300);
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: 0.02em;
+        }
+        
+        .btn::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.6s ease-out, height 0.6s ease-out;
+        }
+        
+        .btn:hover::after {
+            width: 300%;
+            height: 300%;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 36, 99, 0.25);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(10, 36, 99, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.25);
+        }
+        
+        .btn-accent:hover {
+            box-shadow: 0 6px 16px rgba(30, 136, 229, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--light-300);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-light:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .btn-icon {
+            padding: 0.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--light-300);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width var(--transition-normal), transform var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--light-300);
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            font-weight: 400;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--dark-300);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu-link:hover {
+            background: var(--light-200);
+            color: var(--primary);
+        }
+        
+        .sidebar-menu-link.active {
+            background: var(--accent-light);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .sidebar-menu-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--light-300);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+        
+        .user-role {
+            color: var(--dark-300);
+            font-size: 0.8rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin var(--transition-normal);
+        }
+        
+        .header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--light-300);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-sidebar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--light-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 1rem;
+            transition: all var(--transition-fast);
+        }
+        
+        .toggle-sidebar:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .header-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            gap: 1rem;
+        }
+        
+        .notification-bell {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--light-200);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .notification-bell:hover {
+            background: var(--light-300);
+        }
+        
+        .notification-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+        }
+        
+        /* Container for page content */
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Dashboard Specific Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-300);
+            transition: all var(--transition-normal);
+        }
+        
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--dark-300);
+            font-weight: 500;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .stat-icon.new {
+            background: var(--status-new);
+        }
+        
+        .stat-icon.awaiting {
+            background: var(--status-awaiting);
+        }
+        
+        .stat-icon.active {
+            background: var(--status-active);
+        }
+        
+        .stat-icon.completed {
+            background: var(--status-completed);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+            font-family: 'Space Grotesk', monospace;
+        }
+        
+        .stat-description {
+            font-size: 0.85rem;
+            color: var(--dark-300);
+        }
+        
+        /* Tabs */
+        .tabs {
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-nav {
+            display: flex;
+            border-bottom: 2px solid var(--light-300);
+            padding-bottom: 4px;
+        }
+        
+        .tab-item {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: var(--dark-300);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+        
+        .tab-item:hover {
+            color: var(--primary);
+        }
+        
+        .tab-item.active {
+            color: var(--primary);
+        }
+        
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+        
+        .tab-content {
+            padding-top: 1.5rem;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        /* Case cards */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .case-card {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-300);
+            transition: all var(--transition-normal);
+        }
+        
+        .case-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+        
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-300);
+        }
+        
+        .case-title {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+        
+        .case-number {
+            font-size: 0.85rem;
+            color: var(--dark-300);
+        }
+        
+        .case-status {
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .case-status.new {
+            background: rgba(156, 39, 176, 0.1);
+            color: var(--status-new);
+        }
+        
+        .case-status.awaiting {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--status-awaiting);
+        }
+        
+        .case-status.active {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--status-active);
+        }
+        
+        .case-status.completed {
+            background: rgba(33, 150, 243, 0.1);
+            color: var(--status-completed);
+        }
+        
+        .case-body {
+            padding: 1.5rem;
+        }
+        
+        .case-parties {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .case-party {
+            flex: 1;
+        }
+        
+        .party-label {
+            font-size: 0.85rem;
+            color: var(--dark-300);
+            margin-bottom: 0.25rem;
+        }
+        
+        .party-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .case-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .case-date, .case-documents {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark-300);
+        }
+        
+        .case-progress {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--dark-300);
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--light-300);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+        
+        .case-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--light-300);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-300);
+        }
+        
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .empty-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .empty-description {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            color: var(--dark-300);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .case-footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="strona-glowna.html" class="logo">e-<span>Porozumienie</span></a>
+            </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="strona-glowna.html" class="sidebar-menu-link active">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                                    <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                                    <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                                    <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                                </svg>
+                            </span>
+                            <span>Pulpit</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="moje-sprawy.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                    <path d="M12 11h4"></path>
+                                    <path d="M12 16h4"></path>
+                                    <path d="M8 11h.01"></path>
+                                    <path d="M8 16h.01"></path>
+                                </svg>
+                            </span>
+                            <span>Moje sprawy</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="dokumenty.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" x2="8" y1="13" y2="13"></line>
+                                    <line x1="16" x2="8" y1="17" y2="17"></line>
+                                    <line x1="10" x2="8" y1="9" y2="9"></line>
+                                </svg>
+                            </span>
+                            <span>Dokumenty</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="statystyki.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                                    <path d="M21.18 8.02A10 10 0 0 0 12 2v10h10c0-1.41-.34-2.73-.9-3.91"></path>
+                                </svg>
+                            </span>
+                            <span>Statystyki</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="ustawienia.html" class="sidebar-menu-link">
+                            <span class="sidebar-menu-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                </svg>
+                            </span>
+                            <span>Ustawienia</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">MU</div>
+                    <div class="user-details">
+                        <div class="user-name">Mikołaj Uroda</div>
+                        <div class="user-role">Użytkownik</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="toggle-sidebar" id="toggleSidebar">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" x2="21" y1="12" y2="12"></line>
+                            <line x1="3" x2="21" y1="6" y2="6"></line>
+                            <line x1="3" x2="21" y1="18" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h2 class="header-title">Pulpit</h2>
+                </div>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notification-indicator"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page Content -->
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1>Witaj, Mikołaj!</h1>
+                    <a href="nowa-sprawa.html" class="btn btn-primary">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                            <path d="M12 5v14M5 12h14"></path>
+                        </svg>
+                        Nowa sprawa
+                    </a>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Nowe sprawy</span>
+                            <div class="stat-icon new">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 5v14M5 12h14"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-description">Sprawy do rozpoczęcia</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Oczekujące</span>
+                            <div class="stat-icon awaiting">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-description">Oczekujące na odpowiedź</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">W toku</span>
+                            <div class="stat-icon active">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-description">Aktywne sprawy</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Zakończone</span>
+                            <div class="stat-icon completed">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-description">Zawarte ugody</div>
+                    </div>
+                </div>
+                
+                <!-- Tabs -->
+                <div class="tabs">
+                    <div class="tab-nav">
+                        <div class="tab-item active" data-tab="active">Aktywne sprawy</div>
+                        <div class="tab-item" data-tab="completed">Zakończone</div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Active Cases Tab -->
+                        <div class="tab-pane active" id="active-tab">
+                            <div class="cases-grid">
+                                <!-- Case Card 1 -->
+                                <div class="case-card">
+                                    <div class="case-header">
+                                        <div>
+                                            <div class="case-title">Sprzedaż samochodu</div>
+                                            <div class="case-number">#SP-2025-001</div>
+                                        </div>
+                                        <div class="case-status active">W toku</div>
+                                    </div>
+                                    <div class="case-body">
+                                        <div class="case-parties">
+                                            <div class="case-party">
+                                                <div class="party-label">Strona A</div>
+                                                <div class="party-name">Jan Kowalski</div>
+                                            </div>
+                                            <div class="case-party">
+                                                <div class="party-label">Strona B</div>
+                                                <div class="party-name">Anna Nowak</div>
+                                            </div>
+                                        </div>
+                                        <div class="case-meta">
+                                            <div class="case-date">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                                </svg>
+                                                <span>18 marca 2025</span>
+                                            </div>
+                                            <div class="case-documents">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" x2="8" y1="13" y2="13"></line>
+                                                    <line x1="16" x2="8" y1="17" y2="17"></line>
+                                                    <line x1="10" x2="8" y1="9" y2="9"></line>
+                                                </svg>
+                                                <span>5 dokumentów</span>
+                                            </div>
+                                        </div>
+                                        <div class="case-progress">
+                                            <div class="progress-label">
+                                                <span>Postęp</span>
+                                                <span>75%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-value" style="width: 75%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="case-footer">
+                                        <button class="btn btn-sm btn-primary">Kontynuuj</button>
+                                        <button class="btn btn-sm btn-outline">Szczegóły</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Case Card 2 -->
+                                <div class="case-card">
+                                    <div class="case-header">
+                                        <div>
+                                            <div class="case-title">Umowa o dzieło</div>
+                                            <div class="case-number">#UOD-2025-003</div>
+                                        </div>
+                                        <div class="case-status awaiting">Oczekująca</div>
+                                    </div>
+                                    <div class="case-body">
+                                        <div class="case-parties">
+                                            <div class="case-party">
+                                                <div class="party-label">Strona A</div>
+                                                <div class="party-name">Mikołaj Uroda</div>
+                                            </div>
+                                            <div class="case-party">
+                                                <div class="party-label">Strona B</div>
+                                                <div class="party-name">Firma XYZ Sp. z o.o.</div>
+                                            </div>
+                                        </div>
+                                        <div class="case-meta">
+                                            <div class="case-date">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                                </svg>
+                                                <span>15 marca 2025</span>
+                                            </div>
+                                            <div class="case-documents">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" x2="8" y1="13" y2="13"></line>
+                                                    <line x1="16" x2="8" y1="17" y2="17"></line>
+                                                    <line x1="10" x2="8" y1="9" y2="9"></line>
+                                                </svg>
+                                                <span>3 dokumenty</span>
+                                            </div>
+                                        </div>
+                                        <div class="case-progress">
+                                            <div class="progress-label">
+                                                <span>Postęp</span>
+                                                <span>45%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-value" style="width: 45%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="case-footer">
+                                        <button class="btn btn-sm btn-primary">Kontynuuj</button>
+                                        <button class="btn btn-sm btn-outline">Szczegóły</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Case Card 3 -->
+                                <div class="case-card">
+                                    <div class="case-header">
+                                        <div>
+                                            <div class="case-title">Reklamacja produktu</div>
+                                            <div class="case-number">#RK-2025-007</div>
+                                        </div>
+                                        <div class="case-status new">Nowa</div>
+                                    </div>
+                                    <div class="case-body">
+                                        <div class="case-parties">
+                                            <div class="case-party">
+                                                <div class="party-label">Strona A</div>
+                                                <div class="party-name">Mikołaj Uroda</div>
+                                            </div>
+                                            <div class="case-party">
+                                                <div class="party-label">Strona B</div>
+                                                <div class="party-name">Sklep ABC</div>
+                                            </div>
+                                        </div>
+                                        <div class="case-meta">
+                                            <div class="case-date">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                                </svg>
+                                                <span>21 marca 2025</span>
+                                            </div>
+                                            <div class="case-documents">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" x2="8" y1="13" y2="13"></line>
+                                                    <line x1="16" x2="8" y1="17" y2="17"></line>
+                                                    <line x1="10" x2="8" y1="9" y2="9"></line>
+                                                </svg>
+                                                <span>2 dokumenty</span>
+                                            </div>
+                                        </div>
+                                        <div class="case-progress">
+                                            <div class="progress-label">
+                                                <span>Postęp</span>
+                                                <span>15%</span>
+                                            </div>
+                                            <div class="progress-bar">
+                                                <div class="progress-value" style="width: 15%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="case-footer">
+                                        <button class="btn btn-sm btn-primary">Kontynuuj</button>
+                                        <button class="btn btn-sm btn-outline">Szczegóły</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Completed Cases Tab -->
+                        <div class="tab-pane" id="completed-tab">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                </div>
+                                <h3 class="empty-title">Brak zakończonych spraw</h3>
+                                <p class="empty-description">
+                                    Tutaj będą wyświetlane zakończone sprawy z zawartymi ugodami. 
+                                    Aktualnie nie masz żadnych zakończonych spraw.
+                                </p>
+                                <a href="xxx.html" class="btn btn-primary">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                                        <path d="M12 5v14M5 12h14"></path>
+                                    </svg>
+                                    Utwórz nową sprawę
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle sidebar
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+            });
+            
+            // Handle tabs
+            const tabItems = document.querySelectorAll('.tab-item');
+            
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding tab content
+                    const tabId = this.getAttribute('data-tab');
+                    const tabPanes = document.querySelectorAll('.tab-pane');
+                    
+                    tabPanes.forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+            
+            // Mobile responsiveness
+            function handleResize() {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('show');
+                } else {
+                    sidebar.classList.add('show');
+                }
+            }
+            
+            // Initial call and event listener
+            handleResize();
+            window.addEventListener('resize', handleResize);
+        });
+    </script>
+</body>
+</html>
