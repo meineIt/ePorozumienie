@@ -232,7 +232,7 @@ export default function Step4Summary({
           type="button"
           onClick={handleCreate}
           disabled={isCreating}
-          className="px-6 py-2 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-lg"
+          className="px-6 py-2 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
         >
           {isCreating ? (
             <>

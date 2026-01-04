@@ -307,7 +307,7 @@ export default function Step3OtherParty({
         </button>
         <button
           type="submit"
-          className="px-6 py-2 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
+          className="px-6 py-2 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
         >
           Dalej: Podsumowanie
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
