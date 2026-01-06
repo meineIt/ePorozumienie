@@ -1,35 +1,123 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile, stat } from 'fs/promises';
+import { join, resolve, normalize } from 'path';
+import { getAuthUser } from '@/lib/auth/middleware';
+import { prisma } from '@/lib/prisma';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { path: string[] } }
+    { params }: { params: Promise<{ path: string[] }> }
 ) {
     try {
-        const { path } = await params;
-        const filePath = path.join('/');
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
+        }
+
+        const { path: pathArray } = await params;
+        const filePath = pathArray.join('/');
         
-        // Zabezpieczenie przed path traversal
-        if (filePath.includes('..') || filePath.includes('/')) {
+        // Zabezpieczenie przed path traversal - normalizuj ścieżkę i sprawdź czy nie wychodzi poza uploads
+        const normalizedPath = normalize(filePath);
+        if (normalizedPath.includes('..') || normalizedPath.startsWith('/')) {
             return NextResponse.json(
                 { error: 'Nieprawidłowa ścieżka' },
                 { status: 400 }
             );
         }
 
-        const fullPath = join(process.cwd(), 'public', 'uploads', filePath);
+        // Resolve pełnej ścieżki
+        const uploadsDir = resolve(process.cwd(), 'public', 'uploads');
+        const fullPath = resolve(uploadsDir, normalizedPath);
+
+        // Sprawdź czy plik jest w katalogu uploads (zabezpieczenie przed path traversal)
+        if (!fullPath.startsWith(uploadsDir)) {
+            return NextResponse.json(
+                { error: 'Nieprawidłowa ścieżka' },
+                { status: 400 }
+            );
+        }
+
+        // Sprawdź czy plik istnieje i jest plikiem (nie katalogiem)
+        try {
+            const stats = await stat(fullPath);
+            if (!stats.isFile()) {
+                return NextResponse.json(
+                    { error: 'Nieprawidłowa ścieżka' },
+                    { status: 400 }
+                );
+            }
+        } catch {
+            return NextResponse.json(
+                { error: 'Plik nie został znaleziony' },
+                { status: 404 }
+            );
+        }
+
+        // Sprawdź czy użytkownik ma dostęp do tego pliku
+        // Plik musi być powiązany ze sprawą, do której użytkownik ma dostęp
+        const fileName = normalizedPath.split('/').pop() || normalizedPath;
+        
+        // Znajdź sprawy użytkownika
+        const userAffairs = await prisma.affair.findMany({
+            where: {
+                OR: [
+                    { creatorId: authUser.userId },
+                    { involvedUserId: authUser.userId }
+                ]
+            },
+            select: {
+                id: true,
+                files: true
+            }
+        });
+
+        // Sprawdź czy plik jest w dokumentach użytkownika
+        let hasAccess = false;
+        for (const affair of userAffairs) {
+            if (affair.files) {
+                try {
+                    const documents = JSON.parse(affair.files);
+                    if (Array.isArray(documents)) {
+                        const fileInDocuments = documents.some((doc: any) => {
+                            const docPath = doc.path || '';
+                            return docPath.includes(fileName) || docPath.endsWith(fileName);
+                        });
+                        if (fileInDocuments) {
+                            hasAccess = true;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error parsing documents:', error);
+                }
+            }
+        }
+
+        if (!hasAccess) {
+            return NextResponse.json(
+                { error: 'Brak uprawnień do tego pliku' },
+                { status: 403 }
+            );
+        }
         
         const fileBuffer = await readFile(fullPath);
         
         // Określ content-type na podstawie rozszerzenia
-        const extension = filePath.split('.').pop()?.toLowerCase();
+        const extension = normalizedPath.split('.').pop()?.toLowerCase();
         const contentType = getContentType(extension || '');
 
         return new NextResponse(fileBuffer, {
             headers: {
                 'Content-Type': contentType,
-                'Content-Disposition': `inline; filename="${filePath.split('/').pop()}"`,
+                'Content-Disposition': `inline; filename="${fileName}"`,
+                'X-Content-Type-Options': 'nosniff',
             },
         });
     } catch (error) {

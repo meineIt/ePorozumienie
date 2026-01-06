@@ -24,34 +24,10 @@ export default function Step4Summary({
   const [checkingUser, setCheckingUser] = useState(true);
 
   useEffect(() => {
-    const checkUserExists = async () => {
-      const otherPartyEmail = formData.otherPartyType === 'person'
-        ? formData.otherPartyPerson?.email
-        : formData.otherPartyCompany?.email;
-
-      if (!otherPartyEmail) {
-        setCheckingUser(false);
-        return;
-      }
-
-      try {
-        // Sprawdź czy użytkownik istnieje przez API
-        const response = await fetch(`/api/affairs?checkEmail=${encodeURIComponent(otherPartyEmail)}`);
-        if (response.ok) {
-          const data = await response.json();
-          setUserExists(data.exists || false);
-        } else {
-          setUserExists(false);
-        }
-      } catch (err) {
-        console.error('Error checking user:', err);
-        setUserExists(false);
-      } finally {
-        setCheckingUser(false);
-      }
-    };
-
-    checkUserExists();
+    // Usunięto sprawdzanie czy użytkownik istnieje - email enumeration vulnerability
+    // System automatycznie obsłuży przypadek gdy użytkownik nie istnieje (wyśle zaproszenie)
+    setCheckingUser(false);
+    setUserExists(null); // Nie wiemy czy użytkownik istnieje - to jest bezpieczniejsze
   }, [formData.otherPartyType, formData.otherPartyPerson?.email, formData.otherPartyCompany?.email]);
 
   const handleCreate = async () => {
@@ -72,18 +48,24 @@ export default function Step4Summary({
         throw new Error('Email drugiej strony jest wymagany');
       }
 
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
+      if (!token) {
+        throw new Error('Brak autentykacji. Zaloguj się ponownie.');
+      }
+
       const response = await fetch('/api/affairs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify({
           title: formData.title,
           category: formData.category,
           description: formData.description,
           disputeValue: formData.disputeValue,
           documents: formData.documents,
-          creatorId: user.id,
           otherPartyEmail,
           otherPartyType: formData.otherPartyType,
           otherPartyPerson: formData.otherPartyPerson,

@@ -42,6 +42,7 @@ export interface Affair {
   createdAt: string;
   updatedAt: string;
   status?: AffairStatus;
+  files?: string | null;
   creator: {
     id: string;
     firstName: string;

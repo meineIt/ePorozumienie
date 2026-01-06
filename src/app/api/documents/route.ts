@@ -1,24 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma'
+import { getAuthUser } from '@/lib/auth/middleware'
 
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url)
-        const userId = searchParams.get('userId');
-
-        if (!userId) {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
             return NextResponse.json(
-                { error: 'ID użytkownika jest wymagane' },
-                { status: 400 }
-            );
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
         }
 
         // Pobierz wszystkie sprawy użytkownika
         const affairs = await prisma.affair.findMany({
             where: {
                 OR: [
-                    { creatorId: userId },
-                    { involvedUserId: userId }
+                    { creatorId: authUser.userId },
+                    { involvedUserId: authUser.userId }
                 ]
             },
             select: {

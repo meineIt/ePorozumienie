@@ -16,28 +16,28 @@ export default function DocumentCard({ document, onClick, getDocumentIcon }: Doc
       onClick={() => onClick(document)}
       className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
     >
-      <div className="p-4 bg-gray-50 border-b border-gray-200 relative">
-        <div className={`w-12 h-12 rounded-lg ${getCategoryColor(document.category)} flex items-center justify-center mb-2`}>
+      <div className="p-3 sm:p-4 bg-gray-50 border-b border-gray-200 relative">
+        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg ${getCategoryColor(document.category)} flex items-center justify-center mb-2`}>
           {getDocumentIcon(document.category, document.type)}
         </div>
-        <div className="absolute top-4 right-4 px-2 py-1 bg-white rounded text-xs font-semibold text-gray-700">
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 py-1 bg-white rounded text-xs font-semibold text-gray-700">
           {getFileExtension(document.name)}
         </div>
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-gray-900 truncate mb-2" title={document.name}>
+      <div className="p-3 sm:p-4">
+        <h3 className="font-semibold text-sm sm:text-base text-gray-900 truncate mb-2" title={document.name}>
           {document.name}
         </h3>
         <div className="text-xs text-gray-500 space-y-1">
           <div className="flex items-center gap-1">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="12" height="12" className="sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <polyline points="4 20 10 14 14 18 20 12" />
               <rect width="20" height="16" x="2" y="4" rx="2" />
             </svg>
             {formatFileSize(document.size)}
           </div>
           <div className="flex items-center gap-1">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="12" height="12" className="sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <rect width="18" height="18" x="3" y="4" rx="2" />
               <line x1="16" x2="16" y1="2" y2="6" />
               <line x1="8" x2="8" y1="2" y2="6" />
@@ -46,7 +46,7 @@ export default function DocumentCard({ document, onClick, getDocumentIcon }: Doc
             {formatDate(document.affairCreatedAt)}
           </div>
           <div className="flex items-center gap-1 pt-1 border-t border-gray-200">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="12" height="12" className="sm:w-3.5 sm:h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
               <rect width="8" height="4" x="8" y="2" rx="1" />
             </svg>

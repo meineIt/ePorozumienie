@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FormInput from './FormInput';
 import SubmitButton from './SubmitButton';
@@ -9,7 +9,7 @@ import AuthFooter from './AuthFooter';
 import ErrorMessage from './ErrorMessage';
 import { useShake } from './hooks/useShake';
 
-export default function RegisterPage() {
+function RegisterFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { triggerShake } = useShake();
@@ -46,8 +46,21 @@ export default function RegisterPage() {
       setError('Email jest wymagany');
       return false;
     }
-    if (formData.password.length < 6) {
-      setError('Hasło musi mieć co najmniej 6 znaków');
+    // Wzmocnione wymagania dotyczące hasła
+    if (formData.password.length < 8) {
+      setError('Hasło musi mieć co najmniej 8 znaków');
+      return false;
+    }
+    if (!/[a-z]/.test(formData.password)) {
+      setError('Hasło musi zawierać co najmniej jedną małą literę');
+      return false;
+    }
+    if (!/[A-Z]/.test(formData.password)) {
+      setError('Hasło musi zawierać co najmniej jedną wielką literę');
+      return false;
+    }
+    if (!/[0-9]/.test(formData.password)) {
+      setError('Hasło musi zawierać co najmniej jedną cyfrę');
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -79,6 +92,7 @@ export default function RegisterPage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Włącz cookies
         body: JSON.stringify({
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -96,8 +110,16 @@ export default function RegisterPage() {
         triggerShake();
         return;
       }
+
+      // Jeśli rejestracja zakończona sukcesem i otrzymaliśmy token, zapisz go
+      if (data.token) {
+        localStorage.setItem('auth-token', data.token);
+      }
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
   
-      // Sukces - przekieruj do logowania
+      // Sukces - przekieruj do logowania (lub dashboard jeśli auto-login)
       router.push('/login?registered=true');
     } catch {
       setError('Wystąpił błąd połączenia. Spróbuj ponownie.');
@@ -218,6 +240,18 @@ export default function RegisterPage() {
         linkHref="/login"
       />
     </>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Ładowanie...</p>
+      </div>
+    }>
+      <RegisterFormContent />
+    </Suspense>
   );
 }
 

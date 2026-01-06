@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useMemo } from 'react';
+import { useState, FormEvent, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FormInput from './FormInput';
 import SubmitButton from './SubmitButton';
@@ -11,7 +11,7 @@ import SuccessMessage from './SuccessMessage';
 import FormHelper from './FormHelper';
 import { useShake } from './hooks/useShake';
 
-export default function LoginPage() {
+function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { triggerShake } = useShake();
@@ -49,6 +49,7 @@ export default function LoginPage() {
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include', // Włącz cookies
           body: JSON.stringify({
             email,
             password,
@@ -58,13 +59,17 @@ export default function LoginPage() {
         const data = await response.json();
     
         if (!response.ok) {
-          setError('Nieprawidłowy email lub hasło. Spróbuj ponownie.');
+          setError(data.error || 'Nieprawidłowy email lub hasło. Spróbuj ponownie.');
           setLoading(false);
           triggerShake();
           return;
         }
     
-        // Sukces - zapisz dane użytkownika (opcjonalnie w localStorage)
+        // Sukces - zapisz token i dane użytkownika
+        // Token jest już w httpOnly cookie, ale zapisujemy też w localStorage dla kompatybilności
+        if (data.token) {
+          localStorage.setItem('auth-token', data.token);
+        }
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
@@ -134,6 +139,18 @@ export default function LoginPage() {
         linkHref="/register"
       />
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Ładowanie...</p>
+      </div>
+    }>
+      <LoginFormContent />
+    </Suspense>
   );
 }
 

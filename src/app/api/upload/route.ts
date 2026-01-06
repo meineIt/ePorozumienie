@@ -2,15 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { getAuthUser } from '@/lib/auth/middleware';
+import { validateFile, validateFileMagicBytes, MAX_FILES } from '@/lib/utils/fileValidation';
 
 export async function POST(request: NextRequest) {
     try {
+        // Autentykacja
+        try {
+            getAuthUser(request);
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            );
+        }
+
         const formData = await request.formData();
         const files = formData.getAll('files') as File[];
 
         if (!files || files.length === 0) {
             return NextResponse.json(
                 { error: 'Brak plików do przesłania' },
+                { status: 400 }
+            );
+        }
+
+        // Sprawdź limit liczby plików
+        if (files.length > MAX_FILES) {
+            return NextResponse.json(
+                { error: `Można przesłać maksymalnie ${MAX_FILES} plików jednocześnie` },
                 { status: 400 }
             );
         }
@@ -31,14 +51,32 @@ export async function POST(request: NextRequest) {
         }> = [];
 
         for (const file of files) {
+            // Walidacja pliku
+            const validation = validateFile(file);
+            if (!validation.isValid) {
+                return NextResponse.json(
+                    { error: validation.error },
+                    { status: 400 }
+                );
+            }
+
             const bytes = await file.arrayBuffer();
             const buffer = Buffer.from(bytes);
+
+            // Dodatkowa walidacja magic bytes
+            const extension = file.name.split('.').pop() || '';
+            const isValidMagicBytes = await validateFileMagicBytes(buffer, extension);
+            if (!isValidMagicBytes) {
+                return NextResponse.json(
+                    { error: `Plik "${file.name}" ma nieprawidłowy format (rozszerzenie nie pasuje do zawartości)` },
+                    { status: 400 }
+                );
+            }
 
             // Generuj unikalną nazwę pliku
             const timestamp = Date.now();
             const randomStr = Math.random().toString(36).substring(2, 15);
             const originalName = file.name;
-            const extension = originalName.split('.').pop();
             const fileName = `${timestamp}_${randomStr}.${extension}`;
             const filePath = join(uploadDir, fileName);
 

@@ -1,10 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma'
 import { sendAffairInviteEmail } from '@/lib/utils/email'
+import { getAuthUser } from '@/lib/auth/middleware'
+import { isValidEmail } from '@/lib/api/validation'
 import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
     try {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
+        }
+
+        // Walidacja rozmiaru requestu (max 1MB)
+        const contentLength = request.headers.get('content-length')
+        if (contentLength && parseInt(contentLength) > 1024 * 1024) {
+            return NextResponse.json(
+                { error: 'Request zbyt duży' },
+                { status: 413 }
+            )
+        }
+
         const body = await request.json()
         const {
             title,
@@ -12,7 +34,6 @@ export async function POST(request: NextRequest) {
             description, 
             disputeValue, 
             documents,
-            creatorId,
             otherPartyEmail,
             otherPartyType,
             otherPartyPerson,
@@ -20,12 +41,22 @@ export async function POST(request: NextRequest) {
         } = body
 
         // Walidacja
-        if (!title || !creatorId || !otherPartyEmail) {
+        if (!title || !otherPartyEmail) {
             return NextResponse.json(
-            { error: 'Tytuł, ID twórcy i email drugiej strony są wymagane' },
+            { error: 'Tytuł i email drugiej strony są wymagane' },
             { status: 400 }
             )
         }
+
+        // Walidacja email
+        if (!isValidEmail(otherPartyEmail)) {
+            return NextResponse.json(
+                { error: 'Nieprawidłowy format email drugiej strony' },
+                { status: 400 }
+            )
+        }
+
+        const creatorId = authUser.userId
 
         const involvedUser = await prisma.user.findUnique({
             where: { email: otherPartyEmail }
@@ -163,38 +194,29 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
     try {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
+        }
+
+        // Usunięto endpoint checkEmail - email enumeration vulnerability
+        // Jeśli potrzebujesz sprawdzić czy email istnieje, użyj innego bezpiecznego mechanizmu
+
         const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId');
-        const checkEmail = searchParams.get('checkEmail');
-
-        // Endpoint do sprawdzania czy użytkownik istnieje
-        if (checkEmail) {
-            const user = await prisma.user.findUnique({
-                where: { email: checkEmail },
-                select: { id: true }
-            });
-
-            return NextResponse.json(
-                { exists: !!user },
-                { status: 200 }
-            );
-        }
-
-        if (!userId) {
-            return NextResponse.json(
-                {error: 'ID uzytkownika jest wymagane' }, 
-                { status: 400 }
-            );
-        }
-
         const statusFilter = searchParams.get('status');
 
         // Pobierz wszystkie sprawy użytkownika
         const affairs = await prisma.affair.findMany({
             where: {
                 OR: [
-                    { creatorId: userId },
-                    { involvedUserId: userId}
+                    { creatorId: authUser.userId },
+                    { involvedUserId: authUser.userId}
                 ]
             },
             include: { 
@@ -216,7 +238,7 @@ export async function GET(request: NextRequest) {
                 },
                 participants: {
                     where: {
-                        userId: userId
+                        userId: authUser.userId
                     },
                     select: {
                         status: true

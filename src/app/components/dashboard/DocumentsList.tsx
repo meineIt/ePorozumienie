@@ -25,10 +25,23 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`/api/documents?userId=${userId}`);
+        const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`/api/documents`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          credentials: 'include',
+        });
         if (response.ok) {
           const data = await response.json();
           setDocuments(data.documents || []);
+        } else if (response.status === 401) {
+          window.location.href = '/login';
         }
       } catch (error) {
         console.error('Error fetching documents:', error);
@@ -37,10 +50,8 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
       }
     };
 
-    if (userId) {
-      fetchDocuments();
-    }
-  }, [userId]);
+    fetchDocuments();
+  }, []);
 
   // Filtrowanie i sortowanie dokumentów
   const filteredAndSortedDocuments = useMemo(() => {
@@ -65,7 +76,7 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="w-full max-w-7xl mx-auto ml-[230px] p-6">
+      <div className="w-full max-w-7xl mx-auto ml-0 md:ml-[230px] p-3 sm:p-4 md:p-6">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
 
         <DocumentFilters
@@ -81,7 +92,7 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
 
         {/* Documents Grid/List */}
         {filteredAndSortedDocuments.length === 0 ? (
-          <div className="p-12 text-center">
+          <div className="p-6 sm:p-12 text-center">
             <p className="text-gray-500">
               {searchQuery || selectedCategory !== 'all'
                 ? 'Nie znaleziono dokumentów'

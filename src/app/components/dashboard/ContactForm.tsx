@@ -71,7 +71,7 @@ export default function ContactForm({ userEmail, userName }: ContactFormProps) {
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="bg-gradient-to-br from-[#0A2463] to-[#3E5C95] px-6 py-4">
         <h1 className="text-2xl font-bold text-white">Skontaktuj się z nami</h1>
-        <p className="text-blue-100 text-sm mt-1">Masz pytania? Napisz do nas!</p>
+        <p className="text-blue-100 text-sm mt-1">Masz pytania? Pojawił sie błąd?</p>
       </div>
 
       <div className="px-6 py-8">
@@ -99,39 +99,6 @@ export default function ContactForm({ userEmail, userName }: ContactFormProps) {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Imię i nazwisko <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A2463] focus:border-transparent outline-none transition-all"
-                placeholder="Jan Kowalski"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A2463] focus:border-transparent outline-none transition-all"
-                placeholder="jan.kowalski@example.com"
-              />
-            </div>
-          </div>
 
           <div>
             <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
@@ -180,10 +147,7 @@ export default function ContactForm({ userEmail, userName }: ContactFormProps) {
                 </>
               ) : (
                 <>
-                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
-                  Wyślij wiadomość
+                  Wyślij
                 </>
               )}
             </button>

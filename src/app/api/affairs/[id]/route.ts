@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma'
+import { getAuthUser } from '@/lib/auth/middleware'
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id } = await params;
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId');
-
-        if (!userId) {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
             return NextResponse.json(
-                { error: 'ID użytkownika jest wymagane' },
-                { status: 400 }
-            );
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
         }
+
+        const { id } = await params;
 
         const affair = await prisma.affair.findUnique({
             where: { id },
@@ -38,7 +41,7 @@ export async function GET(
                 },
                 participants: {
                     where: {
-                        userId: userId
+                        userId: authUser.userId
                     },
                     select: {
                         status: true
@@ -55,7 +58,7 @@ export async function GET(
         }
 
         // Walidacja uprawnień - sprawdzenie czy użytkownik jest zaangażowany w sprawę
-        if (affair.creatorId !== userId && affair.involvedUserId !== userId) {
+        if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
             return NextResponse.json(
                 { error: 'Brak uprawnień do przeglądania tej sprawy' },
                 { status: 403 }
@@ -82,21 +85,32 @@ export async function GET(
 
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
+        }
+
+        // Walidacja rozmiaru requestu (max 10KB)
+        const contentLength = request.headers.get('content-length')
+        if (contentLength && parseInt(contentLength) > 10 * 1024) {
+            return NextResponse.json(
+                { error: 'Request zbyt duży' },
+                { status: 413 }
+            )
+        }
+
         const { id } = await params;
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId');
         const body = await request.json();
         const { status } = body;
-
-        if (!userId) {
-            return NextResponse.json(
-                { error: 'ID użytkownika jest wymagane' },
-                { status: 400 }
-            );
-        }
 
         if (!status || !['REACTION_NEEDED', 'WAITING', 'DONE'].includes(status)) {
             return NextResponse.json(
@@ -123,7 +137,7 @@ export async function PATCH(
         }
 
         // Walidacja uprawnień
-        if (affair.creatorId !== userId && affair.involvedUserId !== userId) {
+        if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
             return NextResponse.json(
                 { error: 'Brak uprawnień do aktualizacji tej sprawy' },
                 { status: 403 }
@@ -136,7 +150,7 @@ export async function PATCH(
             const participant = await tx.affairParticipant.findUnique({
                 where: {
                     userId_affairId: {
-                        userId: userId,
+                        userId: authUser.userId,
                         affairId: id
                     }
                 }
@@ -150,7 +164,7 @@ export async function PATCH(
             } else {
                 await tx.affairParticipant.create({
                     data: {
-                        userId: userId,
+                        userId: authUser.userId,
                         affairId: id,
                         status
                     }
@@ -159,7 +173,7 @@ export async function PATCH(
 
             // Jeśli użytkownik zmienia status na WAITING, zmień status drugiej strony na REACTION_NEEDED
             if (status === 'WAITING') {
-                const otherUserId = affair.creatorId === userId 
+                const otherUserId = affair.creatorId === authUser.userId 
                     ? affair.involvedUserId 
                     : affair.creatorId;
 

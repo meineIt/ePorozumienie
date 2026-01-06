@@ -56,13 +56,26 @@ export default function AffairDetailsPage() {
 
   useEffect(() => {
     const fetchAffair = async () => {
-      if (!userId || !affairId) return;
+      if (!affairId) return;
 
       try {
-        const response = await fetch(`/api/affairs/${affairId}?userId=${userId}`);
+        const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
+        if (!token) {
+          router.push('/login');
+          return;
+        }
+
+        const response = await fetch(`/api/affairs/${affairId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          credentials: 'include',
+        });
         if (response.ok) {
           const data = await response.json();
           setAffair(data.affair);
+        } else if (response.status === 401) {
+          router.push('/login');
         } else if (response.status === 404) {
           router.push('/dashboard');
         } else if (response.status === 403) {
@@ -75,10 +88,8 @@ export default function AffairDetailsPage() {
       }
     };
 
-    if (userId) {
-      fetchAffair();
-    }
-  }, [affairId, userId, router]);
+    fetchAffair();
+  }, [affairId, router]);
 
   const getAffairInitials = (title: string) => {
     const words = title.split(' ');

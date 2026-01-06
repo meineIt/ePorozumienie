@@ -19,17 +19,34 @@ export default function AffairsList({ userId }: AffairsListProps) {
     useEffect(() => {
         const fetchAffairs = async () => {
           try {
+            // Pobierz token z localStorage
+            const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
+            if (!token) {
+              setLoading(false);
+              return;
+            }
+
             const url = statusFilter 
-              ? `/api/affairs?userId=${userId}&status=${statusFilter}`
-              : `/api/affairs?userId=${userId}`;
-            const response = await fetch(url);
+              ? `/api/affairs?status=${statusFilter}`
+              : `/api/affairs`;
+            const response = await fetch(url, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+              credentials: 'include',
+            });
             if (response.ok) {
               const data = await response.json();
               const fetchedAffairs = data.affairs || [];
               setAffairs(fetchedAffairs);
               // Pobierz wszystkie sprawy dla statystyk
               if (statusFilter) {
-                const allResponse = await fetch(`/api/affairs?userId=${userId}`);
+                const allResponse = await fetch(`/api/affairs`, {
+                  headers: {
+                    'Authorization': `Bearer ${token}`,
+                  },
+                  credentials: 'include',
+                });
                 if (allResponse.ok) {
                   const allData = await allResponse.json();
                   setAllAffairs(allData.affairs || []);
@@ -37,6 +54,9 @@ export default function AffairsList({ userId }: AffairsListProps) {
               } else {
                 setAllAffairs(fetchedAffairs);
               }
+            } else if (response.status === 401) {
+              // Nieautoryzowany - przekieruj do logowania
+              window.location.href = '/login';
             }
           } catch (error) {
             console.error('Error fetching affairs:', error);
@@ -45,10 +65,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
           }
         };
     
-        if (userId) {
-          fetchAffairs();
-        }
-      }, [userId, statusFilter]);
+        fetchAffairs();
+      }, [statusFilter]);
 
 
     const getAffairInitials = (title: string) => {
@@ -94,6 +112,19 @@ export default function AffairsList({ userId }: AffairsListProps) {
           return 'bg-[rgba(33,150,243,0.1)] text-[#2196F3]';
         default:
           return 'bg-[rgba(76,175,80,0.1)] text-[#4CAF50]';
+      }
+    };
+
+    const getDocumentCount = (affair: Affair): number => {
+      if (!affair.files) {
+        return 0;
+      }
+      try {
+        const documents = JSON.parse(affair.files);
+        return Array.isArray(documents) ? documents.length : 0;
+      } catch (error) {
+        console.error('Error parsing documents for affair:', affair.id, error);
+        return 0;
       }
     };
 
@@ -249,7 +280,15 @@ export default function AffairsList({ userId }: AffairsListProps) {
                         <line x1="16" x2="8" y1="17" y2="17"></line>
                         <line x1="10" x2="8" y1="9" y2="9"></line>
                       </svg>
-                      <span>999 dokumentów</span>
+                      <span>
+                        {(() => {
+                          const count = getDocumentCount(affair);
+                          if (count === 0) return '0 dokumentów';
+                          if (count === 1) return '1 dokument';
+                          if (count >= 2 && count <= 4) return `${count} dokumenty`;
+                          return `${count} dokumentów`;
+                        })()}
+                      </span>
                     </div>
                   </div>
                   <div className="mb-4">
