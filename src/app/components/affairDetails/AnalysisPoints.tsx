@@ -1,5 +1,7 @@
 'use client';
 
+import AnalysisIcon, { AnalysisType } from '../shared/icons/AnalysisIcon';
+
 interface AnalysisPoint {
   id: string;
   title: string;
@@ -7,43 +9,28 @@ interface AnalysisPoint {
 }
 
 interface AnalysisPointsProps {
-  type: 'agreements' | 'negotiations' | 'disagreements';
+  type: AnalysisType;
   points: AnalysisPoint[];
 }
 
 export default function AnalysisPoints({ type, points }: AnalysisPointsProps) {
   const config = {
     agreements: {
-      icon: (
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      ),
+      icon: <AnalysisIcon type="agreements" className="w-4 h-4" />,
       iconBg: 'bg-[rgba(76,175,80,0.1)]',
       iconColor: 'text-[#4CAF50]',
       emptyTitle: 'Brak punktów zgodnych',
       emptyDescription: 'Punkty zgodne będą wyświetlane tutaj po analizie AI.',
     },
     negotiations: {
-      icon: (
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="16"></line>
-          <line x1="8" y1="12" x2="16" y2="12"></line>
-        </svg>
-      ),
+      icon: <AnalysisIcon type="negotiations" className="w-4 h-4" />,
       iconBg: 'bg-[rgba(33,150,243,0.1)]',
       iconColor: 'text-[#2196F3]',
       emptyTitle: 'Brak punktów do negocjacji',
       emptyDescription: 'Punkty do negocjacji będą wyświetlane tutaj po analizie AI.',
     },
     disagreements: {
-      icon: (
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      ),
+      icon: <AnalysisIcon type="disagreements" className="w-4 h-4" />,
       iconBg: 'bg-[rgba(255,152,0,0.1)]',
       iconColor: 'text-[#FF9800]',
       emptyTitle: 'Brak rozbieżności',

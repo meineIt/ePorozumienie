@@ -1,22 +1,11 @@
 'use client';
 
 import DocumentRow from './DocumentRow';
-
-interface Document {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  category: string;
-  affairId: string;
-  affairTitle: string;
-  affairCreatedAt: string;
-  path?: string | null;
-}
+import { DocumentWithAffair } from '@/lib/types';
 
 interface DocumentListViewProps {
-  documents: Document[];
-  onDocumentClick: (doc: Document) => void;
+  documents: DocumentWithAffair[];
+  onDocumentClick: (doc: DocumentWithAffair) => void;
   getDocumentIcon: (category: string, type: string) => React.ReactNode;
 }
 

@@ -1,19 +1,9 @@
 'use client';
 
-interface Document {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  category: string;
-  affairId: string;
-  affairTitle: string;
-  affairCreatedAt: string;
-  path?: string | null;
-}
+import { DocumentWithAffair } from '@/lib/types';
 
 interface DocumentViewerProps {
-  document: Document | null;
+  document: DocumentWithAffair | null;
   isOpen: boolean;
   onClose: () => void;
   getDocumentUrl: (path: string) => string;

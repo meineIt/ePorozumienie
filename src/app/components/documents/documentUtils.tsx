@@ -1,65 +1,17 @@
-import React from 'react';
+import { DocumentWithAffair } from '@/lib/types';
+import DocumentIcon from '../shared/icons/DocumentIcon';
+import type { ReactNode } from 'react';
 
 /**
  * Funkcje pomocnicze dla komponentów dokumentów
  */
 
-interface Document {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  category: string;
-  affairId: string;
-  affairTitle: string;
-  affairCreatedAt: string;
-  path?: string | null;
-}
-
 /**
  * Pobiera ikonę dokumentu na podstawie kategorii i typu
+ * @deprecated Użyj komponentu DocumentIcon bezpośrednio
  */
-export function getDocumentIcon(category: string, type: string): React.ReactNode {
-  const iconClass = "w-6 h-6";
-  
-  if (type.startsWith('image/')) {
-    return (
-      <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-        <circle cx="8.5" cy="8.5" r="1.5" />
-        <polyline points="21 15 16 10 5 21" />
-      </svg>
-    );
-  }
-  
-  if (category === 'Umowy' || category === 'Korespondencja') {
-    return (
-      <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <path d="M12 18v-6" />
-        <path d="M8 15h8" />
-      </svg>
-    );
-  }
-  
-  if (category === 'Faktury') {
-    return (
-      <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" x2="8" y1="13" y2="13" />
-        <line x1="16" x2="8" y1="17" y2="17" />
-      </svg>
-    );
-  }
-  
-  return (
-    <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-      <polyline points="13 2 13 9 20 9" />
-    </svg>
-  );
+export function getDocumentIcon(category: string, type: string): ReactNode {
+  return <DocumentIcon category={category} type={type} />;
 }
 
 /**
@@ -78,10 +30,10 @@ export function getDocumentUrl(path: string): string {
  * Filtruje dokumenty na podstawie zapytania wyszukiwania i kategorii
  */
 export function filterDocuments(
-  documents: Document[],
+  documents: DocumentWithAffair[],
   searchQuery: string,
   selectedCategory: string
-): Document[] {
+): DocumentWithAffair[] {
   return documents.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          doc.affairTitle.toLowerCase().includes(searchQuery.toLowerCase());
@@ -93,7 +45,7 @@ export function filterDocuments(
 /**
  * Sortuje dokumenty według wybranego kryterium
  */
-export function sortDocuments(documents: Document[], sortBy: string): Document[] {
+export function sortDocuments(documents: DocumentWithAffair[], sortBy: string): DocumentWithAffair[] {
   const sorted = [...documents];
   sorted.sort((a, b) => {
     switch (sortBy) {

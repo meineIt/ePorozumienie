@@ -6,31 +6,20 @@ import DocumentGrid from '../documents/DocumentGrid';
 import DocumentListView from '../documents/DocumentListView';
 import DocumentViewer from '../documents/DocumentViewer';
 import { getDocumentIcon, getDocumentUrl, filterDocuments, sortDocuments } from '../documents/documentUtils';
-
-interface Document {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  category: string;
-  affairId: string;
-  affairTitle: string;
-  affairCreatedAt: string;
-  path?: string | null;
-}
+import { DocumentWithAffair } from '@/lib/types';
 
 interface DocumentsListProps {
   userId: string;
 }
 
 export default function DocumentsList({ userId }: DocumentsListProps) {
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<DocumentWithAffair[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('newest');
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [selectedDocument, setSelectedDocument] = useState<DocumentWithAffair | null>(null);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   useEffect(() => {
@@ -59,7 +48,7 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
     return sortDocuments(filtered, sortBy);
   }, [documents, searchQuery, selectedCategory, sortBy]);
 
-  const handleDocumentClick = (doc: Document) => {
+  const handleDocumentClick = (doc: DocumentWithAffair) => {
     if (doc.path) {
       setSelectedDocument(doc);
       setIsViewerOpen(true);
@@ -88,7 +77,6 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
           onSortChange={setSortBy}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
-          // documentCount={filteredAndSortedDocuments.length}
         />
 
         {/* Documents Grid/List */}

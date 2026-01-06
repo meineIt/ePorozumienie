@@ -1,13 +1,14 @@
 'use client';
 
 import { formatDate } from '@/lib/utils/format';
+import TimelineIcon, { TimelineEventType } from '../shared/icons/TimelineIcon';
 
 interface TimelineEvent {
   id: string;
   title: string;
   description: string;
   date: string;
-  type: 'creation' | 'party-added' | 'party-joined' | 'analysis' | 'proposal' | 'acceptance';
+  type: TimelineEventType;
 }
 
 interface AffairTimelineProps {
@@ -15,54 +16,6 @@ interface AffairTimelineProps {
 }
 
 export default function AffairTimeline({ events }: AffairTimelineProps) {
-  const getEventIcon = (type: TimelineEvent['type']) => {
-    const iconClass = "w-5 h-5";
-    switch (type) {
-      case 'creation':
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-          </svg>
-        );
-      case 'party-added':
-      case 'party-joined':
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        );
-      case 'analysis':
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"></path>
-          </svg>
-        );
-      case 'proposal':
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" x2="8" y1="13" y2="13"></line>
-            <line x1="16" x2="8" y1="17" y2="17"></line>
-          </svg>
-        );
-      case 'acceptance':
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        );
-      default:
-        return (
-          <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-          </svg>
-        );
-    }
-  };
 
   if (events.length === 0) {
     return (
@@ -96,7 +49,7 @@ export default function AffairTimeline({ events }: AffairTimelineProps) {
               {/* Timeline marker */}
               <div className="absolute left-0 w-8 h-8 rounded-full bg-[#3E5C95] border-4 border-white flex items-center justify-center z-10">
                 <div className="text-white">
-                  {getEventIcon(event.type)}
+                  <TimelineIcon type={event.type} />
                 </div>
               </div>
               

@@ -2,22 +2,11 @@
 
 import { formatFileSize, formatDate, getFileExtension } from '@/lib/utils/format';
 import { getCategoryColor } from '@/lib/utils/constants';
-
-interface Document {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  category: string;
-  affairId: string;
-  affairTitle: string;
-  affairCreatedAt: string;
-  path?: string | null;
-}
+import { DocumentWithAffair } from '@/lib/types';
 
 interface DocumentCardProps {
-  document: Document;
-  onClick: (doc: Document) => void;
+  document: DocumentWithAffair;
+  onClick: (doc: DocumentWithAffair) => void;
   getDocumentIcon: (category: string, type: string) => React.ReactNode;
 }
 

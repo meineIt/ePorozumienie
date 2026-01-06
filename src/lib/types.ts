@@ -7,13 +7,25 @@ export interface User {
   updatedAt?: string;
 }
 
+/**
+ * Podstawowy interfejs dokumentu (używany w formularzach)
+ */
 export interface Document {
   id: string;
   name: string;
   size: number;
   type: string;
   category: string;
-  path?: string;
+  path?: string | null;
+}
+
+/**
+ * Rozszerzony interfejs dokumentu z informacjami o sprawie (używany w listach dokumentów)
+ */
+export interface DocumentWithAffair extends Document {
+  affairId: string;
+  affairTitle: string;
+  affairCreatedAt: string;
 }
 
 export interface AffairFormData {
