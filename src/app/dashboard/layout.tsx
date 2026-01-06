@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import DashboardNavbar from '@/app/components/dashboard/DashboardNavbar';
-import DashboardSidebar from '@/app/components/dashboard/DashboardSidebar';
-import DocumentsList from '@/app/components/dashboard/DocumentsList';
+import DashboardNavbar from '../components/dashboard/DashboardNavbar';
+import DashboardSidebar from '../components/dashboard/DashboardSidebar';
 
 interface User {
   id: string;
@@ -15,30 +14,45 @@ interface User {
   updatedAt?: string;
 }
 
-export default function DocumentsPage() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const [user] = useState<User | null>(() => {
+    // Inicjalizacja użytkownika z localStorage przy pierwszym renderze
     if (typeof window !== 'undefined') {
       const userData = localStorage.getItem('user');
-      return userData ? JSON.parse(userData) : null;
+      if (userData) {
+        try {
+          return JSON.parse(userData) as User;
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          return null;
+        }
+      }
     }
     return null;
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Sprawdź czy użytkownik istnieje i zakończ ładowanie
     if (!user) {
       router.push('/login');
       return;
     }
     
+    // Ustaw loading na false po krótkim opóźnieniu, aby uniknąć migotania
     const timer = setTimeout(() => {
       setLoading(false);
     }, 0);
     
     return () => clearTimeout(timer);
-  }, [router, user]);
+  }, [user, router]);
 
+  // Ekran ładowania
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -49,15 +63,17 @@ export default function DocumentsPage() {
     );
   }
 
+  // Jeśli nie ma użytkownika, nie renderuj nic (redirect w useEffect)
   if (!user) {
     return null;
   }
 
   return (
     <>
-      <DashboardNavbar />
+      <DashboardNavbar firstName={user.firstName} />
       <DashboardSidebar user={user} />
-      <DocumentsList userId={user.id} />
+      {children}
     </>
   );
 }
+

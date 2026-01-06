@@ -17,12 +17,8 @@ export default function Step2Documents({
     onNext,
     onPrev,
   }: Step2DocumentsProps) {
-    const [selectedCategory, setSelectedCategory] = useState('all');
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
-
-
-    const categories = ['Wszystkie', 'Umowy', 'Korespondencja', 'Faktury', 'Zdjęcia', 'Inne'];
 
     interface UploadedFile {
         id: string;
@@ -128,23 +124,6 @@ export default function Step2Documents({
             <p className="text-gray-600 mb-4">
               Dodaj dokumenty związane ze sprawą, które pomogą w procesie mediacji i wypracowaniu ugody.
             </p>
-    
-            {/* Kategorie */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat.toLowerCase())}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === cat.toLowerCase()
-                      ? 'bg-blue-700 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
     
             {/* Dropzone */}
             <div
@@ -270,7 +249,7 @@ export default function Step2Documents({
               onClick={onNext}
               className="px-6 py-2 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
             >
-              Dalej: Dane drugiej strony
+              Dalej
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

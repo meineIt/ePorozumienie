@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import DocumentFilters from './documents/DocumentFilters';
-import DocumentGrid from './documents/DocumentGrid';
-import DocumentListView from './documents/DocumentListView';
-import DocumentViewer from './documents/DocumentViewer';
-import { getDocumentIcon, getDocumentUrl, filterDocuments, sortDocuments } from './documents/documentUtils';
+import DocumentFilters from '../documents/DocumentFilters';
+import DocumentGrid from '../documents/DocumentGrid';
+import DocumentListView from '../documents/DocumentListView';
+import DocumentViewer from '../documents/DocumentViewer';
+import { getDocumentIcon, getDocumentUrl, filterDocuments, sortDocuments } from '../documents/documentUtils';
 
 interface Document {
   id: string;
@@ -75,20 +75,9 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto mt-20 ml-64 p-6">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center">
-              <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">Dokumenty</h2>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#FAFAFA]">
+      <div className="w-full max-w-7xl mx-auto ml-[230px] p-6">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
 
         <DocumentFilters
           searchQuery={searchQuery}
@@ -99,7 +88,7 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
           onSortChange={setSortBy}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
-          documentCount={filteredAndSortedDocuments.length}
+          // documentCount={filteredAndSortedDocuments.length}
         />
 
         {/* Documents Grid/List */}
@@ -124,14 +113,15 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
             getDocumentIcon={getDocumentIcon}
           />
         )}
-      </div>
+        </div>
 
-      <DocumentViewer
-        document={selectedDocument}
-        isOpen={isViewerOpen}
-        onClose={() => setIsViewerOpen(false)}
-        getDocumentUrl={getDocumentUrl}
-      />
+        <DocumentViewer
+          document={selectedDocument}
+          isOpen={isViewerOpen}
+          onClose={() => setIsViewerOpen(false)}
+          getDocumentUrl={getDocumentUrl}
+        />
+      </div>
     </div>
   );
 }

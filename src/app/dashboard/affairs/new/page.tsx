@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
-import DashboardNavbar from '@/app/components/dashboard/DashboardNavbar';
-import DashboardSidebar from '@/app/components/dashboard/DashboardSidebar';
 import StepIndicator from '@/app/components/newAffair/StepIndicator';
 import Step1BasicInfo from '@/app/components/newAffair/Step1BasicInfo';
 import Step2Documents from '@/app/components/newAffair/Step2Documents';
@@ -50,12 +48,6 @@ export default function NewAffairPage() {
         notifySMS: false,
     });
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        }
-    }, [user, router]);
-
     const updateFormData = (data: Partial<AffairFormData>) => {
         setFormData(prev => ({ ...prev, ...data}));
     };
@@ -79,21 +71,12 @@ export default function NewAffairPage() {
     };
 
     if (!user) {
-        return  (
-            <div className="min-h-screen flex items-center justify-center">
-            <p className="text-gray-600">Ładowanie...</p>
-          </div>
-        );
+        return null;
     }
     
     return (
-        <>
-          <DashboardNavbar />
-          <DashboardSidebar user={user} />
-          
-          <div className="min-h-screen bg-gray-50 ml-64 pt-16">
-            <div className="max-w-6xl mx-auto px-6 py-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-8">Nowa sprawa</h1>
+        <div className="min-h-screen bg-[#FAFAFA] ml-[230px]">
+            <div className="max-w-6xl mx-auto px-6 py-4">
               
               <StepIndicator 
                 currentStep={currentStep} 
@@ -142,6 +125,5 @@ export default function NewAffairPage() {
               </div>
             </div>
           </div>
-        </>
       );
     }

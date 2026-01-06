@@ -1,9 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import DashboardNavbar from '../../components/dashboard/DashboardNavbar';
-import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 
 interface User {
   id: string;
@@ -15,52 +12,28 @@ interface User {
 }
 
 export default function ProfilePage() {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(() => {
-    // Inicjalizacja stanu z localStorage
-    if (typeof window !== 'undefined') {
-      const userData = localStorage.getItem('user');
-      return userData ? JSON.parse(userData) : null;
-    }
-    return null;
-  });
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Sprawdź czy użytkownik istnieje
-    if (!user) {
-      // Jeśli nie ma danych użytkownika, przekieruj do logowania
-      router.push('/login');
-      return;
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        try {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
     }
-    
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 0);
-    
-    return () => clearTimeout(timer);
-  }, [router, user]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-gray-600">Ładowanie...</p>
-        </div>
-      </div>
-    );
-  }
+  }, []);
 
   if (!user) {
     return null;
   }
 
   return (
-    <>
-      <DashboardNavbar />
-      <DashboardSidebar user={user} />
-
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 pt-24 ml-64">
+    <div className="min-h-screen bg-[#FAFAFA] py-12 px-4 sm:px-6 lg:px-8 pt-24 ml-[230px]">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="bg-blue-600 px-6 py-4">
@@ -169,6 +142,5 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </>
   );
 }

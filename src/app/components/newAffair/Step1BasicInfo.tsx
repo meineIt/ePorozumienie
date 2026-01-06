@@ -80,7 +80,7 @@ export default function Step1BasicInfo({
                 <select
                   value={formData.category}
                   onChange={(e) => updateFormData({ category: e.target.value })}
-                  className={`w-full px-4 py-2 border-[1.5px] rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] ${
+                  className={`w-full px-4 py-2 border-[1.5px] rounded-xl bg-white focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] appearance-none ${
                     errors.category ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
@@ -195,7 +195,7 @@ export default function Step1BasicInfo({
                 type="submit"
                 className="px-6 py-2 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300"
             >
-                Dalej: Dodaj dokumenty
+                Dalej
             </button>
         </div>
     </form>

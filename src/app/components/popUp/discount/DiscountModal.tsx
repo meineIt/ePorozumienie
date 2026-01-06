@@ -40,11 +40,37 @@ const PopupModal = forwardRef<PopupModalRef>((props, ref) => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted');
-    handleClose();
+    
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+
+    try {
+      const response = await fetch('/api/discount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Sukces - zamknij popup
+        handleClose();
+        // Opcjonalnie: pokaż komunikat sukcesu
+        alert('Dziękujemy! Sprawdź swoją skrzynkę email, aby otrzymać kod rabatowy.');
+      } else {
+        // Błąd
+        alert(data.error || 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie.');
+      }
+    } catch (error) {
+      console.error('Error submitting discount form:', error);
+      alert('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie.');
+    }
   };
 
   return (

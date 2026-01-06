@@ -123,7 +123,7 @@ export default function Step3OtherParty({
           <select
             value={otherPartyType}
             onChange={(e) => setOtherPartyType(e.target.value as 'person' | 'company')}
-            className="w-full px-4 py-2 border-[1.5px] border-gray-300 rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)]"
+            className="w-full px-4 py-2 border-[1.5px] border-gray-300 rounded-xl bg-white focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] appearance-none"
           >
             <option value="person">Osoba fizyczna</option>
             <option value="company">Firma / Organizacja</option>
@@ -309,7 +309,7 @@ export default function Step3OtherParty({
           type="submit"
           className="px-6 py-2 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
         >
-          Dalej: Podsumowanie
+          Dalej
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

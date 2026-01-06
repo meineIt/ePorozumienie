@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import Navigation from './components/indexPageSections/Navigation';
 import Footer from './components/indexPageSections/Footer';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navigation />
       
       <div className="grow flex items-center justify-center px-4 py-20">
         <div className="text-center max-w-2xl mx-auto">
@@ -34,12 +32,6 @@ export default function NotFound() {
               Powrót do strony głównej
             </Link>
             
-            <Link
-              href="/login"
-              className="bg-white hover:bg-gray-50 text-blue-700 border-2 border-blue-700 py-3 px-8 rounded-lg font-medium transition duration-300"
-            >
-              Zaloguj się
-            </Link>
           </div>
           
           {/* Decorative Elements */}

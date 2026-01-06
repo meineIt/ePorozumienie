@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import AffairsList from '../components/dashboard/DashboardAffairsList';
+import DocumentsList from '@/app/components/dashboard/DocumentsList';
 
-export default function DashboardPage() {
+export default function DocumentsPage() {
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,5 +24,5 @@ export default function DashboardPage() {
     return null;
   }
 
-  return <AffairsList userId={userId} />;
+  return <DocumentsList userId={userId} />;
 }

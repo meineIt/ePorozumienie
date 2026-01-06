@@ -37,7 +37,7 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
       ),
     },
     {
-      href: '/dashboard/dokumenty',
+      href: '/dashboard/documents',
       label: 'Dokumenty',
       icon: (
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -60,8 +60,8 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
       ),
     },
     {
-      href: '/dashboard/profil',
-      label: 'Profil',
+      href: '/dashboard/contactForm',
+      label: 'Napisz do nas',
       icon: (
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -77,10 +77,10 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[280px] bg-white border-r border-gray-200 z-40 flex flex-col shadow-sm">
+    <aside className="fixed left-0 top-0 h-screen w-[230px] bg-white border-r border-gray-200 z-40 flex flex-col shadow-sm">
       {/* Logo */}
       <div className="h-[70px] flex items-center px-6 border-b border-gray-200">
-        <Link href="/dashboard" className="text-xl font-bold text-[#0A2463] hover:text-[#051740] font-['Space_Grotesk']">
+        <Link href="/dashboard" className="text-2xl font-bold text-[#0A2463] hover:text-[#051740] font-['Space_Grotesk']">
           e-<span className="font-normal">Porozumienie</span>
         </Link>
       </div>
@@ -94,9 +94,9 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 text-base font-medium ${
                     isActive
-                      ? 'bg-[#BBDEFB] text-[#0A2463] border-l-[3px] border-[#0A2463] font-medium'
+                      ? 'bg-[#BBDEFB] text-[#0A2463] border-l-[3px] border-[#0A2463]'
                       : 'text-[#616161] hover:bg-[#F5F5F5] hover:text-[#0A2463]'
                   }`}
                 >
@@ -111,17 +111,23 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
 
       {/* User Info Footer */}
       <div className="border-t border-gray-200 px-6 py-4">
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-[#3E5C95] text-white flex items-center justify-center font-semibold text-base mr-3 shrink-0">
+        <Link href="/dashboard/profile" className="flex items-center mb-3 hover:opacity-80 transition-opacity">
+          <div className="w-10 h-10 rounded-full bg-[#3E5C95] text-white flex items-center justify-center font-semibold text-sm mr-3 shrink-0">
             {getUserInitials()}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-semibold text-[#212121] truncate leading-tight">
               {user ? `${user.firstName} ${user.lastName}` : 'Użytkownik'}
             </div>
-            <div className="text-xs text-[#616161] truncate">{user?.email || ''}</div>
+            <div className="text-[12px] text-[#616161] truncate">{user?.email || ''}</div>
           </div>
-        </div>
+        </Link>
+        <button
+          onClick={handleLogout}
+          className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-all duration-200 font-medium text-sm border border-gray-200 hover:border-gray-300"
+        >
+          Wyloguj
+        </button>
       </div>
     </aside>
   );

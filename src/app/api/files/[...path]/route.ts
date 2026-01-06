@@ -7,7 +7,8 @@ export async function GET(
     { params }: { params: { path: string[] } }
 ) {
     try {
-        const filePath = params.path.join('/');
+        const { path } = await params;
+        const filePath = path.join('/');
         
         // Zabezpieczenie przed path traversal
         if (filePath.includes('..') || filePath.includes('/')) {
