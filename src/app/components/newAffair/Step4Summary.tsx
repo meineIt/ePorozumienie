@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AffairFormData, User } from '@/lib/types';
 
 interface Step4SummaryProps {
@@ -20,6 +20,39 @@ export default function Step4Summary({
   const [isCreating, setIsCreating] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userExists, setUserExists] = useState<boolean | null>(null);
+  const [checkingUser, setCheckingUser] = useState(true);
+
+  useEffect(() => {
+    const checkUserExists = async () => {
+      const otherPartyEmail = formData.otherPartyType === 'person'
+        ? formData.otherPartyPerson?.email
+        : formData.otherPartyCompany?.email;
+
+      if (!otherPartyEmail) {
+        setCheckingUser(false);
+        return;
+      }
+
+      try {
+        // Sprawdź czy użytkownik istnieje przez API
+        const response = await fetch(`/api/affairs?checkEmail=${encodeURIComponent(otherPartyEmail)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setUserExists(data.exists || false);
+        } else {
+          setUserExists(false);
+        }
+      } catch (err) {
+        console.error('Error checking user:', err);
+        setUserExists(false);
+      } finally {
+        setCheckingUser(false);
+      }
+    };
+
+    checkUserExists();
+  }, [formData.otherPartyType, formData.otherPartyPerson?.email, formData.otherPartyCompany?.email]);
 
   const handleCreate = async () => {
     if (!termsAccepted) {
@@ -84,7 +117,10 @@ export default function Step4Summary({
         </div>
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Sprawa została utworzona!</h2>
         <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-          Druga strona otrzyma powiadomienie o chęci zawarcia ugody. Po dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję ugody.
+          {userExists 
+            ? 'Sprawa została przypisana do drugiej strony. Po dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję ugody.'
+            : 'Druga strona otrzyma email z zaproszeniem do rejestracji. Po utworzeniu konta i dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję ugody.'
+          }
         </p>
         <a
           href="/dashboard"
@@ -118,19 +154,24 @@ export default function Step4Summary({
       )}
 
       {/* Info box */}
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
-        <div className="flex items-start">
-          <svg className="w-5 h-5 text-blue-700 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold text-blue-900 mb-1">Co dalej?</h4>
-            <p className="text-sm text-gray-700">
-              Po utworzeniu sprawy, druga strona otrzyma powiadomienie z zaproszeniem do mediacji. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję ugody.
-            </p>
+      {!checkingUser && (
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
+          <div className="flex items-start">
+            <svg className="w-5 h-5 text-blue-700 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h4 className="font-semibold text-blue-900 mb-1">Co dalej?</h4>
+              <p className="text-sm text-gray-700">
+                {userExists 
+                  ? 'Druga strona ma już konto w systemie, więc sprawa została automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję ugody.'
+                  : 'Druga strona nie ma jeszcze konta w systemie. Po utworzeniu sprawy, otrzyma email z linkiem referencyjnym do rejestracji. Po utworzeniu konta przez ten link, sprawa zostanie automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję ugody.'
+                }
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Podsumowanie */}
       <div className="space-y-6 mb-8">

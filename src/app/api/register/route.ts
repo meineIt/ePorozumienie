@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { firstName, lastName, email, password } = body
+    const { firstName, lastName, email, password, inviteToken } = body
 
     // Walidacja
     if (!firstName || !lastName || !email || !password) {
@@ -34,6 +34,33 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Jeśli podano token, sprawdź czy jest ważny
+    let affair = null
+    if (inviteToken) {
+      affair = await prisma.affair.findUnique({
+        where: { inviteToken },
+        select: {
+          id: true,
+          inviteTokenUsed: true,
+          title: true
+        }
+      })
+
+      if (!affair) {
+        return NextResponse.json(
+          { error: 'Nieprawidłowy lub nieważny token zaproszenia' },
+          { status: 400 }
+        )
+      }
+
+      if (affair.inviteTokenUsed) {
+        return NextResponse.json(
+          { error: 'Token zaproszenia został już wykorzystany' },
+          { status: 400 }
+        )
+      }
+    }
+
     // Hashuj hasło
     const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -47,6 +74,30 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Jeśli rejestracja przez token, przypisz sprawę do użytkownika
+    if (inviteToken && affair) {
+      await prisma.$transaction(async (tx) => {
+        // Zaktualizuj sprawę
+        await tx.affair.update({
+          where: { id: affair.id },
+          data: {
+            involvedUserId: user.id,
+            inviteTokenUsed: true,
+            inviteToken: null
+          }
+        })
+
+        // Utwórz rekord uczestnika dla nowego użytkownika ze statusem REACTION_NEEDED
+        await tx.affairParticipant.create({
+          data: {
+            userId: user.id,
+            affairId: affair.id,
+            status: 'REACTION_NEEDED'
+          }
+        })
+      })
+    }
+
     // Zwróć sukces (bez hasła!)
     return NextResponse.json(
       { 
@@ -56,7 +107,8 @@ export async function POST(request: NextRequest) {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName
-        }
+        },
+        ...(affair && { affairTitle: affair.title })
       },
       { status: 201 }
     )

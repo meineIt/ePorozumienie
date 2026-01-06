@@ -3,6 +3,7 @@ import { getContactEmailTemplate } from '../email/templates/contact';
 import { getContactConfirmationEmailTemplate } from '../email/templates/contactConfirmation';
 import { getDiscountEmailTemplate } from '../email/templates/discount';
 import { getDiscountConfirmationEmailTemplate } from '../email/templates/discountConfirmation';
+import { getAffairInviteEmailTemplate } from '../email/templates/affairInvite';
 
 export interface EmailOptions {
     to: string;
@@ -77,6 +78,22 @@ export async function sendDiscountEmail(data: DiscountFormData): Promise<{ succe
 export async function sendDiscountConfirmationEmail(userEmail: string, userName: string, discountCode?: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
     const subject = 'Twój kod rabatowy 30% - e-Porozumienie';
     const html = getDiscountConfirmationEmailTemplate(userName, discountCode);
+
+    return sendEmail({
+        to: userEmail,
+        subject,
+        html,
+    });
+}
+
+/**
+ * Wysyła email z zaproszeniem do sprawy dla drugiej strony
+ */
+export async function sendAffairInviteEmail(userEmail: string, affairTitle: string, token: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const inviteLink = `${baseUrl}/register?token=${token}`;
+    const subject = `Zaproszenie do mediacji - ${affairTitle}`;
+    const html = getAffairInviteEmailTemplate(affairTitle, inviteLink);
 
     return sendEmail({
         to: userEmail,

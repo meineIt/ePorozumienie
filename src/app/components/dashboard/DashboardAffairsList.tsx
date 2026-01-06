@@ -3,27 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils/format';
-
-interface Affair {
-  id: string;
-  title: string;
-  category: string | null;
-  description: string | null;
-  createdAt: string;
-  updatedAt: string;
-  creator: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  involvedUser: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-}
+import { Affair, AffairStatus } from '@/lib/types';
 
 interface AffairsListProps {
   userId: string;
@@ -31,16 +11,32 @@ interface AffairsListProps {
 
 export default function AffairsList({ userId }: AffairsListProps) {
     const [affairs, setAffairs] = useState<Affair[]>([]);
+    const [allAffairs, setAllAffairs] = useState<Affair[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState<AffairStatus | null>(null);
 
     useEffect(() => {
         const fetchAffairs = async () => {
           try {
-            const response = await fetch(`/api/affairs?userId=${userId}`);
+            const url = statusFilter 
+              ? `/api/affairs?userId=${userId}&status=${statusFilter}`
+              : `/api/affairs?userId=${userId}`;
+            const response = await fetch(url);
             if (response.ok) {
               const data = await response.json();
-              setAffairs(data.affairs || []);
+              const fetchedAffairs = data.affairs || [];
+              setAffairs(fetchedAffairs);
+              // Pobierz wszystkie sprawy dla statystyk
+              if (statusFilter) {
+                const allResponse = await fetch(`/api/affairs?userId=${userId}`);
+                if (allResponse.ok) {
+                  const allData = await allResponse.json();
+                  setAllAffairs(allData.affairs || []);
+                }
+              } else {
+                setAllAffairs(fetchedAffairs);
+              }
             }
           } catch (error) {
             console.error('Error fetching affairs:', error);
@@ -52,7 +48,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
         if (userId) {
           fetchAffairs();
         }
-      }, [userId]);
+      }, [userId, statusFilter]);
 
 
     const getAffairInitials = (title: string) => {
@@ -67,6 +63,39 @@ export default function AffairsList({ userId }: AffairsListProps) {
         affair.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         affair.description?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Oblicz statystyki
+    const stats = {
+      reactionNeeded: allAffairs.filter(a => a.status === AffairStatus.REACTION_NEEDED).length,
+      waiting: allAffairs.filter(a => a.status === AffairStatus.WAITING).length,
+      done: allAffairs.filter(a => a.status === AffairStatus.DONE).length,
+    };
+
+    const getStatusLabel = (status: AffairStatus | null | undefined) => {
+      switch (status) {
+        case AffairStatus.REACTION_NEEDED:
+          return 'Wymaga reakcji';
+        case AffairStatus.WAITING:
+          return 'Oczekujące';
+        case AffairStatus.DONE:
+          return 'Zakończone';
+        default:
+          return 'W toku';
+      }
+    };
+
+    const getStatusBadgeClass = (status: AffairStatus | null | undefined) => {
+      switch (status) {
+        case AffairStatus.REACTION_NEEDED:
+          return 'bg-[rgba(255,152,0,0.1)] text-[#FF9800]';
+        case AffairStatus.WAITING:
+          return 'bg-[rgba(76,175,80,0.1)] text-[#4CAF50]';
+        case AffairStatus.DONE:
+          return 'bg-[rgba(33,150,243,0.1)] text-[#2196F3]';
+        default:
+          return 'bg-[rgba(76,175,80,0.1)] text-[#4CAF50]';
+      }
+    };
 
     if (loading) {
         return (
@@ -83,7 +112,14 @@ export default function AffairsList({ userId }: AffairsListProps) {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative">
+          <button
+            onClick={() => setStatusFilter(statusFilter === AffairStatus.REACTION_NEEDED ? null : AffairStatus.REACTION_NEEDED)}
+            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+              statusFilter === AffairStatus.REACTION_NEEDED 
+                ? 'border-[#FF9800] border-2' 
+                : 'border-gray-200'
+            }`}
+          >
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-[#FF9800] flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -92,11 +128,18 @@ export default function AffairsList({ userId }: AffairsListProps) {
                 </svg>
               </div>
               <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Wymaga reakcji</span>
-              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">999</div>
+              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">{stats.reactionNeeded}</div>
             </div>
-          </div>
+          </button>
           
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative">
+          <button
+            onClick={() => setStatusFilter(statusFilter === AffairStatus.WAITING ? null : AffairStatus.WAITING)}
+            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+              statusFilter === AffairStatus.WAITING 
+                ? 'border-[#4CAF50] border-2' 
+                : 'border-gray-200'
+            }`}
+          >
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-[#4CAF50] flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -104,11 +147,18 @@ export default function AffairsList({ userId }: AffairsListProps) {
                 </svg>
               </div>
               <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Oczekujące</span>
-              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">999</div>
+              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">{stats.waiting}</div>
             </div>
-          </div>
+          </button>
           
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative">
+          <button
+            onClick={() => setStatusFilter(statusFilter === AffairStatus.DONE ? null : AffairStatus.DONE)}
+            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+              statusFilter === AffairStatus.DONE 
+                ? 'border-[#2196F3] border-2' 
+                : 'border-gray-200'
+            }`}
+          >
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-[#2196F3] flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -117,9 +167,9 @@ export default function AffairsList({ userId }: AffairsListProps) {
                 </svg>
               </div>
               <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Zawarte ugody</span>
-              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">999</div>
+              <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">{stats.done}</div>
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Divider */}
@@ -164,8 +214,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
                   <div>
                     <div className="font-semibold text-lg text-[#212121] mb-1">{affair.title}</div>
                   </div>
-                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[rgba(76,175,80,0.1)] text-[#4CAF50] uppercase tracking-wide">
-                    W toku
+                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadgeClass(affair.status)} uppercase tracking-wide`}>
+                    {getStatusLabel(affair.status)}
                   </span>
                 </div>
                 <div className="p-6">
@@ -176,7 +226,9 @@ export default function AffairsList({ userId }: AffairsListProps) {
                     </div>
                     <div>
                       <div className="text-xs text-[#616161] mb-1">Strona B</div>
-                      <div className="font-semibold text-[#212121]">{affair.involvedUser?.firstName} {affair.involvedUser?.lastName}</div>
+                      <div className="font-semibold text-[#212121]">
+                        {affair.involvedUser ? `${affair.involvedUser.firstName} ${affair.involvedUser.lastName}` : '—'}
+                      </div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center mb-4 text-sm text-[#616161]">

@@ -28,6 +28,34 @@ export interface DocumentWithAffair extends Document {
   affairCreatedAt: string;
 }
 
+export enum AffairStatus {
+  REACTION_NEEDED = 'REACTION_NEEDED',
+  WAITING = 'WAITING',
+  DONE = 'DONE'
+}
+
+export interface Affair {
+  id: string;
+  title: string;
+  category: string | null;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+  status?: AffairStatus;
+  creator: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  involvedUser: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null;
+}
+
 export interface AffairFormData {
   // Step 1
   title: string;

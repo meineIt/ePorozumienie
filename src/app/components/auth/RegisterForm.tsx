@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import FormInput from './FormInput';
 import SubmitButton from './SubmitButton';
 import TrustedProfileButton from './TrustedProfileButton';
@@ -11,7 +11,9 @@ import { useShake } from './hooks/useShake';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { triggerShake } = useShake();
+  const inviteToken = searchParams.get('token');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -82,6 +84,7 @@ export default function RegisterPage() {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
+          ...(inviteToken && { inviteToken }),
         }),
       });
   
@@ -106,6 +109,27 @@ export default function RegisterPage() {
   return (
     <>
       <ErrorMessage message={error} />
+      
+      {inviteToken && (
+        <div style={{
+          backgroundColor: '#E3F2FD',
+          border: '1px solid #2196F3',
+          borderRadius: '8px',
+          padding: '16px',
+          marginBottom: '20px',
+          color: '#0A2463'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+            <svg style={{ width: '20px', height: '20px', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <strong>Zaproszenie do sprawy</strong>
+          </div>
+          <p style={{ margin: 0, fontSize: '14px' }}>
+            Zostałeś zaproszony do udziału w mediacji. Po utworzeniu konta, sprawa zostanie automatycznie przypisana do Twojego konta.
+          </p>
+        </div>
+      )}
       
       <form onSubmit={handleSubmit}>
         <FormInput
