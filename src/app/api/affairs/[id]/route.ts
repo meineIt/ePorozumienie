@@ -40,12 +40,21 @@ export async function GET(
                     }
                 },
                 participants: {
-                    where: {
-                        userId: authUser.userId
-                    },
                     select: {
-                        status: true
-                    }
+                        id: true,
+                        userId: true,
+                        status: true,
+                        description: true,
+                        files: true,
+                        user: {
+                            select: {
+                                id: true,
+                                firstName: true,
+                                lastName: true,
+                                email: true
+                            }
+                        }
+                    } as any
                 }
             }
         });
@@ -57,20 +66,25 @@ export async function GET(
             );
         }
 
-        // Walidacja uprawnień - sprawdzenie czy użytkownik jest zaangażowany w sprawę
-        if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
-            return NextResponse.json(
-                { error: 'Brak uprawnień do przeglądania tej sprawy' },
-                { status: 403 }
-            );
-        }
-
         // Dodaj status użytkownika do odpowiedzi
-        const participant = affair.participants[0];
+        const participants = (affair as any).participants as Array<{
+            id: string;
+            userId: string;
+            status: string;
+            description: string | null;
+            files: string | null;
+            user: {
+                id: string;
+                firstName: string;
+                lastName: string;
+                email: string;
+            };
+        }>;
+        const currentUserParticipant = participants.find(p => p.userId === authUser.userId);
         const affairWithStatus = {
             ...affair,
-            status: participant?.status || null,
-            participants: undefined // Usuń z odpowiedzi
+            status: currentUserParticipant?.status || null,
+            participants: participants // Zwróć pełne dane uczestników
         };
 
         return NextResponse.json({ affair: affairWithStatus }, { status: 200 });
@@ -218,3 +232,139 @@ export async function PATCH(
     }
 }
 
+export async function PUT(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        // Autentykacja
+        let authUser
+        try {
+            authUser = getAuthUser(request)
+        } catch {
+            return NextResponse.json(
+                { error: 'Wymagana autentykacja' },
+                { status: 401 }
+            )
+        }
+
+        // Walidacja rozmiaru requestu (max 1MB)
+        const contentLength = request.headers.get('content-length')
+        if (contentLength && parseInt(contentLength) > 1024 * 1024) {
+            return NextResponse.json(
+                { error: 'Request zbyt duży' },
+                { status: 413 }
+            )
+        }
+
+        const { id } = await params;
+        const body = await request.json();
+        const { description, documents } = body;
+
+        // Sprawdź czy sprawa istnieje i użytkownik ma do niej dostęp
+        const affair = await prisma.affair.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                creatorId: true,
+                involvedUserId: true
+            }
+        });
+
+        if (!affair) {
+            return NextResponse.json(
+                { error: 'Sprawa nie została znaleziona' },
+                { status: 404 }
+            );
+        }
+
+        // Walidacja uprawnień
+        if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
+            return NextResponse.json(
+                { error: 'Brak uprawnień do aktualizacji tej sprawy' },
+                { status: 403 }
+            );
+        }
+
+        // Sprawdź czy użytkownik jest uczestnikiem sprawy
+        const participant = await prisma.affairParticipant.findUnique({
+            where: {
+                userId_affairId: {
+                    userId: authUser.userId,
+                    affairId: id
+                }
+            }
+        });
+
+        if (!participant) {
+            return NextResponse.json(
+                { error: 'Nie jesteś uczestnikiem tej sprawy' },
+                { status: 403 }
+            );
+        }
+
+        const filesData = documents && documents.length > 0
+            ? JSON.stringify(documents)
+            : null
+
+        // Aktualizuj stanowisko uczestnika i zmień statusy
+        await prisma.$transaction(async (tx) => {
+            // Aktualizuj stanowisko uczestnika
+            await tx.affairParticipant.update({
+                where: { id: participant.id },
+                data: {
+                    description: description || null,
+                    files: filesData
+                } as any
+            });
+
+            // Zmień status użytkownika na WAITING
+            await tx.affairParticipant.update({
+                where: { id: participant.id },
+                data: { status: 'WAITING' }
+            });
+
+            // Zmień status drugiej strony na REACTION_NEEDED
+            const otherUserId = affair.creatorId === authUser.userId 
+                ? affair.involvedUserId 
+                : affair.creatorId;
+
+            if (otherUserId) {
+                const otherParticipant = await tx.affairParticipant.findUnique({
+                    where: {
+                        userId_affairId: {
+                            userId: otherUserId,
+                            affairId: id
+                        }
+                    }
+                });
+
+                if (otherParticipant) {
+                    await tx.affairParticipant.update({
+                        where: { id: otherParticipant.id },
+                        data: { status: 'REACTION_NEEDED' }
+                    });
+                } else {
+                    await tx.affairParticipant.create({
+                        data: {
+                            userId: otherUserId,
+                            affairId: id,
+                            status: 'REACTION_NEEDED'
+                        }
+                    });
+                }
+            }
+        });
+
+        return NextResponse.json(
+            { message: 'Stanowisko zostało zapisane pomyślnie' },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error('Error updating party position:', error);
+        return NextResponse.json(
+            { error: 'Wystąpił błąd podczas zapisywania stanowiska' },
+            { status: 500 }
+        );
+    }
+}

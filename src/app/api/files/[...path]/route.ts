@@ -74,13 +74,19 @@ export async function GET(
             },
             select: {
                 id: true,
-                files: true
+                files: true,
+                participants: {
+                    select: {
+                        files: true
+                    }
+                }
             }
         });
 
         // Sprawdź czy plik jest w dokumentach użytkownika
         let hasAccess = false;
         for (const affair of userAffairs) {
+            // Sprawdź pliki z Affair (dla kompatybilności wstecznej)
             if (affair.files) {
                 try {
                     const documents = JSON.parse(affair.files);
@@ -98,6 +104,28 @@ export async function GET(
                     console.error('Error parsing documents:', error);
                 }
             }
+
+            // Sprawdź pliki z AffairParticipant
+            for (const participant of affair.participants) {
+                if (participant.files) {
+                    try {
+                        const documents = JSON.parse(participant.files);
+                        if (Array.isArray(documents)) {
+                            const fileInDocuments = documents.some((doc: any) => {
+                                const docPath = doc.path || '';
+                                return docPath.includes(fileName) || docPath.endsWith(fileName);
+                            });
+                            if (fileInDocuments) {
+                                hasAccess = true;
+                                break;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error parsing participant documents:', error);
+                    }
+                }
+            }
+            if (hasAccess) break;
         }
 
         if (!hasAccess) {

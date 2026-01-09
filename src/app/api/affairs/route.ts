@@ -107,8 +107,10 @@ export async function POST(request: NextRequest) {
                     data: {
                         userId: creatorId,
                         affairId: createdAffair.id,
-                        status: 'WAITING'
-                    }
+                        status: 'WAITING',
+                        description: description || null,
+                        files: filesData
+                    } as any
                 })
 
                 // Utwórz rekord uczestnika dla drugiej strony ze statusem REACTION_NEEDED
@@ -155,8 +157,10 @@ export async function POST(request: NextRequest) {
                     data: {
                         userId: creatorId,
                         affairId: createdAffair.id,
-                        status: 'WAITING'
-                    }
+                        status: 'WAITING',
+                        description: description || null,
+                        files: filesData
+                    } as any
                 })
 
                 return createdAffair

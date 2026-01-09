@@ -27,7 +27,15 @@ export async function GET(request: NextRequest) {
                 id: true,
                 title: true,
                 files: true,
-                createdAt: true
+                createdAt: true,
+                participants: {
+                    where: {
+                        userId: authUser.userId
+                    },
+                    select: {
+                        files: true
+                    }
+                }
             },
             orderBy: {
                 createdAt: 'desc'
@@ -57,6 +65,7 @@ export async function GET(request: NextRequest) {
         }> = [];
 
         affairs.forEach((affair) => {
+            // Dokumenty z Affair (dla kompatybilności wstecznej)
             if (affair.files) {
                 try {
                     const documents = JSON.parse(affair.files);
@@ -79,6 +88,32 @@ export async function GET(request: NextRequest) {
                     console.error('Error parsing documents for affair:', affair.id, error);
                 }
             }
+
+            // Dokumenty z AffairParticipant
+            affair.participants.forEach((participant) => {
+                if (participant.files) {
+                    try {
+                        const documents = JSON.parse(participant.files);
+                        if (Array.isArray(documents)) {
+                            documents.forEach((doc: ParsedDocument) => {
+                                allDocuments.push({
+                                    id: doc.id || Math.random().toString(36).substr(2, 9),
+                                    name: doc.name,
+                                    size: doc.size || 0,
+                                    type: doc.type || 'application/octet-stream',
+                                    category: doc.category || 'Inne',
+                                    path: doc.path || null,
+                                    affairId: affair.id,
+                                    affairTitle: affair.title,
+                                    affairCreatedAt: affair.createdAt
+                                });
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error parsing participant documents for affair:', affair.id, error);
+                    }
+                }
+            });
         });
         return NextResponse.json({ documents: allDocuments }, { status: 200 });
 

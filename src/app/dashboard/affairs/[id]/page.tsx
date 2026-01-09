@@ -6,6 +6,8 @@ import AffairTabs from '@/app/components/affairDetails/AffairTabs';
 import AnalysisPoints from '@/app/components/affairDetails/AnalysisPoints';
 import SettlementProposal from '@/app/components/affairDetails/SettlementProposal';
 import AffairTimeline from '@/app/components/affairDetails/AffairTimeline';
+import PartyPositionForm from '@/app/components/affairDetails/PartyPositionForm';
+import { AffairParticipant, AffairStatus } from '@/lib/types';
 
 interface Affair {
   id: string;
@@ -14,6 +16,7 @@ interface Affair {
   description: string | null;
   createdAt: string;
   updatedAt: string;
+  status?: AffairStatus | null;
   creator: {
     id: string;
     firstName: string;
@@ -25,7 +28,15 @@ interface Affair {
     firstName: string;
     lastName: string;
     email: string;
+  } | null;
+  participants?: Array<AffairParticipant & {
+    user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
   };
+  }>;
 }
 
 type TabType = 'agreements' | 'negotiations' | 'disagreements';
@@ -39,6 +50,7 @@ export default function AffairDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('agreements');
   const [userId, setUserId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -89,7 +101,11 @@ export default function AffairDetailsPage() {
     };
 
     fetchAffair();
-  }, [affairId, router]);
+  }, [affairId, router, refreshKey]);
+
+  const handlePositionSaved = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   const getAffairInitials = (title: string) => {
     const words = title.split(' ');
@@ -138,6 +154,23 @@ export default function AffairDetailsPage() {
     return null;
   }
 
+  const currentUserParticipant = affair.participants?.find(p => p.userId === userId);
+  const creatorParticipant = affair.participants?.find(p => p.userId === affair.creator.id);
+  const involvedParticipant = affair.involvedUser ? affair.participants?.find(p => p.userId === affair.involvedUser?.id) : null;
+
+  const showPositionForm = currentUserParticipant?.status === 'REACTION_NEEDED' && 
+    (!currentUserParticipant.description && !currentUserParticipant.files);
+
+  const parseDocuments = (filesString: string | null | undefined): Array<{ id: string; name: string; size: number; type: string; category: string; path: string }> => {
+    if (!filesString) return [];
+    try {
+      const parsed = JSON.parse(filesString);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
   return (
     <div className="ml-[230px] min-h-screen bg-[#FAFAFA]">
       <div className="max-w-7xl mx-auto px-6 py-8">
@@ -168,13 +201,66 @@ export default function AffairDetailsPage() {
             </div>
             <div>
               <div className="text-xs text-[#616161] mb-1">Strona B</div>
+              {affair.involvedUser ? (
+                <>
               <div className="font-semibold text-[#212121]">
                 {affair.involvedUser.firstName} {affair.involvedUser.lastName}
               </div>
               <div className="text-sm text-[#616161]">{affair.involvedUser.email}</div>
+                </>
+              ) : (
+                <div className="text-sm text-[#616161]">Oczekiwanie na dołączenie</div>
+              )}
             </div>
           </div>
         </div>
+
+        {/* Formularz stanowiska strony B */}
+        {showPositionForm && (
+          <PartyPositionForm affairId={affairId} onSave={handlePositionSaved} />
+        )}
+
+        {/* Stanowiska stron */}
+        {(creatorParticipant?.description || creatorParticipant?.files || involvedParticipant?.description || involvedParticipant?.files) && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Twoje stanowisko</h2>
+            
+            <div className="space-y-6">
+              {currentUserParticipant && (currentUserParticipant.description || currentUserParticipant.files) && (
+                <div className="space-y-6">
+                  {/* Stanowisko zalogowanego użytkownika */}
+                    {currentUserParticipant.description && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Opis sprawy</h4>
+                        <p className="text-gray-600 whitespace-pre-wrap">{currentUserParticipant.description}</p>
+                      </div>
+                    )}
+                    {currentUserParticipant.files && parseDocuments(currentUserParticipant.files).length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Dokumenty</h4>
+                        <div className="space-y-2">
+                          {parseDocuments(currentUserParticipant.files).map((doc) => (
+                            <a
+                              key={doc.id}
+                              href={`/api/files${doc.path}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center p-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
+                            >
+                              <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              <span className="text-sm text-gray-700">{doc.name}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                </div>
+            )}
+            </div>
+          </div>
+        )}
 
         {/* Tabs and Analysis */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">

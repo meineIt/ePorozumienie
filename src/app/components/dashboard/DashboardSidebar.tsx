@@ -50,7 +50,7 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
       ),
     },
     {
-      href: '/dashboard/statystyki',
+      href: '/dashboard/',
       label: 'Statystyki',
       icon: (
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

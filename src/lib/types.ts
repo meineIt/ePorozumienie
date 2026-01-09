@@ -34,6 +34,17 @@ export enum AffairStatus {
   DONE = 'DONE'
 }
 
+export interface AffairParticipant {
+  id: string;
+  userId: string;
+  affairId: string;
+  status: AffairStatus;
+  description?: string | null;
+  files?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Affair {
   id: string;
   title: string;
@@ -55,6 +66,7 @@ export interface Affair {
     lastName: string;
     email: string;
   } | null;
+  participants?: AffairParticipant[];
 }
 
 export interface AffairFormData {
