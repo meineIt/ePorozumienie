@@ -7,7 +7,7 @@ import LoginForm from '../components/auth/LoginForm';
 import { useShake } from '../components/auth/hooks/useShake';
 import Navigation from '../components/indexPageSections/Navigation';
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const { shake } = useShake();
 
   return (
@@ -15,8 +15,8 @@ export default function RegisterPage() {
       <Navigation />
       <AuthLayout shake={shake}>
       <AuthFormHeader
-        title="Utwórz konto"
-        description="Zarejestruj się, aby rozpocząć korzystanie z platformy."
+        title="Zaloguj się"
+        description="Zaloguj się do swojego konta, aby kontynuować korzystanie z platformy."
       />
       <LoginForm />
       </AuthLayout>

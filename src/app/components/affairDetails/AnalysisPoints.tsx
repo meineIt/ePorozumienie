@@ -1,6 +1,7 @@
 'use client';
 
 import AnalysisIcon, { AnalysisType } from '../shared/icons/AnalysisIcon';
+import { escapeHtml } from '@/lib/utils/escapeHtml';
 
 interface AnalysisPoint {
   id: string;
@@ -66,9 +67,9 @@ export default function AnalysisPoints({ type, points }: AnalysisPointsProps) {
               {currentConfig.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="font-bold text-[#212121] mb-2 text-base">{point.title}</h4>
+              <h4 className="font-bold text-[#212121] mb-2 text-base">{escapeHtml(point.title)}</h4>
               <div className="bg-white rounded-lg p-3 border border-gray-200/50">
-                <p className="text-[#616161] text-sm leading-relaxed whitespace-pre-wrap">{point.description}</p>
+                <p className="text-[#616161] text-sm leading-relaxed whitespace-pre-wrap">{escapeHtml(point.description)}</p>
               </div>
             </div>
           </div>

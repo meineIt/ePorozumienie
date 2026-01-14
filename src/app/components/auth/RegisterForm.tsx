@@ -133,21 +133,14 @@ function RegisterFormContent() {
       <ErrorMessage message={error} />
       
       {inviteToken && (
-        <div style={{
-          backgroundColor: '#E3F2FD',
-          border: '1px solid #2196F3',
-          borderRadius: '8px',
-          padding: '16px',
-          marginBottom: '20px',
-          color: '#0A2463'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-            <svg style={{ width: '20px', height: '20px', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-5 mb-6 text-blue-900">
+          <div className="flex items-center gap-3 mb-3">
+            <svg className="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <strong>Zaproszenie do sprawy</strong>
+            <strong className="font-bold text-base">Zaproszenie do sprawy</strong>
           </div>
-          <p style={{ margin: 0, fontSize: '14px' }}>
+          <p className="text-sm leading-relaxed m-0">
             Zostałeś zaproszony do udziału w mediacji. Po utworzeniu konta, sprawa zostanie automatycznie przypisana do Twojego konta.
           </p>
         </div>
@@ -211,15 +204,18 @@ function RegisterFormContent() {
         />
         
         <div className="form-group">
-          <label className="form-checkbox">
+          <label className="form-checkbox flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               name="acceptTerms"
               checked={formData.acceptTerms}
               onChange={handleChange}
               required
+              className="w-5 h-5 rounded-lg border-2 border-gray-300 text-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
             />
-            <span>Akceptuję <a href="#">regulamin</a> i <a href="#">politykę prywatności</a></span>
+            <span className="text-gray-700 text-sm">
+              Akceptuję <a href="#" className="text-blue-700 hover:text-blue-800 font-semibold">regulamin</a> i <a href="#" className="text-blue-700 hover:text-blue-800 font-semibold">politykę prywatności</a>
+            </span>
           </label>
         </div>
         

@@ -1,8 +1,19 @@
 import OpenAI from 'openai';
-import { prisma } from '@/lib/prisma';
+import { prisma, prismaWithTimeout } from '@/lib/prisma';
+
+function getOpenAIApiKey(): string {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('OPENAI_API_KEY environment variable is required in production');
+    }
+    throw new Error('OPENAI_API_KEY environment variable is required. Please set it in your .env file');
+  }
+  return apiKey;
+}
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: getOpenAIApiKey(),
 });
 
 export interface AnalysisPoint {
@@ -55,9 +66,25 @@ export function bothPartiesHavePositions(affair: AffairWithParticipants): boolea
 }
 
 /**
+ * Helper do opakowania operacji z timeoutem
+ */
+async function withTimeout<T>(
+  operation: () => Promise<T>,
+  timeoutMs: number,
+  errorMessage: string
+): Promise<T> {
+  return Promise.race([
+    operation(),
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(errorMessage)), timeoutMs)
+    ),
+  ]);
+}
+
+/**
  * Przygotowuje prompt dla OpenAI na podstawie stanowisk stron
  */
-function preparePrompt(affair: AffairWithParticipants): string {
+function preparePrompt(affair: AffairWithParticipants, modificationRequests?: string[]): string {
   const creatorParticipant = affair.participants.find(p => p.userId === affair.creatorId);
   const involvedParticipant = affair.participants.find(p => p.userId === affair.involvedUserId);
 
@@ -141,16 +168,13 @@ Your objective is to:
         prompt += `Dokumenty umowy zostały przesłane. W analizie uwzględnij treść umowy na podstawie dostępnych dokumentów.\n\n`;
       }
     } catch {
-      // Ignoruj błędy parsowania
     }
   }
 
-  // Dodaj opis sprawy jeśli jest dostępny
   if (affair.description) {
     prompt += `[Opis sprawy]\n${affair.description}\n\n`;
   }
 
-  // Dodaj stanowiska stron
   prompt += `[Stanowiska stron]\n\n`;
 
   prompt += `Stanowisko Strony A (${affair.creatorId === creatorParticipant.userId ? 'Twórca sprawy' : 'Druga strona'}):\n`;
@@ -169,26 +193,32 @@ Your objective is to:
     prompt += `\n[Dokumenty przesłane przez Stronę B]\n`;
   }
 
+  if (modificationRequests && modificationRequests.length > 0) {
+    prompt += `\n[Propozycje zmian do poprzedniej wersji porozumienia]\n`;
+    modificationRequests.forEach((request, index) => {
+      prompt += `Propozycja zmiany ${index + 1}:\n${request}\n\n`;
+    });
+    prompt += `Uwzględnij powyższe propozycje zmian przy przygotowaniu nowej wersji porozumienia.\n`;
+  }
+
   return prompt;
 }
 
-/**
- * Analizuje stanowiska stron używając OpenAI
- */
-export async function analyzeAffairPositions(affairId: string): Promise<AIAnalysis> {
-  // Pobierz sprawę z uczestnikami
-  const affair = await prisma.affair.findUnique({
-    where: { id: affairId },
-    include: {
-      participants: {
-        select: {
-          userId: true,
-          description: true,
-          files: true,
+export async function analyzeAffairPositions(affairId: string, modificationRequests?: string[]): Promise<AIAnalysis> {
+  const affair = await prismaWithTimeout(async (client) => {
+    return client.affair.findUnique({
+      where: { id: affairId },
+      include: {
+        participants: {
+          select: {
+            userId: true,
+            description: true,
+            files: true,
+          },
         },
       },
-    },
-  });
+    });
+  }, 30000);
 
   if (!affair) {
     throw new Error('Sprawa nie została znaleziona');
@@ -198,40 +228,41 @@ export async function analyzeAffairPositions(affairId: string): Promise<AIAnalys
     throw new Error('Obie strony muszą mieć zapisane stanowiska');
   }
 
-  const prompt = preparePrompt(affair);
+  const prompt = preparePrompt(affair, modificationRequests);
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4-turbo-preview',
-      messages: [
-        {
-          role: 'system',
-          content: 'Jesteś ekspertem prawnym specjalizującym się w analizie umów i mediacji. Analizujesz stanowiska stron i przygotowujesz szczegółową analizę oraz propozycję porozumienia. Zawsze zwracasz poprawny JSON w języku polskim.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      response_format: { type: 'json_object' },
-      temperature: 0.3, // Niższa temperatura dla bardziej spójnych wyników
-    });
+    const completion = await withTimeout(
+      () => openai.chat.completions.create({
+        model: process.env.OPENAI_MODEL || 'gpt-4-turbo-preview',
+        messages: [
+          {
+            role: 'system',
+            content: 'Jesteś ekspertem prawnym specjalizującym się w analizie umów i mediacji. Analizujesz stanowiska stron i przygotowujesz szczegółową analizę oraz propozycję porozumienia. Zawsze zwracasz poprawny JSON w języku polskim.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3, // Niższa temperatura dla bardziej spójnych wyników
+      }),
+      60000, // 60 sekund timeout dla AI analysis
+      'Timeout: Analiza AI przekroczyła dozwolony czas (60 sekund)'
+    );
 
     const content = completion.choices[0]?.message?.content;
     if (!content) {
       throw new Error('Brak odpowiedzi z OpenAI');
     }
 
-    // Parsuj JSON odpowiedź
     const analysis = JSON.parse(content) as AIAnalysis;
 
-    // Walidacja struktury
     if (!analysis.punkty_zgodne || !analysis.punkty_do_negocjacji || 
         !analysis.punkty_sporne || !analysis.propozycja_porozumienia) {
       throw new Error('Nieprawidłowa struktura odpowiedzi z OpenAI');
     }
 
-    // Upewnij się, że wszystkie są tablicami (oprócz propozycja_porozumienia)
     if (!Array.isArray(analysis.punkty_zgodne) || 
         !Array.isArray(analysis.punkty_do_negocjacji) || 
         !Array.isArray(analysis.punkty_sporne)) {

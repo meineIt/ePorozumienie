@@ -25,7 +25,6 @@ export default function NewAffairPage() {
                         return parsedUser;
                     }
                 } catch (error) {
-                    console.error('Error parsing user data:', error);
                 }
             }
         }
@@ -76,13 +75,13 @@ export default function NewAffairPage() {
     
     return (
         <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+            <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
               
               <StepIndicator 
                 currentStep={currentStep}
               />
     
-              <div className="bg-white rounded-lg shadow-md p-8 mt-8">
+              <div className="card card-padding mt-6">
                 {currentStep === 1 && (
                   <Step1BasicInfo
                     formData={formData}
@@ -116,8 +115,6 @@ export default function NewAffairPage() {
                     user={user}
                     onPrev={prevStep}
                     onCreateAffair={() => {
-                      // TODO: Implementacja zapisu sprawy
-                      console.log('Creating affair:', formData);
                     }}
                   />
                 )}

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -30,28 +27,27 @@ model Affair {
   description     String?
   affairCreatedAt DateTime @default(now())
   affairValue     Float?
-  files           String? // Można zmienić na bardziej zaawansowany typ w przyszłości
+  files           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  // Relacja do użytkownika, który stworzył sprawę
   creatorId String
   creator   User   @relation("AffairCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
-  // Relacja do drugiego użytkownika zaangażowanego w sprawę
   involvedUserId String?
   involvedUser   User?   @relation("AffairInvolved", fields: [involvedUserId], references: [id], onDelete: Cascade)
 
-  // Token referencyjny do zaproszenia drugiej strony
   inviteToken     String? @unique
   inviteTokenUsed Boolean @default(false)
 
-  // Relacja do uczestników sprawy z ich statusami
   participants AffairParticipant[]
 
-  // Analiza AI
-  aiAnalysis            String?   // JSON z wynikami analizy AI
-  aiAnalysisGeneratedAt DateTime? // data wygenerowania analizy
+  aiAnalysis            String?
+  aiAnalysisGeneratedAt DateTime?
+
+  settlementProposalStatus        String?
+  settlementAcceptedBy            String?
+  settlementModificationRequests String?
 }
 
 enum AffairStatus {
@@ -69,6 +65,9 @@ model AffairParticipant {
   files       String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+
+  settlementAcceptedAt            DateTime?
+  settlementModificationRequestedAt DateTime?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   affair Affair @relation(fields: [affairId], references: [id], onDelete: Cascade)

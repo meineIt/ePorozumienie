@@ -43,31 +43,9 @@ export interface AffairParticipant {
   files?: string | null;
   createdAt: string;
   updatedAt: string;
+  settlementAcceptedAt?: string | null;
+  settlementModificationRequestedAt?: string | null;
 }
-
-// export interface Affair {
-//   id: string;
-//   title: string;
-//   category: string | null;
-//   description: string | null;
-//   createdAt: string;
-//   updatedAt: string;
-//   status?: AffairStatus;
-//   files?: string | null;
-//   creator: {
-//     id: string;
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//   };
-//   involvedUser: {
-//     id: string;
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//   } | null;
-//   participants?: AffairParticipant[];
-// }
 
 export interface Affair {
   id: string;
@@ -80,6 +58,9 @@ export interface Affair {
   files?: string | null;
   aiAnalysis?: string | null;
   aiAnalysisGeneratedAt?: string | null;
+  settlementProposalStatus?: string | null;
+  settlementAcceptedBy?: string | null;
+  settlementModificationRequests?: string | null;
   creator: {
     id: string;
     firstName: string;
@@ -103,7 +84,6 @@ export interface Affair {
 }
 
 export interface AffairFormData {
-  // Step 1
   title: string;
   category: string;
   description: string;
@@ -112,10 +92,8 @@ export interface AffairFormData {
   hasTimeLimit: boolean;
   timeDeadline: string;
   
-  // Step 2
   documents: Document[];
   
-  // Step 3
   otherPartyType: 'person' | 'company';
   otherPartyPerson?: {
     firstName: string;

@@ -1,24 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, stat } from 'fs/promises';
-import { join, resolve, normalize } from 'path';
-import { getAuthUser } from '@/lib/auth/middleware';
-import { prisma } from '@/lib/prisma';
+import { resolve, normalize } from 'path';
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
+import { prismaWithTimeout } from '@/lib/prisma';
 
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ path: string[] }> }
 ) {
     try {
-        // Autentykacja
-        let authUser
-        try {
-            authUser = getAuthUser(request)
-        } catch {
-            return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
-        }
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
 
         const { path: pathArray } = await params;
         const filePath = pathArray.join('/');
@@ -65,23 +57,25 @@ export async function GET(
         const fileName = normalizedPath.split('/').pop() || normalizedPath;
         
         // Znajdź sprawy użytkownika
-        const userAffairs = await prisma.affair.findMany({
-            where: {
-                OR: [
-                    { creatorId: authUser.userId },
-                    { involvedUserId: authUser.userId }
-                ]
-            },
-            select: {
-                id: true,
-                files: true,
-                participants: {
-                    select: {
-                        files: true
+        const userAffairs = await prismaWithTimeout(async (client) => {
+            return client.affair.findMany({
+                where: {
+                    OR: [
+                        { creatorId: authUser.userId },
+                        { involvedUserId: authUser.userId }
+                    ]
+                },
+                select: {
+                    id: true,
+                    files: true,
+                    participants: {
+                        select: {
+                            files: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        }, 30000);
 
         // Sprawdź czy plik jest w dokumentach użytkownika
         let hasAccess = false;

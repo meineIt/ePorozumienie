@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { escapeHtml } from '@/lib/utils/escapeHtml';
 
 interface User {
   id: string;
@@ -29,7 +30,6 @@ export default function ProfilePage() {
           setFirstName(parsedUser.firstName || '');
           setLastName(parsedUser.lastName || '');
         } catch (error) {
-          console.error('Error parsing user data:', error);
         }
       }
     }
@@ -93,7 +93,6 @@ export default function ProfilePage() {
         setSaveMessage(null);
       }, 3000);
     } catch (error) {
-      console.error('Error saving profile:', error);
       setSaveMessage({ 
         type: 'error', 
         text: error instanceof Error ? error.message : 'Wystąpił błąd podczas zapisywania' 
@@ -109,20 +108,17 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
-        <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="bg-blue-600 px-6 py-4 relative overflow-hidden">
-              {/* Pattern with pluses */}
-              <div 
-                className="absolute inset-0 opacity-60"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"), radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)`
-                }}
-              />
-              <h1 className="text-2xl font-bold text-white relative z-10">Mój Profil</h1>
-            </div>
+      <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Header - zgodny ze stylem innych stron dashboardu */}
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#212121] leading-tight">
+            Mój Profil
+          </h1>
+        </div>
+        
+        <div className="card overflow-hidden">
             
-            <div className="px-6 py-8">
+            <div className="card-padding">
               <div className="space-y-6">
                 {/* Avatar Section */}
                 <div className="flex items-center space-x-6 pb-6">
@@ -131,7 +127,7 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
-                      {firstName} {lastName}
+                      {escapeHtml(firstName)} {escapeHtml(lastName)}
                     </h2>
                     <p className="text-gray-600">{user.email}</p>
                   </div>

@@ -6,6 +6,15 @@ export const DOCUMENT_CATEGORIES = ['Wszystkie', 'Umowy', 'Faktury', 'Zdjęcia',
 export type DocumentCategory = typeof DOCUMENT_CATEGORIES[number];
 
 /**
+ * Limity długości tokenów - ochrona przed atakami DoS
+ */
+export const TOKEN_LENGTH_LIMITS = {
+  JWT: 2048, // Standardowy limit dla JWT tokenów
+  INVITE_TOKEN: 256, // inviteToken jest base64url z 32 bajtów (~43 znaki), limit dla bezpieczeństwa
+  CSRF_TOKEN: 128, // CSRF token to hex hash (64 znaki), limit dla bezpieczeństwa
+} as const;
+
+/**
  * Mapowanie kolorów dla kategorii dokumentów
  */
 export const CATEGORY_COLORS: Record<string, string> = {

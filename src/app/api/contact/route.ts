@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sendContactEmail, sendContactConfirmationEmail } from '@/lib/utils/email';
 import { rateLimit } from '@/lib/auth/rateLimit';
 import { isValidEmail } from '@/lib/api/validation';
+import { sanitizeString, sanitizeText } from '@/lib/utils/sanitize';
 
 // Rate limiting: 5 wiadomości na 15 minut
 const contactRateLimit = rateLimit({
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
     try {
-      await contactRateLimit.check(5, ip)
+      await contactRateLimit.check(5, ip, request)
     } catch {
       return NextResponse.json(
         { error: 'Zbyt wiele prób wysłania wiadomości. Spróbuj ponownie za chwilę.' },
@@ -65,12 +66,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Sanityzacja danych przed wysłaniem emaila
+    const sanitizedName = sanitizeString(name)
+    const sanitizedMessage = sanitizeText(message)
+    const sanitizedSubject = subject ? sanitizeString(subject) : undefined
+
     // Wyślij email do administratora
     const adminEmailResult = await sendContactEmail({
-      name,
+      name: sanitizedName,
       email,
-      message,
-      subject,
+      message: sanitizedMessage,
+      subject: sanitizedSubject,
     });
 
     if (!adminEmailResult.success) {
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Wyślij email potwierdzający do użytkownika
-    const confirmationResult = await sendContactConfirmationEmail(email, name);
+    const confirmationResult = await sendContactConfirmationEmail(email, sanitizedName);
     if (!confirmationResult.success) {
       console.warn('Failed to send confirmation email:', confirmationResult.error);
       // Nie przerywamy - główny email został wysłany

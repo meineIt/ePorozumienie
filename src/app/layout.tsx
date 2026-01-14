@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Montserrat, Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { ensureEnvironmentVariables } from "@/lib/utils/envValidation";
+
+// Walidacja zmiennych środowiskowych przy starcie aplikacji
+ensureEnvironmentVariables();
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",

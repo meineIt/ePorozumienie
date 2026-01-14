@@ -5,7 +5,7 @@ import DocumentFilters from '../documents/DocumentFilters';
 import DocumentGrid from '../documents/DocumentGrid';
 import DocumentListView from '../documents/DocumentListView';
 import DocumentViewer from '../documents/DocumentViewer';
-import { getDocumentIcon, getDocumentUrl, filterDocuments, sortDocuments } from '../documents/documentUtils';
+import { getDocumentUrl, filterDocuments, sortDocuments } from '../documents/documentUtils';
 import { DocumentWithAffair } from '@/lib/types';
 
 interface DocumentsListProps {
@@ -44,7 +44,6 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
           window.location.href = '/login';
         }
       } catch (error) {
-        console.error('Error fetching documents:', error);
       } finally {
         setLoading(false);
       }
@@ -75,8 +74,15 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] pt-[94px] lg:pl-[240px]">
-      <div className="w-full max-w-7xl mx-auto p-3 sm:p-4 md:p-6">
+    <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
+      <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Header - zgodny ze stylem innych stron dashboardu */}
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#212121] leading-tight">
+            Dokumenty
+          </h1>
+        </div>
+        
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
 
         <DocumentFilters
@@ -103,13 +109,11 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
           <DocumentGrid
             documents={filteredAndSortedDocuments}
             onDocumentClick={handleDocumentClick}
-            getDocumentIcon={getDocumentIcon}
           />
         ) : (
           <DocumentListView
             documents={filteredAndSortedDocuments}
             onDocumentClick={handleDocumentClick}
-            getDocumentIcon={getDocumentIcon}
           />
         )}
         </div>

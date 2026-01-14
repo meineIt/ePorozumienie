@@ -14,7 +14,6 @@ export default function DashboardPage() {
           const user = JSON.parse(userData);
           setUserId(user.id);
         } catch (error) {
-          console.error('Error parsing user data:', error);
         }
       }
     }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { prisma } from '@/lib/prisma'
-import { generateToken } from '@/lib/auth/jwt'
+import { prisma, prismaWithTimeout } from '@/lib/prisma'
+import { generateToken, getAuthenticatedUser } from '@/lib/auth/jwt'
 import { rateLimit } from '@/lib/auth/rateLimit'
 
 // Rate limiting: 5 prób na 15 minut
@@ -12,10 +12,13 @@ const loginRateLimit = rateLimit({
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
+    // Rate limiting - spróbuj wyciągnąć userId z JWT jeśli użytkownik jest już zalogowany
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    const authenticatedUser = getAuthenticatedUser(request)
+    const userId = authenticatedUser?.userId
+    
     try {
-      await loginRateLimit.check(5, ip)
+      await loginRateLimit.check(5, ip, request, userId)
     } catch {
       return NextResponse.json(
         { error: 'Zbyt wiele prób logowania. Spróbuj ponownie za chwilę.' },
@@ -26,10 +29,33 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, password } = body
 
+    // Walidacja typów
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return NextResponse.json(
+        { error: 'Email i hasło muszą być ciągami znaków' },
+        { status: 400 }
+      )
+    }
+
     // Walidacja
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email i hasło są wymagane' },
+        { status: 400 }
+      )
+    }
+
+    // Walidacja długości - ochrona przed DoS
+    if (email.length > 200) {
+      return NextResponse.json(
+        { error: 'Email nie może być dłuższy niż 200 znaków' },
+        { status: 400 }
+      )
+    }
+
+    if (password.length > 128) {
+      return NextResponse.json(
+        { error: 'Hasło nie może być dłuższe niż 128 znaków' },
         { status: 400 }
       )
     }
@@ -44,9 +70,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Znajdź użytkownika
-    const user = await prisma.user.findUnique({
-      where: { email }
-    })
+    const user = await prismaWithTimeout(async (client) => {
+        return client.user.findUnique({
+            where: { email }
+        });
+    }, 30000)
 
     if (!user) {
       return NextResponse.json(

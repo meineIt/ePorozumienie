@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils/format';
 import { Affair, AffairStatus } from '@/lib/types';
+import { escapeHtml } from '@/lib/utils/escapeHtml';
 
 interface AffairsListProps {
   userId: string;
@@ -57,9 +58,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
             } else if (response.status === 401) {
               // Nieautoryzowany - przekieruj do logowania
               window.location.href = '/login';
-            }
-          } catch (error) {
-            console.error('Error fetching affairs:', error);
+        }
+      } catch (error) {
           } finally {
             setLoading(false);
           }
@@ -94,7 +94,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
         case AffairStatus.REACTION_NEEDED:
           return 'Wymaga reakcji';
         case AffairStatus.WAITING:
-          return 'Oczekujące';
+          return 'Wysłane';
         case AffairStatus.DONE:
           return 'Zakończone';
         default:
@@ -122,8 +122,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
       try {
         const documents = JSON.parse(affair.files);
         return Array.isArray(documents) ? documents.length : 0;
-      } catch (error) {
-        console.error('Error parsing documents for affair:', affair.id, error);
+        } catch (error) {
         return 0;
       }
     };
@@ -145,8 +144,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
 
       if (statusFilter === AffairStatus.WAITING) {
         return {
-          title: 'Brak spraw oczekujących',
-          description: 'Nie masz obecnie spraw w statusie oczekujących. Sprawy pojawią się tutaj, gdy będą wymagały Twojej uwagi.'
+          title: 'Brak spraw wysłanych',
+          description: 'Nie masz obecnie spraw wysłanych. Sprawy pojawią się tutaj, gdy będą wymagały Twojej uwagi.'
         };
       }
 
@@ -174,6 +173,12 @@ export default function AffairsList({ userId }: AffairsListProps) {
   return (
     <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
       <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Header - zgodny ze stylem innych stron dashboardu */}
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#212121] leading-tight">
+            Pulpit
+          </h1>
+        </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -190,7 +195,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
               <div className="w-9 h-9 rounded-lg bg-[#FF9800] flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
                 </svg>
               </div>
               <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Wymaga reakcji</span>
@@ -209,10 +215,11 @@ export default function AffairsList({ userId }: AffairsListProps) {
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-green-500 flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  <path d="M22 2L11 13"></path>
+                  <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
                 </svg>
               </div>
-              <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Oczekujące</span>
+              <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Wysłane</span>
               <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">{stats.waiting}</div>
             </div>
           </button>
@@ -278,7 +285,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
               >
                 <div className="p-4 sm:p-6 border-b border-gray-200/50 flex justify-between items-start gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-base sm:text-lg text-[#212121] mb-1 truncate">{affair.title}</div>
+                    <div className="font-semibold text-base sm:text-lg text-[#212121] mb-1 truncate">{escapeHtml(affair.title)}</div>
                   </div>
                   <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadgeClass(affair.status)} uppercase tracking-wide shrink-0`}>
                     {getStatusLabel(affair.status)}
@@ -288,12 +295,12 @@ export default function AffairsList({ userId }: AffairsListProps) {
                   <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
                     <div>
                       <div className="text-xs text-[#616161] mb-1">Strona A</div>
-                      <div className="font-semibold text-sm sm:text-base text-[#212121] truncate">{affair.creator?.firstName} {affair.creator?.lastName}</div>
+                      <div className="font-semibold text-sm sm:text-base text-[#212121] truncate">{escapeHtml(affair.creator?.firstName || '')} {escapeHtml(affair.creator?.lastName || '')}</div>
                     </div>
                     <div>
                       <div className="text-xs text-[#616161] mb-1">Strona B</div>
                       <div className="font-semibold text-sm sm:text-base text-[#212121] truncate">
-                        {affair.involvedUser ? `${affair.involvedUser.firstName} ${affair.involvedUser.lastName}` : '—'}
+                        {affair.involvedUser ? `${escapeHtml(affair.involvedUser.firstName)} ${escapeHtml(affair.involvedUser.lastName)}` : '—'}
                       </div>
                     </div>
                   </div>

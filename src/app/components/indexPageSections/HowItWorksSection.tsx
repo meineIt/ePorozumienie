@@ -1,42 +1,42 @@
 export default function HowItWorksSection() {
   return (
-    <section id="jak-to-dziala" className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+    <section id="jak-to-dziala" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
           Jak działa e-Porozumienie?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md step-card">
-            <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:-translate-y-1 relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
               1
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">
+            <h3 className="text-2xl font-bold mb-4 text-gray-900">
               Rejestracja i weryfikacja
             </h3>
-            <p className="text-gray-600">
-              Załóż konto, zweryfikuj tożsamość przez <strong>Profil Zaufany</strong> i wgraj
-              dokumenty, które zostaną <strong>automatycznie zweryfikowane</strong> pod kątem
+            <p className="text-gray-600 leading-relaxed text-base">
+              Załóż konto, zweryfikuj tożsamość przez <strong className="font-semibold text-gray-900">Profil Zaufany</strong> i wgraj
+              dokumenty, które zostaną <strong className="font-semibold text-gray-900">automatycznie zweryfikowane</strong> pod kątem
               autentyczności.
             </p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md step-card">
-            <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:-translate-y-1 relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
               2
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">AI-mediacja</h3>
-            <p className="text-gray-600">
-              <strong>AI-mediator</strong> analizuje dokumenty, identyfikuje punkty sporne i
-              proponuje kompromisowe rozwiązania zgodne z aktualnym <strong>orzecznictwem</strong>.
+            <h3 className="text-2xl font-bold mb-4 text-gray-900">AI-mediacja</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
+              <strong className="font-semibold text-gray-900">AI-mediator</strong> analizuje dokumenty, identyfikuje punkty sporne i
+              proponuje kompromisowe rozwiązania zgodne z aktualnym <strong className="font-semibold text-gray-900">orzecznictwem</strong>.
             </p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md step-card">
-            <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:-translate-y-1 relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
               3
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">Porozumienie i e-podpis</h3>
-            <p className="text-gray-600">
-              Po osiągnięciu porozumienia, system generuje gotowe porozumienie do podpisania za pomocą
-              <strong>podpisu elektronicznego</strong> bez wychodzenia z domu.
+            <h3 className="text-2xl font-bold mb-4 text-gray-900">Porozumienie i e-podpis</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Po osiągnięciu porozumienia, system generuje gotowe porozumienie do podpisania za pomocą{' '}
+              <strong className="font-semibold text-gray-900">podpisu elektronicznego</strong> bez wychodzenia z domu.
             </p>
           </div>
         </div>

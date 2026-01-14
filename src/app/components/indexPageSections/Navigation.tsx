@@ -8,43 +8,64 @@ export default function Navigation() {
   const isHomePage = pathname === '/';
 
   return (
-    <nav className="bg-white shadow-md fixed w-full z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center">
-          <Link
-          href="/"
-            className="text-xl font-bold text-blue-800">e-Porozumienie
-          </Link>
-        </div>
-        {isHomePage && (
-          <div className="hidden md:flex space-x-8">
-            <a href="#jak-to-dziala" className="text-gray-700 hover:text-blue-700 font-medium">
-              Jak to działa
-            </a>
-            <a href="#korzysci" className="text-gray-700 hover:text-blue-700 font-medium">
-              Korzyści
-            </a>
-            <a href="#kredyty-frankowe" className="text-gray-700 hover:text-blue-700 font-medium">
-              Kredyty frankowe
-            </a>
-            <a href="#cennik" className="text-gray-700 hover:text-blue-700 font-medium">
-              Model biznesowy
-            </a>
-            <a href="#zespol" className="text-gray-700 hover:text-blue-700 font-medium">
-              Zespół
-            </a>
-          </div>
-        )}
-        {isHomePage && (
-          <div>
-            <Link
-              href="/login"
-              className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-lg font-medium transition duration-300"
+    <nav className="fixed top-0 left-0 right-0 z-50">
+      <div className="backdrop-blur-xl bg-white/90 border-b border-gray-200/60 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20 md:h-24">
+            <div className="flex items-center">
+              <Link
+                href="/"
+                className="text-2xl md:text-3xl font-bold text-blue-800 tracking-tight transition-all duration-200 hover:scale-105"
               >
-              Logowanie
-            </Link>
+                e-Porozumienie
+              </Link>
+            </div>
+            {isHomePage && (
+              <div className="hidden md:flex items-center gap-2 lg:gap-3">
+                <a
+                  href="#jak-to-dziala"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                >
+                  Jak to działa
+                </a>
+                <a
+                  href="#korzysci"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                >
+                  Korzyści
+                </a>
+                <a
+                  href="#kredyty-frankowe"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                >
+                  Kredyty frankowe
+                </a>
+                <a
+                  href="#cennik"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                >
+                  Model biznesowy
+                </a>
+                <a
+                  href="#zespol"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                >
+                  Zespół
+                </a>
+              </div>
+            )}
+            {isHomePage && (
+              <div>
+                <Link
+                  href="/login"
+                  className="inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-3xl text-base md:text-lg shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 active:scale-95"
+                >
+                  Logowanie
+                </Link>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

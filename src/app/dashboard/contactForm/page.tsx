@@ -18,7 +18,6 @@ export default function ContactFormPage() {
             lastName: parsedUser.lastName,
           });
         } catch (error) {
-          console.error('Error parsing user data:', error);
         }
       }
     }
@@ -29,8 +28,14 @@ export default function ContactFormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] pt-[94px] pb-12 px-4 sm:px-6 lg:px-8 lg:pl-[240px]">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
+      <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#212121] leading-tight">
+            Skontaktuj się z nami
+            <p className="text-[#212121] text-sm mt-1 relative z-10">Masz pytania? Pojawił sie błąd?</p>
+          </h1>
+        </div>
         <ContactForm 
           userEmail={user.email}
           userName={`${user.firstName} ${user.lastName}`}

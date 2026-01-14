@@ -28,7 +28,6 @@ export default function DashboardLayout({
         try {
           return JSON.parse(userData) as User;
         } catch (error) {
-          console.error('Error parsing user data:', error);
           return null;
         }
       }

@@ -1,5 +1,16 @@
 import { PrismaClient } from '@prisma/client'
 
+function getDatabaseUrl(): string {
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('DATABASE_URL environment variable is required in production');
+    }
+    throw new Error('DATABASE_URL environment variable is required. Please set it in your .env file');
+  }
+  return url;
+}
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
@@ -9,7 +20,7 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   // Timeout dla operacji (30 sekund)
   datasources: {
     db: {
-      url: process.env.DATABASE_URL,
+      url: getDatabaseUrl(),
     },
   },
 })

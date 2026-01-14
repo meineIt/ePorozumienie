@@ -69,9 +69,6 @@ export default function DashboardNavbar({ firstName, sidebarOpen, setSidebarOpen
           >
             e-<span className="font-normal">Porozumienie</span>
           </Link>
-          <span className="text-lg lg:text-xl font-semibold text-white font-['Space_Grotesk'] ml-12 lg:ml-16">
-            <span className="hidden sm:inline">Witaj, </span>{firstName || 'Użytkowniku'}!
-          </span>
         </div>
       
         {/* Right side - New Affair button */}

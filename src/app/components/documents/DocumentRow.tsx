@@ -3,21 +3,21 @@
 import { formatFileSize, formatDate, getFileExtension } from '@/lib/utils/format';
 import { getCategoryColor } from '@/lib/utils/constants';
 import { DocumentWithAffair } from '@/lib/types';
+import DocumentIcon from '../shared/icons/DocumentIcon';
 
 interface DocumentRowProps {
   document: DocumentWithAffair;
   onClick: (doc: DocumentWithAffair) => void;
-  getDocumentIcon: (category: string, type: string) => React.ReactNode;
 }
 
-export default function DocumentRow({ document, onClick, getDocumentIcon }: DocumentRowProps) {
+export default function DocumentRow({ document, onClick }: DocumentRowProps) {
   return (
     <div
       onClick={() => onClick(document)}
       className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 hover:bg-gray-50 transition-colors flex items-center gap-2 sm:gap-4 cursor-pointer"
     >
       <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg ${getCategoryColor(document.category)} flex items-center justify-center shrink-0`}>
-        {getDocumentIcon(document.category, document.type)}
+        <DocumentIcon category={document.category} type={document.type} className="w-5 h-5 sm:w-6 sm:h-6" />
       </div>
       <div className="flex-1 min-w-0">
         <h3 

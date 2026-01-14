@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { Document } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
-import { getDocumentIcon } from '../documents/documentUtils';
+import DocumentIcon from '../shared/icons/DocumentIcon';
 
 interface PartyPositionFormProps {
     affairId: string;
@@ -66,7 +66,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
 
             setDocuments([...documents, ...newDocuments]);
         } catch (error) {
-            console.error('Upload error:', error);
             setError('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
         } finally {
             setUploading(false);
@@ -116,7 +115,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
 
             onSave();
         } catch (error) {
-            console.error('Save error:', error);
             setError(error instanceof Error ? error.message : 'Wystąpił błąd podczas zapisywania stanowiska');
         } finally {
             setSaving(false);
@@ -135,9 +133,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
             <form onSubmit={handleSubmit}>
                 {/* Opis sprawy */}
                 <div className="mb-6">
-                    <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Opis sprawy z Twojej perspektywy
-                    </label>
                     <textarea
                         id="description"
                         value={description}
@@ -151,9 +146,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                 {/* Upload dokumentów */}
                 <div className="mb-6">
                     <div className="flex items-center mb-4">
-                        <svg className="w-5 h-5 text-blue-700 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
                         <h3 className="text-lg font-semibold text-blue-700" style={{ fontSize: '1.5rem' }}>Dokumenty</h3>
                     </div>
 
@@ -206,7 +198,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                                     className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"
                                 >
                                     <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center text-white mr-4">
-                                        {getDocumentIcon(doc.category, doc.type)}
+                                        <DocumentIcon category={doc.category} type={doc.type} className="w-6 h-6" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="font-semibold text-gray-900 truncate">{doc.name}</p>
@@ -254,7 +246,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                     <button
                         type="submit"
                         disabled={saving}
-                        className="px-6 py-3 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {saving ? (
                             <>
@@ -264,9 +256,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                         ) : (
                             <>
                                 Zapisz stanowisko
-                                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
                             </>
                         )}
                     </button>

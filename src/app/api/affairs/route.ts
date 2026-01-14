@@ -1,24 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from '@/lib/prisma'
+import { prisma, prismaWithTimeout } from '@/lib/prisma'
 import { sendAffairInviteEmail } from '@/lib/utils/email'
-import { getAuthUser } from '@/lib/auth/middleware'
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware'
 import { isValidEmail } from '@/lib/api/validation'
+import { requireCSRF } from '@/lib/auth/csrf'
+import { sanitizeString, sanitizeText } from '@/lib/utils/sanitize'
 import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
     try {
-        // Autentykacja
-        let authUser
-        try {
-            authUser = getAuthUser(request)
-        } catch {
-            return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
+
+        // CSRF protection
+        const csrfError = requireCSRF(request)
+        if (csrfError) {
+            return csrfError
         }
 
-        // Walidacja rozmiaru requestu (max 1MB)
         const contentLength = request.headers.get('content-length')
         if (contentLength && parseInt(contentLength) > 1024 * 1024) {
             return NextResponse.json(
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
             otherPartyCompany
         } = body
 
-        // Walidacja
         if (!title || !otherPartyEmail) {
             return NextResponse.json(
             { error: 'Tytuł i email drugiej strony są wymagane' },
@@ -48,7 +46,28 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Walidacja email
+        // Walidacja typów i długości
+        if (typeof title !== 'string' || title.trim().length === 0) {
+            return NextResponse.json(
+                { error: 'Tytuł musi być niepustym ciągiem znaków' },
+                { status: 400 }
+            )
+        }
+
+        if (title.length > 200) {
+            return NextResponse.json(
+                { error: 'Tytuł nie może być dłuższy niż 200 znaków' },
+                { status: 400 }
+            )
+        }
+
+        if (typeof otherPartyEmail !== 'string') {
+            return NextResponse.json(
+                { error: 'Email drugiej strony musi być ciągiem znaków' },
+                { status: 400 }
+            )
+        }
+
         if (!isValidEmail(otherPartyEmail)) {
             return NextResponse.json(
                 { error: 'Nieprawidłowy format email drugiej strony' },
@@ -56,27 +75,72 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        if (otherPartyEmail.length > 200) {
+            return NextResponse.json(
+                { error: 'Email nie może być dłuższy niż 200 znaków' },
+                { status: 400 }
+            )
+        }
+
+        if (category && (typeof category !== 'string' || category.length > 100)) {
+            return NextResponse.json(
+                { error: 'Kategoria nie może być dłuższa niż 100 znaków' },
+                { status: 400 }
+            )
+        }
+
+        if (description && (typeof description !== 'string' || description.length > 5000)) {
+            return NextResponse.json(
+                { error: 'Opis nie może być dłuższy niż 5000 znaków' },
+                { status: 400 }
+            )
+        }
+
+        if (disputeValue !== undefined && disputeValue !== null) {
+            const value = typeof disputeValue === 'string' ? parseFloat(disputeValue) : disputeValue;
+            if (isNaN(value) || value < 0 || value > 999999999) {
+                return NextResponse.json(
+                    { error: 'Wartość sprawy musi być liczbą między 0 a 999999999' },
+                    { status: 400 }
+                )
+            }
+        }
+
+        if (documents && !Array.isArray(documents)) {
+            return NextResponse.json(
+                { error: 'Dokumenty muszą być tablicą' },
+                { status: 400 }
+            )
+        }
+
         const creatorId = authUser.userId
 
-        const involvedUser = await prisma.user.findUnique({
-            where: { email: otherPartyEmail }
-        })
+        const involvedUser = await prismaWithTimeout(async (client) => {
+            return client.user.findUnique({
+                where: { email: otherPartyEmail }
+            });
+        }, 30000)
 
         const filesData = documents && documents.length > 0
             ? JSON.stringify(documents)
             : null
 
+        // Sanityzacja danych przed zapisem
+        const sanitizedTitle = sanitizeString(title)
+        const sanitizedCategory = category ? sanitizeString(category) : null
+        const sanitizedDescription = description ? sanitizeText(description) : null
+
         let affair
         let inviteToken: string | null = null
 
         if (involvedUser) {
-            // Użytkownik istnieje - przypisz sprawę bezpośrednio
-            affair = await prisma.$transaction(async (tx) => {
+            affair = await prismaWithTimeout(async (client) => {
+                return client.$transaction(async (tx) => {
                 const createdAffair = await tx.affair.create({
                     data: {
-                        title,
-                        category: category || null,
-                        description: description || null,
+                        title: sanitizedTitle,
+                        category: sanitizedCategory,
+                        description: sanitizedDescription,
                         affairValue: disputeValue ? parseFloat(disputeValue.toString()) : null,
                         files: filesData,
                         creatorId,
@@ -108,12 +172,11 @@ export async function POST(request: NextRequest) {
                         userId: creatorId,
                         affairId: createdAffair.id,
                         status: 'WAITING',
-                        description: description || null,
+                        description: sanitizedDescription,
                         files: filesData
                     } as any
                 })
 
-                // Utwórz rekord uczestnika dla drugiej strony ze statusem REACTION_NEEDED
                 await tx.affairParticipant.create({
                     data: {
                         userId: involvedUser.id,
@@ -123,17 +186,18 @@ export async function POST(request: NextRequest) {
                 })
 
                 return createdAffair
-            })
+                })
+            }, 30000)
         } else {
-            // Użytkownik nie istnieje - wygeneruj token i wyślij email
             inviteToken = crypto.randomBytes(32).toString('base64url')
             
-            affair = await prisma.$transaction(async (tx) => {
+            affair = await prismaWithTimeout(async (client) => {
+                return client.$transaction(async (tx) => {
                 const createdAffair = await tx.affair.create({
                     data: {
-                        title,
-                        category: category || null,
-                        description: description || null,
+                        title: sanitizedTitle,
+                        category: sanitizedCategory,
+                        description: sanitizedDescription,
                         affairValue: disputeValue ? parseFloat(disputeValue.toString()) : null,
                         files: filesData,
                         creatorId,
@@ -158,20 +222,19 @@ export async function POST(request: NextRequest) {
                         userId: creatorId,
                         affairId: createdAffair.id,
                         status: 'WAITING',
-                        description: description || null,
+                        description: sanitizedDescription,
                         files: filesData
                     } as any
                 })
 
                 return createdAffair
-            })
+                })
+            }, 30000)
 
-            // Wyślij email z zaproszeniem
             try {
-                await sendAffairInviteEmail(otherPartyEmail, title, inviteToken)
+                await sendAffairInviteEmail(otherPartyEmail, sanitizedTitle, inviteToken)
             } catch (emailError) {
                 console.error('Error sending invite email:', emailError)
-                // Nie przerywamy procesu - sprawa została utworzona, email można wysłać później
             }
         }
 
@@ -198,74 +261,62 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
     try {
-        // Autentykacja
-        let authUser
-        try {
-            authUser = getAuthUser(request)
-        } catch {
-            return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
-        }
-
-        // Usunięto endpoint checkEmail - email enumeration vulnerability
-        // Jeśli potrzebujesz sprawdzić czy email istnieje, użyj innego bezpiecznego mechanizmu
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
 
         const { searchParams } = new URL(request.url);
         const statusFilter = searchParams.get('status');
 
-        // Pobierz wszystkie sprawy użytkownika
-        const affairs = await prisma.affair.findMany({
-            where: {
-                OR: [
-                    { creatorId: authUser.userId },
-                    { involvedUserId: authUser.userId}
-                ]
-            },
-            include: { 
-                creator: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true
-                    }
+        const affairs = await prismaWithTimeout(async (client) => {
+            return client.affair.findMany({
+                where: {
+                    OR: [
+                        { creatorId: authUser.userId },
+                        { involvedUserId: authUser.userId}
+                    ]
                 },
-                involvedUser: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true
-                    }
-                },
-                participants: {
-                    where: {
-                        userId: authUser.userId
+                include: { 
+                    creator: {
+                        select: {
+                            id: true,
+                            email: true,
+                            firstName: true,
+                            lastName: true
+                        }
                     },
-                    select: {
-                        status: true
+                    involvedUser: {
+                        select: {
+                            id: true,
+                            email: true,
+                            firstName: true,
+                            lastName: true
+                        }
+                    },
+                    participants: {
+                        where: {
+                            userId: authUser.userId
+                        },
+                        select: {
+                            status: true
+                        }
                     }
+                },
+                orderBy: {
+                    createdAt: 'desc'
                 }
-            },
-            orderBy: {
-                createdAt: 'desc'
-            }
-        });
+            });
+        }, 30000);
 
-        // Dodaj status do każdej sprawy i przefiltruj jeśli potrzeba
         const affairsWithStatus = affairs
             .map(affair => {
                 const participant = affair.participants[0];
                 return {
                     ...affair,
                     status: participant?.status || null,
-                    participants: undefined // Usuń z odpowiedzi
+                    participants: undefined
                 };
             })
             .filter(affair => {
-                // Jeśli jest filtr statusu, przefiltruj sprawy
                 if (statusFilter) {
                     return affair.status === statusFilter;
                 }

@@ -2,19 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { getAuthUser } from '@/lib/auth/middleware';
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
+import { requireCSRF } from '@/lib/auth/csrf';
 import { validateFile, validateFileMagicBytes, MAX_FILES } from '@/lib/utils/fileValidation';
 
 export async function POST(request: NextRequest) {
     try {
-        // Autentykacja
-        try {
-            getAuthUser(request);
-        } catch {
-            return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            );
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request);
+
+        // CSRF protection
+        const csrfError = requireCSRF(request)
+        if (csrfError) {
+            return csrfError
         }
 
         const formData = await request.formData();

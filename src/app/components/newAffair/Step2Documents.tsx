@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { AffairFormData, Document } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
-import { getDocumentIcon } from '../documents/documentUtils';
+import DocumentIcon from '../shared/icons/DocumentIcon';
 
 interface Step2DocumentsProps {
     formData: AffairFormData;
@@ -66,7 +66,6 @@ export default function Step2Documents({
               documents: [...formData.documents, ...newDocuments] 
           });
       } catch (error) {
-          console.error('Upload error:', error);
           alert('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
       } finally {
           setUploading(false);
@@ -157,7 +156,7 @@ export default function Step2Documents({
                       className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"
                     >
                       <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center text-white mr-4">
-                        {getDocumentIcon(doc.category, doc.type)}
+                        <DocumentIcon category={doc.category} type={doc.type} className="w-6 h-6" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-gray-900 truncate">{doc.name}</p>

@@ -1,30 +1,30 @@
 export default function FeaturesSection() {
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+    <section className="py-20 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
           Kluczowe funkcje platformy
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Feature 1 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 relative">
-            <div className="badge">Polskie rozwiązanie</div>
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="absolute top-4 right-4 px-3 py-1 bg-red-600 text-white text-xs font-semibold rounded-full">Polskie rozwiązanie</div>
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+              <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Dedykowany AI-mediator</h3>
-            <p className="text-gray-600">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">Dedykowany AI-mediator</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
               Model przeszkolony na tysiącach wyroków i porozumień z bankami, wykorzystujący polski
-              model językowy <strong>Bielik</strong>.
+              model językowy <strong className="font-semibold text-gray-900">Bielik</strong>.
             </p>
           </div>
 
           {/* Feature 2 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+              <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V8.414a2 2 0 00-.586-1.414l-4.828-4.828A2 2 0 0011.586 2H4zm3 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z"
@@ -32,17 +32,17 @@ export default function FeaturesSection() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Generator dokumentów</h3>
-            <p className="text-gray-600">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">Generator dokumentów</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
               Automatyczne tworzenie gotowych do podpisu porozumień, pozwów i wniosków o zabezpieczenie
-              z mocą prawną, zgodnie z <strong>aktualnym stanem prawnym</strong>.
+              z mocą prawną, zgodnie z <strong className="font-semibold text-gray-900">aktualnym stanem prawnym</strong>.
             </p>
           </div>
 
           {/* Feature 3 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+              <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zM13 9V5.5a3 3 0 10-6 0V9h6z"
@@ -50,17 +50,17 @@ export default function FeaturesSection() {
                 ></path>
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Bezpieczeństwo</h3>
-            <p className="text-gray-600">
-              Szyfrowanie <strong>end-to-end</strong>, pełna zgodność z RODO, dane przetwarzane
-              wyłącznie na serwerach w UE. <strong>Osoby trzecie nigdy nie będą mieć dostępu do danych</strong>.
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">Bezpieczeństwo</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Szyfrowanie <strong className="font-semibold text-gray-900">end-to-end</strong>, pełna zgodność z RODO, dane przetwarzane
+              wyłącznie na serwerach w UE. <strong className="font-semibold text-gray-900">Osoby trzecie nigdy nie będą mieć dostępu do danych</strong>.
             </p>
           </div>
 
           {/* Feature 4 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+              <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"
@@ -68,38 +68,38 @@ export default function FeaturesSection() {
                 ></path>
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">
               Integracja z Profilem Zaufanym
             </h3>
-            <p className="text-gray-600">
-              Uwierzytelnianie użytkowników przez <strong>Profil Zaufany</strong> i{' '}
-              <strong>ePUAP</strong> i integracja z <strong>podpisem elektronicznym</strong>{' '}
+            <p className="text-gray-600 leading-relaxed text-base">
+              Uwierzytelnianie użytkowników przez <strong className="font-semibold text-gray-900">Profil Zaufany</strong> i{' '}
+              <strong className="font-semibold text-gray-900">ePUAP</strong> i integracja z <strong className="font-semibold text-gray-900">podpisem elektronicznym</strong>{' '}
               umożliwiającym podpisanie porozumienia bez wychodzenia z domu.
             </p>
           </div>
 
           {/* Feature 5 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
+              <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
                 <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
                 <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path>
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">Integracja z rejestrami</h3>
-            <p className="text-gray-600">
-              Integracja z rejestrami państwowymi (<strong>CEIDG</strong>, <strong>PESEL</strong>)
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">Integracja z rejestrami</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Integracja z rejestrami państwowymi (<strong className="font-semibold text-gray-900">CEIDG</strong>, <strong className="font-semibold text-gray-900">PESEL</strong>)
               i komercyjnymi bazami danych w celu zdobywania i weryfikacji informacji o drugim
               podmiocie.
             </p>
           </div>
 
           {/* Feature 6 */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <div className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200/50 hover:-translate-y-1">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
               <svg
-                className="h-8 w-8 text-blue-700"
+                className="h-8 w-8 text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -111,10 +111,10 @@ export default function FeaturesSection() {
                 ></path>
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">System płatności</h3>
-            <p className="text-gray-600">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900">System płatności</h3>
+            <p className="text-gray-600 leading-relaxed text-base">
               Bezpieczny system płatności z logiką warunkową - dostęp do dokumentów po opłaceniu
-              przez obie strony z <strong>automatycznym rozliczeniem</strong>.
+              przez obie strony z <strong className="font-semibold text-gray-900">automatycznym rozliczeniem</strong>.
             </p>
           </div>
         </div>

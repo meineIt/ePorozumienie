@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
     try {
-      await discountRateLimit.check(3, ip)
+      await discountRateLimit.check(3, ip, request)
     } catch {
       return NextResponse.json(
         { error: 'Zbyt wiele prób. Spróbuj ponownie za chwilę.' },

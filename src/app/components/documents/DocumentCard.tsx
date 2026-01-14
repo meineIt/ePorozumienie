@@ -3,14 +3,14 @@
 import { formatFileSize, formatDate, getFileExtension } from '@/lib/utils/format';
 import { getCategoryColor } from '@/lib/utils/constants';
 import { DocumentWithAffair } from '@/lib/types';
+import DocumentIcon from '../shared/icons/DocumentIcon';
 
 interface DocumentCardProps {
   document: DocumentWithAffair;
   onClick: (doc: DocumentWithAffair) => void;
-  getDocumentIcon: (category: string, type: string) => React.ReactNode;
 }
 
-export default function DocumentCard({ document, onClick, getDocumentIcon }: DocumentCardProps) {
+export default function DocumentCard({ document, onClick }: DocumentCardProps) {
   return (
     <div
       onClick={() => onClick(document)}
@@ -18,7 +18,7 @@ export default function DocumentCard({ document, onClick, getDocumentIcon }: Doc
     >
       <div className="p-3 sm:p-4 bg-gradient-to-br from-[#F5F5F7] to-white border-b border-gray-200/50 relative">
         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${getCategoryColor(document.category)} flex items-center justify-center mb-2 shadow-sm`}>
-          {getDocumentIcon(document.category, document.type)}
+          <DocumentIcon category={document.category} type={document.type} className="w-6 h-6 sm:w-8 sm:h-8" />
         </div>
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-xs font-semibold text-gray-700 shadow-sm border border-gray-200/50">
           {getFileExtension(document.name)}

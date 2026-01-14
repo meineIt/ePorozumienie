@@ -1,8 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from '@/lib/prisma';
+import { prisma, prismaWithTimeout } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
-import { getAuthUser } from '@/lib/auth/middleware';
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
+import { requireCSRF } from '@/lib/auth/csrf';
 import { analyzeAffairPositions, bothPartiesHavePositions } from '@/lib/ai/analyzer';
+import { rateLimit } from '@/lib/auth/rateLimit';
+import { sanitizeText } from '@/lib/utils/sanitize';
+
+// Rate limiting dla GET: 60 zapytań na 1 minutę na użytkownika
+const affairsGetRateLimit = rateLimit({
+  interval: 60 * 1000, // 1 minuta
+  uniqueTokenPerInterval: 500,
+});
+
+// Rate limiting dla PUT/PATCH: 20 zapytań na 1 minutę na użytkownika
+const affairsModifyRateLimit = rateLimit({
+  interval: 60 * 1000, // 1 minuta
+  uniqueTokenPerInterval: 500,
+});
 
 type AffairWithDetails = Prisma.AffairGetPayload<{
     select: {
@@ -90,72 +105,81 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Autentykacja
-        let authUser
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
+
+        // Rate limiting
         try {
-            authUser = getAuthUser(request)
+            await affairsGetRateLimit.check(60, authUser.userId, request);
         } catch {
             return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
+                { error: 'Zbyt wiele zapytań. Spróbuj ponownie za chwilę.' },
+                { status: 429 }
+            );
         }
 
         const { id } = await params;
 
-        const affair = await prisma.affair.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                title: true,
-                category: true,
-                description: true,
-                affairCreatedAt: true,
-                affairValue: true,
-                files: true,
-                createdAt: true,
-                updatedAt: true,
-                creatorId: true,
-                involvedUserId: true,
-                inviteToken: true,
-                inviteTokenUsed: true,
-                aiAnalysis: true,
-                aiAnalysisGeneratedAt: true,
-                creator: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true
-                    }
-                },
-                involvedUser: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true
-                    }
-                },
-                participants: {
-                    select: {
-                        id: true,
-                        userId: true,
-                        status: true,
-                        description: true,
-                        files: true,
-                        user: {
-                            select: {
-                                id: true,
-                                firstName: true,
-                                lastName: true,
-                                email: true
-                            }
+        const affair = await prismaWithTimeout(async (client) => {
+            return client.affair.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    title: true,
+                    category: true,
+                    description: true,
+                    affairCreatedAt: true,
+                    affairValue: true,
+                    files: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    creatorId: true,
+                    involvedUserId: true,
+                    inviteToken: true,
+                    inviteTokenUsed: true,
+                    aiAnalysis: true,
+                    aiAnalysisGeneratedAt: true,
+                    settlementProposalStatus: true,
+                    settlementAcceptedBy: true,
+                    settlementModificationRequests: true,
+                    creator: {
+                        select: {
+                            id: true,
+                            email: true,
+                            firstName: true,
+                            lastName: true
                         }
+                    },
+                    involvedUser: {
+                        select: {
+                            id: true,
+                            email: true,
+                            firstName: true,
+                            lastName: true
+                        }
+                    },
+                    participants: {
+                        select: {
+                            id: true,
+                            userId: true,
+                            status: true,
+                            description: true,
+                            files: true,
+                            settlementAcceptedAt: true,
+                            settlementModificationRequestedAt: true,
+                            user: {
+                                select: {
+                                    id: true,
+                                    firstName: true,
+                                    lastName: true,
+                                    email: true
+                                }
+                            }
+                        } as any
                     }
-                }
-            }
-        }) as AffairWithDetails | null;
+                } as any
+            });
+        }, 30000) as AffairWithDetails | null;
 
         if (!affair) {
             return NextResponse.json(
@@ -164,13 +188,38 @@ export async function GET(
             );
         }
 
-        // Dodaj status użytkownika do odpowiedzi
-        const participants = affair.participants;
-        const currentUserParticipant = participants.find(p => p.userId === authUser.userId);
+        const creatorParticipant = affair.participants.find(p => p.userId === affair.creatorId);
+        const involvedParticipant = affair.involvedUserId 
+            ? affair.participants.find(p => p.userId === affair.involvedUserId)
+            : null;
+
+        const creatorHasPosition = creatorParticipant && (creatorParticipant.description || creatorParticipant.files);
+        const involvedHasPosition = involvedParticipant && (involvedParticipant.description || involvedParticipant.files);
+        const bothHavePositions = creatorHasPosition && involvedHasPosition;
+
+        const filteredParticipants = affair.participants.map(participant => {
+            const isCurrentUser = participant.userId === authUser.userId;
+            
+            if (isCurrentUser) {
+                return participant;
+            }
+            
+            if (bothHavePositions) {
+                return participant;
+            }
+            
+            return {
+                ...participant,
+                description: null,
+                files: null
+            };
+        });
+
+        const currentUserParticipant = filteredParticipants.find(p => p.userId === authUser.userId);
         const affairWithStatus = {
             ...affair,
             status: currentUserParticipant?.status || null,
-            participants: participants // Zwróć pełne dane uczestników
+            participants: filteredParticipants
         };
 
         return NextResponse.json({ affair: affairWithStatus }, { status: 200 });
@@ -188,18 +237,25 @@ export async function PATCH(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Autentykacja
-        let authUser
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
+
+        // Rate limiting
         try {
-            authUser = getAuthUser(request)
+            await affairsModifyRateLimit.check(20, authUser.userId, request);
         } catch {
             return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
+                { error: 'Zbyt wiele prób aktualizacji. Spróbuj ponownie za chwilę.' },
+                { status: 429 }
+            );
         }
 
-        // Walidacja rozmiaru requestu (max 10KB)
+        // CSRF protection
+        const csrfError = requireCSRF(request)
+        if (csrfError) {
+            return csrfError
+        }
+
         const contentLength = request.headers.get('content-length')
         if (contentLength && parseInt(contentLength) > 10 * 1024) {
             return NextResponse.json(
@@ -219,15 +275,16 @@ export async function PATCH(
             );
         }
 
-        // Sprawdź czy sprawa istnieje i użytkownik ma do niej dostęp
-        const affair = await prisma.affair.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                creatorId: true,
-                involvedUserId: true
-            }
-        });
+        const affair = await prismaWithTimeout(async (client) => {
+            return client.affair.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    creatorId: true,
+                    involvedUserId: true
+                }
+            });
+        }, 30000);
 
         if (!affair) {
             return NextResponse.json(
@@ -236,18 +293,10 @@ export async function PATCH(
             );
         }
 
-        // Walidacja uprawnień
-        if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
-            return NextResponse.json(
-                { error: 'Brak uprawnień do aktualizacji tej sprawy' },
-                { status: 403 }
-            );
-        }
-
-        // Aktualizuj status użytkownika i ewentualnie drugiej strony
-        await prisma.$transaction(async (tx) => {
-            // Znajdź lub utwórz rekord uczestnika
-            const participant = await tx.affairParticipant.findUnique({
+        // Walidacja uprawnień: sprawdź czy użytkownik jest uczestnikiem sprawy
+        // Użytkownik może aktualizować tylko swój własny status uczestnika
+        const participant = await prismaWithTimeout(async (client) => {
+            return client.affairParticipant.findUnique({
                 where: {
                     userId_affairId: {
                         userId: authUser.userId,
@@ -255,23 +304,37 @@ export async function PATCH(
                     }
                 }
             });
+        }, 30000);
 
-            if (participant) {
-                await tx.affairParticipant.update({
-                    where: { id: participant.id },
-                    data: { status }
-                });
-            } else {
-                await tx.affairParticipant.create({
-                    data: {
-                        userId: authUser.userId,
-                        affairId: id,
-                        status
-                    }
-                });
+        if (!participant) {
+            // Jeśli użytkownik nie jest jeszcze uczestnikiem, sprawdź czy ma uprawnienia do sprawy
+            // (jest twórcą lub zaangażowanym użytkownikiem)
+            if (affair.creatorId !== authUser.userId && affair.involvedUserId !== authUser.userId) {
+                return NextResponse.json(
+                    { error: 'Brak uprawnień: nie jesteś uczestnikiem tej sprawy' },
+                    { status: 403 }
+                );
             }
+        }
 
-            // Jeśli użytkownik zmienia status na WAITING, zmień status drugiej strony na REACTION_NEEDED
+        await prismaWithTimeout(async (client) => {
+            return client.$transaction(async (tx) => {
+                // Aktualizuj lub utwórz uczestnika - użytkownik może modyfikować tylko swój własny status
+                if (participant) {
+                    await tx.affairParticipant.update({
+                        where: { id: participant.id },
+                        data: { status }
+                    });
+                } else {
+                    await tx.affairParticipant.create({
+                        data: {
+                            userId: authUser.userId,
+                            affairId: id,
+                            status
+                        }
+                    });
+                }
+
             if (status === 'WAITING') {
                 const otherUserId = affair.creatorId === authUser.userId 
                     ? affair.involvedUserId 
@@ -303,7 +366,8 @@ export async function PATCH(
                     }
                 }
             }
-        });
+            })
+        }, 30000);
 
         return NextResponse.json(
             { message: 'Status został zaktualizowany pomyślnie' },
@@ -323,18 +387,25 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Autentykacja
-        let authUser
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
+
+        // Rate limiting
         try {
-            authUser = getAuthUser(request)
+            await affairsModifyRateLimit.check(20, authUser.userId, request);
         } catch {
             return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
+                { error: 'Zbyt wiele prób aktualizacji. Spróbuj ponownie za chwilę.' },
+                { status: 429 }
+            );
         }
 
-        // Walidacja rozmiaru requestu (max 1MB)
+        // CSRF protection
+        const csrfError = requireCSRF(request)
+        if (csrfError) {
+            return csrfError
+        }
+
         const contentLength = request.headers.get('content-length')
         if (contentLength && parseInt(contentLength) > 1024 * 1024) {
             return NextResponse.json(
@@ -347,15 +418,68 @@ export async function PUT(
         const body = await request.json() as PutAffairBody;
         const { description, documents } = body;
 
-        // Sprawdź czy sprawa istnieje i użytkownik ma do niej dostęp
-        const affair = await prisma.affair.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                creatorId: true,
-                involvedUserId: true
+        // Walidacja typów i długości
+        if (description !== undefined && description !== null) {
+            if (typeof description !== 'string') {
+                return NextResponse.json(
+                    { error: 'Opis musi być ciągiem znaków' },
+                    { status: 400 }
+                );
             }
-        });
+            if (description.length > 5000) {
+                return NextResponse.json(
+                    { error: 'Opis nie może być dłuższy niż 5000 znaków' },
+                    { status: 400 }
+                );
+            }
+        }
+
+        if (documents !== undefined && documents !== null) {
+            if (!Array.isArray(documents)) {
+                return NextResponse.json(
+                    { error: 'Dokumenty muszą być tablicą' },
+                    { status: 400 }
+                );
+            }
+            if (documents.length > 50) {
+                return NextResponse.json(
+                    { error: 'Maksymalna liczba dokumentów to 50' },
+                    { status: 400 }
+                );
+            }
+            // Walidacja każdego dokumentu
+            for (const doc of documents) {
+                if (!doc || typeof doc !== 'object') {
+                    return NextResponse.json(
+                        { error: 'Nieprawidłowy format dokumentu' },
+                        { status: 400 }
+                    );
+                }
+                if (doc.id && typeof doc.id !== 'string') {
+                    return NextResponse.json(
+                        { error: 'ID dokumentu musi być ciągiem znaków' },
+                        { status: 400 }
+                    );
+                }
+                if (doc.name && (typeof doc.name !== 'string' || doc.name.length > 255)) {
+                    return NextResponse.json(
+                        { error: 'Nazwa dokumentu nie może być dłuższa niż 255 znaków' },
+                        { status: 400 }
+                    );
+                }
+            }
+        }
+
+        const affair = await prismaWithTimeout(async (client) => {
+            return client.affair.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    creatorId: true,
+                    involvedUserId: true
+                }
+            });
+        }, 30000);
 
         if (!affair) {
             return NextResponse.json(
@@ -372,15 +496,16 @@ export async function PUT(
             );
         }
 
-        // Sprawdź czy użytkownik jest uczestnikiem sprawy
-        const participant = await prisma.affairParticipant.findUnique({
-            where: {
-                userId_affairId: {
-                    userId: authUser.userId,
-                    affairId: id
+        const participant = await prismaWithTimeout(async (client) => {
+            return client.affairParticipant.findUnique({
+                where: {
+                    userId_affairId: {
+                        userId: authUser.userId,
+                        affairId: id
+                    }
                 }
-            }
-        });
+            });
+        }, 30000);
 
         if (!participant) {
             return NextResponse.json(
@@ -393,89 +518,112 @@ export async function PUT(
             ? JSON.stringify(documents)
             : null
 
-        // Aktualizuj stanowisko uczestnika i zmień statusy
-        await prisma.$transaction(async (tx) => {
-            // Aktualizuj stanowisko uczestnika
-            await tx.affairParticipant.update({
-                where: { id: participant.id },
-                data: {
-                    description: description || null,
-                    files: filesData
-                }
-            });
+        // Sanityzacja description przed zapisem
+        const sanitizedDescription = description ? sanitizeText(description) : null
 
-            // Zmień status użytkownika na WAITING
-            await tx.affairParticipant.update({
-                where: { id: participant.id },
-                data: { status: 'WAITING' }
-            });
+        const otherUserId = affair.creatorId === authUser.userId 
+            ? affair.involvedUserId 
+            : affair.creatorId;
 
-            // Zmień status drugiej strony na REACTION_NEEDED
-            const otherUserId = affair.creatorId === authUser.userId 
-                ? affair.involvedUserId 
-                : affair.creatorId;
-
-            if (otherUserId) {
-                const otherParticipant = await tx.affairParticipant.findUnique({
-                    where: {
-                        userId_affairId: {
-                            userId: otherUserId,
-                            affairId: id
-                        }
+        await prismaWithTimeout(async (client) => {
+            return client.$transaction(async (tx) => {
+                await tx.affairParticipant.update({
+                    where: { id: participant.id },
+                    data: {
+                        description: sanitizedDescription,
+                        files: filesData
                     }
                 });
 
-                if (otherParticipant) {
-                    await tx.affairParticipant.update({
-                        where: { id: otherParticipant.id },
-                        data: { status: 'REACTION_NEEDED' }
-                    });
-                } else {
-                    await tx.affairParticipant.create({
-                        data: {
-                            userId: otherUserId,
-                            affairId: id,
-                            status: 'REACTION_NEEDED'
+                let otherParticipant = null;
+                if (otherUserId) {
+                    otherParticipant = await tx.affairParticipant.findUnique({
+                        where: {
+                            userId_affairId: {
+                                userId: otherUserId,
+                                affairId: id
+                            }
                         }
                     });
                 }
-            }
-        });
 
-        // Sprawdź czy obie strony mają stanowiska i automatycznie wywołaj analizę AI w tle
-        // Nie czekamy na wynik - analiza wykonuje się asynchronicznie
+                const otherHasPosition = otherParticipant && 
+                    (otherParticipant.description || otherParticipant.files);
+
+                if (otherHasPosition) {
+                    await tx.affair.update({
+                        where: { id },
+                        data: {
+                            settlementProposalStatus: 'awaiting-both'
+                        } as any
+                    });
+                } else {
+                    await tx.affairParticipant.update({
+                        where: { id: participant.id },
+                        data: { status: 'WAITING' }
+                    });
+
+                    if (otherUserId) {
+                        if (otherParticipant) {
+                            await tx.affairParticipant.update({
+                                where: { id: otherParticipant.id },
+                                data: { status: 'REACTION_NEEDED' }
+                            });
+                        } else {
+                            await tx.affairParticipant.create({
+                                data: {
+                                    userId: otherUserId,
+                                    affairId: id,
+                                    status: 'REACTION_NEEDED'
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }, 30000);
+
         (async () => {
             try {
-                const affairWithParticipants = await prisma.affair.findUnique({
-                    where: { id },
-                    include: {
-                        participants: {
-                            select: {
-                                userId: true,
-                                description: true,
-                                files: true,
+                const affairWithParticipants = await prismaWithTimeout(async (client) => {
+                    return client.affair.findUnique({
+                        where: { id },
+                        include: {
+                            participants: {
+                                select: {
+                                    userId: true,
+                                    description: true,
+                                    files: true,
+                                },
                             },
                         },
-                    },
-                }) as AffairWithParticipants | null;
+                    });
+                }, 30000) as AffairWithParticipants | null;
 
                 if (affairWithParticipants && bothPartiesHavePositions(affairWithParticipants)) {
-                    // Sprawdź czy analiza już istnieje - jeśli tak, nie generuj ponownie
                     if (!affairWithParticipants.aiAnalysis) {
                         const analysis = await analyzeAffairPositions(id);
                         
-                        // Zapisz wyniki analizy w bazie
-                        await prisma.affair.update({
-                            where: { id },
-                            data: {
-                                aiAnalysis: JSON.stringify(analysis),
-                                aiAnalysisGeneratedAt: new Date(),
-                            }
-                        });
+                        await prismaWithTimeout(async (client) => {
+                            return client.affair.update({
+                                where: { id },
+                                data: {
+                                    aiAnalysis: JSON.stringify(analysis),
+                                    aiAnalysisGeneratedAt: new Date(),
+                                    settlementProposalStatus: 'awaiting-both'
+                                } as any
+                            });
+                        }, 30000);
+
+                        await prismaWithTimeout(async (client) => {
+                            return client.affairParticipant.updateMany({
+                                where: { affairId: id },
+                                data: { status: 'REACTION_NEEDED' }
+                            });
+                        }, 30000);
                     }
                 }
             } catch (error) {
-                // Loguj błąd ale nie przerywaj procesu
                 console.error('Error generating AI analysis:', error);
             }
         })();

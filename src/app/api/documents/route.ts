@@ -1,46 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from '@/lib/prisma'
-import { getAuthUser } from '@/lib/auth/middleware'
+import { prisma, prismaWithTimeout } from '@/lib/prisma'
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware'
+import { rateLimit } from '@/lib/auth/rateLimit';
+
+// Rate limiting: 30 zapytań na 1 minutę na użytkownika
+const documentsRateLimit = rateLimit({
+  interval: 60 * 1000, // 1 minuta
+  uniqueTokenPerInterval: 500,
+});
 
 export async function GET(request: NextRequest) {
     try {
-        // Autentykacja
-        let authUser
+        // Autentykacja jest obsługiwana przez globalny middleware
+        const authUser = getAuthUserFromHeaders(request)
+
+        // Rate limiting
         try {
-            authUser = getAuthUser(request)
+            await documentsRateLimit.check(30, authUser.userId, request);
         } catch {
             return NextResponse.json(
-                { error: 'Wymagana autentykacja' },
-                { status: 401 }
-            )
+                { error: 'Zbyt wiele zapytań. Spróbuj ponownie za chwilę.' },
+                { status: 429 }
+            );
         }
 
         // Pobierz wszystkie sprawy użytkownika
-        const affairs = await prisma.affair.findMany({
-            where: {
-                OR: [
-                    { creatorId: authUser.userId },
-                    { involvedUserId: authUser.userId }
-                ]
-            },
-            select: {
-                id: true,
-                title: true,
-                files: true,
-                createdAt: true,
-                participants: {
-                    where: {
-                        userId: authUser.userId
-                    },
-                    select: {
-                        files: true
+        const affairs = await prismaWithTimeout(async (client) => {
+            return client.affair.findMany({
+                where: {
+                    OR: [
+                        { creatorId: authUser.userId },
+                        { involvedUserId: authUser.userId }
+                    ]
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    files: true,
+                    createdAt: true,
+                    participants: {
+                        where: {
+                            userId: authUser.userId
+                        },
+                        select: {
+                            files: true
+                        }
                     }
+                },
+                orderBy: {
+                    createdAt: 'desc'
                 }
-            },
-            orderBy: {
-                createdAt: 'desc'
-            }
-        });
+            });
+        }, 30000);
 
         // Spłaszcz dokumenty z wszystkich spraw
         interface ParsedDocument {

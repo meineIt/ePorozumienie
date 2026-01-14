@@ -1,18 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { getAuthUser } from '@/lib/auth/middleware';
+import { prisma, prismaWithTimeout } from '@/lib/prisma';
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
+import { requireCSRF } from '@/lib/auth/csrf';
+import { rateLimit } from '@/lib/auth/rateLimit';
+import { sanitizeName } from '@/lib/utils/sanitize';
+
+// Rate limiting: 10 aktualizacji na 15 minut na użytkownika
+const profileRateLimit = rateLimit({
+  interval: 15 * 60 * 1000, // 15 minut
+  uniqueTokenPerInterval: 500,
+});
 
 export async function PATCH(request: NextRequest) {
   try {
-    // Autentykacja
-    let authUser;
+    // Autentykacja jest obsługiwana przez globalny middleware
+    const authUser = getAuthUserFromHeaders(request);
+
+    // Rate limiting
     try {
-      authUser = getAuthUser(request);
+      await profileRateLimit.check(10, authUser.userId, request);
     } catch {
       return NextResponse.json(
-        { error: 'Wymagana autentykacja' },
-        { status: 401 }
+        { error: 'Zbyt wiele prób aktualizacji profilu. Spróbuj ponownie za chwilę.' },
+        { status: 429 }
       );
+    }
+
+    // CSRF protection
+    const csrfError = requireCSRF(request)
+    if (csrfError) {
+      return csrfError
     }
 
     // Walidacja rozmiaru requestu (max 10KB)
@@ -25,7 +42,16 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { firstName, lastName } = body;
+    const { firstName, lastName, userId } = body;
+
+    // Walidacja uprawnień: odrzuć userId jeśli został podany
+    // Endpoint zawsze aktualizuje profil zalogowanego użytkownika
+    if (userId !== undefined && userId !== null) {
+      return NextResponse.json(
+        { error: 'Nie można modyfikować userId. Endpoint aktualizuje tylko profil zalogowanego użytkownika.' },
+        { status: 400 }
+      );
+    }
 
     // Walidacja
     if (!firstName || !lastName) {
@@ -50,22 +76,28 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    // Sanityzacja danych przed zapisem
+    const sanitizedFirstName = sanitizeName(firstName.trim())
+    const sanitizedLastName = sanitizeName(lastName.trim())
+
     // Aktualizuj profil użytkownika
-    const updatedUser = await prisma.user.update({
-      where: { id: authUser.userId },
-      data: {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const updatedUser = await prismaWithTimeout(async (client) => {
+        return client.user.update({
+            where: { id: authUser.userId },
+            data: {
+                firstName: sanitizedFirstName,
+                lastName: sanitizedLastName,
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+    }, 30000);
 
     return NextResponse.json(
       {

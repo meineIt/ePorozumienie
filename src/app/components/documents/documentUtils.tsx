@@ -1,24 +1,6 @@
 import { DocumentWithAffair } from '@/lib/types';
-import DocumentIcon from '../shared/icons/DocumentIcon';
-import type { ReactNode } from 'react';
 
-/**
- * Funkcje pomocnicze dla komponentów dokumentów
- */
-
-/**
- * Pobiera ikonę dokumentu na podstawie kategorii i typu
- * @deprecated Użyj komponentu DocumentIcon bezpośrednio
- */
-export function getDocumentIcon(category: string, type: string): ReactNode {
-  return <DocumentIcon category={category} type={type} />;
-}
-
-/**
- * Pobiera URL dokumentu z ścieżki
- */
 export function getDocumentUrl(path: string): string {
-  // Jeśli path zaczyna się od /uploads, użyj API endpoint
   if (path.startsWith('/uploads/')) {
     const fileName = path.replace('/uploads/', '');
     return `/api/files/${fileName}`;
@@ -26,9 +8,6 @@ export function getDocumentUrl(path: string): string {
   return path;
 }
 
-/**
- * Filtruje dokumenty na podstawie zapytania wyszukiwania i kategorii
- */
 export function filterDocuments(
   documents: DocumentWithAffair[],
   searchQuery: string,
@@ -42,9 +21,6 @@ export function filterDocuments(
   });
 }
 
-/**
- * Sortuje dokumenty według wybranego kryterium
- */
 export function sortDocuments(documents: DocumentWithAffair[], sortBy: string): DocumentWithAffair[] {
   const sorted = [...documents];
   sorted.sort((a, b) => {

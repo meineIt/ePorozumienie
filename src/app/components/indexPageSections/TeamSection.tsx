@@ -2,56 +2,58 @@ import Image from 'next/image';
 
 export default function TeamSection() {
   return (
-    <section id="zespol" className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Founderzy</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
-            <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full bg-gray-200">
+    <section id="zespol" className="py-20 md:py-24 bg-gradient-to-b from-white to-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
+          Founderzy
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 text-center border border-gray-100 hover:-translate-y-1">
+            <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-3xl bg-gray-200 shadow-lg group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/images/1.jpg"
                 alt="Simone Barszczak"
-                width={96}
-                height={96}
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold mb-1 text-gray-800">Simone Barszczak</h3>
-            <p className="text-blue-700 font-medium mb-3">Prawnik nowych technologii</p>
-            <p className="text-gray-600">
-              Prawnik Nowych Technologii specjalizujący się w <strong>FinTech, Cyberbezpieczeństwie</strong> i Legal Design
+            <h3 className="text-2xl font-bold mb-2 text-gray-900">Simone <br />Barszczak</h3>
+            <p className="text-blue-700 font-semibold mb-4 text-lg">Prawnik nowych technologii</p>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Prawnik Nowych Technologii specjalizujący się w <strong className="font-semibold text-gray-900">FinTech, Cyberbezpieczeństwie</strong> i Legal Design
             </p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
-            <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full bg-gray-200">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 text-center border border-gray-100 hover:-translate-y-1">
+            <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-3xl bg-gray-200 shadow-lg group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/images/2.jpg"
                 alt="Paweł Urzenitzok"
-                width={96}
-                height={96}
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold mb-1 text-gray-800">Paweł Urzenitzok</h3>
-            <p className="text-blue-700 font-medium mb-3">Doktorant</p>
-            <p className="text-gray-600">
-              Doktorant <strong>prawa nowych technologii</strong> badający legaltech.
+            <h3 className="text-2xl font-bold mb-2 text-gray-900">Paweł <br />Urzenitzok</h3>
+            <p className="text-blue-700 font-semibold mb-4 text-lg">Doktorant</p>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Doktorant <strong className="font-semibold text-gray-900">prawa nowych technologii</strong> badający legaltech.
             </p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center">
-            <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full bg-gray-200">
+          <div className="group bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 text-center border border-gray-100 hover:-translate-y-1">
+            <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-3xl bg-gray-200 shadow-lg group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/images/3.jpg"
                 alt="Mikołaj Uroda"
-                width={96}
-                height={96}
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold mb-1 text-gray-800">Mikołaj Uroda</h3>
-            <p className="text-blue-700 font-medium mb-3">Prawnik, informatyk</p>
-            <p className="text-gray-600">
-              Specjalista łączący wiedzę prawniczą z umiejętnościami <strong>programistycznymi</strong>.
+            <h3 className="text-2xl font-bold mb-2 text-gray-900">Mikołaj <br />Uroda</h3>
+            <p className="text-blue-700 font-semibold mb-4 text-lg">Prawnik, informatyk</p>
+            <p className="text-gray-600 leading-relaxed text-base">
+              Specjalista łączący wiedzę prawniczą z umiejętnościami <strong className="font-semibold text-gray-900">programistycznymi</strong>.
             </p>
           </div>
         </div>
