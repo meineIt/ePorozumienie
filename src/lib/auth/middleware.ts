@@ -11,9 +11,11 @@ export function requireAuth(request: NextRequest): NextResponse | null {
 
   if (!user) {
     logUnauthorizedAccess('Unauthorized access attempt', {
+      headers: request.headers,
       url: request.url,
+    }, {
       method: request.method,
-    }, request);
+    });
     return NextResponse.json(
       { error: 'Wymagana autentykacja' },
       { status: 401 }
@@ -34,9 +36,11 @@ export function getAuthUser(request: NextRequest): { userId: string; email: stri
 
   if (!user) {
     logUnauthorizedAccess('Unauthorized access attempt - getAuthUser', {
+      headers: request.headers,
       url: request.url,
+    }, {
       method: request.method,
-    }, request);
+    });
     throw new Error('Unauthorized');
   }
 
@@ -57,9 +61,11 @@ export function getAuthUserFromHeaders(request: NextRequest): { userId: string; 
 
   if (!userId || !email) {
     logUnauthorizedAccess('Unauthorized access attempt - getAuthUserFromHeaders (missing headers)', {
+      headers: request.headers,
       url: request.url,
+    }, {
       method: request.method,
-    }, request);
+    });
     throw new Error('Unauthorized - user data not found in headers');
   }
 

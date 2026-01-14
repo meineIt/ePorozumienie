@@ -20,21 +20,12 @@ export default function AffairsList({ userId }: AffairsListProps) {
     useEffect(() => {
         const fetchAffairs = async () => {
           try {
-            // Pobierz token z localStorage
-            const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-            if (!token) {
-              setLoading(false);
-              return;
-            }
-
             const url = statusFilter 
               ? `/api/affairs?status=${statusFilter}`
               : `/api/affairs`;
+            // Używamy tylko cookie (credentials: 'include') - token jest w httpOnly cookie
             const response = await fetch(url, {
-              headers: {
-                'Authorization': `Bearer ${token}`,
-              },
-              credentials: 'include',
+              credentials: 'include', // Włącz cookies - token jest w httpOnly cookie
             });
             if (response.ok) {
               const data = await response.json();
@@ -43,10 +34,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
               // Pobierz wszystkie sprawy dla statystyk
               if (statusFilter) {
                 const allResponse = await fetch(`/api/affairs`, {
-                  headers: {
-                    'Authorization': `Bearer ${token}`,
-                  },
-                  credentials: 'include',
+                  credentials: 'include', // Włącz cookies
                 });
                 if (allResponse.ok) {
                   const allData = await allResponse.json();
@@ -56,10 +44,13 @@ export default function AffairsList({ userId }: AffairsListProps) {
                 setAllAffairs(fetchedAffairs);
               }
             } else if (response.status === 401) {
-              // Nieautoryzowany - przekieruj do logowania
+              // Nieautoryzowany - wyczyść localStorage i przekieruj do logowania
+              localStorage.removeItem('user');
+              localStorage.removeItem('auth-token');
               window.location.href = '/login';
-        }
-      } catch (error) {
+            }
+          } catch (error) {
+            console.error('Error fetching affairs:', error);
           } finally {
             setLoading(false);
           }

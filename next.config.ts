@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const nextConfig: NextConfig = {
   async headers() {
+    // Konfiguracja CSP - różna dla development i production
+    const scriptSrc = isDevelopment
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : "script-src 'self'";
+    
+    const connectSrc = isDevelopment
+      ? "connect-src 'self' ws://localhost:* wss://localhost:* ws://192.168.0.100:* wss://192.168.0.100:*"
+      : "connect-src 'self'";
+
     return [
       {
         source: '/:path*',
@@ -38,11 +49,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self'",
+              scriptSrc,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self'",
+              connectSrc,
               "frame-ancestors 'self'",
               "base-uri 'self'",
               "form-action 'self'",

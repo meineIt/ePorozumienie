@@ -6,9 +6,6 @@
 /* Import component styles */
 @import './components.css';
 
-/* Import utility classes */
-@import './utilities.css';
-
 /* Import authentication styles */
 @import './auth.css';
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthenticatedUser } from '@/lib/auth/jwt';
+import { getAuthenticatedUserEdge } from '@/lib/auth/jwt';
 import { logUnauthorizedAccess } from '@/lib/utils/securityLogger';
 
 /**
@@ -22,8 +22,9 @@ function isPublicPath(pathname: string): boolean {
 /**
  * Middleware Next.js do globalnej autentykacji
  * Automatycznie weryfikuje autentykację dla wszystkich chronionych ścieżek API
+ * Używa jose dla weryfikacji tokenów w Edge Runtime
  */
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Sprawdź czy to ścieżka API
@@ -37,15 +38,17 @@ export function middleware(request: NextRequest) {
   }
 
   // Dla wszystkich innych ścieżek API - wymagana autentykacja
-  const user = getAuthenticatedUser(request);
+  const user = await getAuthenticatedUserEdge(request);
 
   if (!user) {
     // Loguj próbę nieautoryzowanego dostępu
     logUnauthorizedAccess('Unauthorized access attempt - middleware', {
+      headers: request.headers,
       url: request.url,
+    }, {
       method: request.method,
       pathname,
-    }, request);
+    });
 
     return NextResponse.json(
       { error: 'Wymagana autentykacja' },

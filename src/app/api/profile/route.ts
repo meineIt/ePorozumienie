@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, prismaWithTimeout } from '@/lib/prisma';
+import { prismaWithTimeout } from '@/lib/prisma';
 import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
 import { requireCSRF } from '@/lib/auth/csrf';
 import { rateLimit } from '@/lib/auth/rateLimit';
@@ -10,6 +10,74 @@ const profileRateLimit = rateLimit({
   interval: 15 * 60 * 1000, // 15 minut
   uniqueTokenPerInterval: 500,
 });
+
+// Rate limiting dla GET: 30 zapytań na 15 minut na użytkownika
+const profileGetRateLimit = rateLimit({
+  interval: 15 * 60 * 1000, // 15 minut
+  uniqueTokenPerInterval: 500,
+});
+
+/**
+ * GET - Pobiera dane użytkownika (weryfikacja autentykacji)
+ */
+export async function GET(request: NextRequest) {
+  try {
+    // Autentykacja jest obsługiwana przez globalny middleware
+    const authUser = getAuthUserFromHeaders(request);
+
+    // Rate limiting
+    try {
+      await profileGetRateLimit.check(30, authUser.userId, request);
+    } catch {
+      return NextResponse.json(
+        { error: 'Zbyt wiele prób. Spróbuj ponownie za chwilę.' },
+        { status: 429 }
+      );
+    }
+
+    // Pobierz dane użytkownika z bazy
+    const user = await prismaWithTimeout(async (client) => {
+      return client.user.findUnique({
+        where: { id: authUser.userId },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+    }, 30000);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Użytkownik nie został znaleziony' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        user,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Profile get error:', error);
+    // Jeśli błąd autentykacji (Unauthorized), zwróć 401
+    if (error instanceof Error && error.message === 'Unauthorized - user data not found in headers') {
+      return NextResponse.json(
+        { error: 'Wymagana autentykacja' },
+        { status: 401 }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Wystąpił błąd podczas pobierania profilu' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function PATCH(request: NextRequest) {
   try {

@@ -583,7 +583,9 @@ export async function PUT(
             });
         }, 30000);
 
-        (async () => {
+        // Background task: Generate AI analysis if both parties have positions
+        // Don't await - let it run in background while returning response
+        Promise.resolve().then(async () => {
             try {
                 const affairWithParticipants = await prismaWithTimeout(async (client) => {
                     return client.affair.findUnique({
@@ -626,7 +628,9 @@ export async function PUT(
             } catch (error) {
                 console.error('Error generating AI analysis:', error);
             }
-        })();
+        }).catch((error) => {
+            console.error('Unhandled error in AI analysis background task:', error);
+        });
 
         return NextResponse.json(
             { message: 'Stanowisko zostało zapisane pomyślnie' },

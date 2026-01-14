@@ -10,7 +10,6 @@
   --font-mono: var(--font-space-grotesk);
 }
 
-/* iOS-inspired System Font Stack */
 @supports (font: -apple-system-body) {
   :root {
     --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -31,7 +30,7 @@ body {
   padding-right: var(--safe-area-right);
 }
 
-/* Typography (iOS-inspired scale) */
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
@@ -131,7 +130,260 @@ p {
   border-radius: var(--radius-sm);
 }
 
-/* Utility Classes - Reusable Component Styles */
+/* Utility Classes */
+
+/* Gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+}
+
+.bg-blue-700 {
+  background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+}
+
+.bg-blue-600 {
+  background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+}
+
+.hover\:bg-blue-800:hover, .hover\:bg-blue-700:hover {
+  background: linear-gradient(135deg, #0A2463 0%, #3E5C95 100%) !important;
+  box-shadow: 0 10px 25px rgba(10, 36, 99, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+
+.text-blue-700, .text-blue-800 {
+  color: #0A2463 !important;
+}
+
+.bg-blue-50 {
+  background: linear-gradient(135deg, rgba(10, 36, 99, 0.05) 0%, rgba(62, 92, 149, 0.05) 100%) !important;
+}
+
+/* Card hover effects */
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.step-card {
+  transition: all 0.3s ease;
+}
+
+.step-card:hover {
+  transform: scale(1.03);
+}
+
+.testimonial-card {
+  background-color: #f8fafc;
+  border-left: 4px solid var(--primary);
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+/* Pattern with plus signs */
+.element-with-pattern {
+  position: relative;
+  background: #0A2463;
+}
+
+.element-with-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 60px 60px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.element-with-pattern > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Blur Backdrop */
+.blur-backdrop {
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  background: var(--glass-bg);
+}
+
+.blur-backdrop-sm {
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  background: var(--glass-bg);
+}
+
+.blur-backdrop-md {
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  background: var(--glass-bg);
+}
+
+/* iOS-style Card */
+.card-ios {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-normal);
+}
+
+.card-ios:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-ios:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+/* iOS-style Button */
+.button-ios {
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  min-height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.button-ios:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.button-ios:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.button-ios:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* iOS-style Input */
+.input-ios {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--bg-primary);
+  transition: all var(--transition-normal);
+  min-height: var(--touch-target-min);
+}
+
+.input-ios:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.input-ios::placeholder {
+  color: var(--dark-300);
+  opacity: 0.6;
+}
+
+/* Responsive Spacing Utilities */
+@media (max-width: 767px) {
+  .mobile-p-4 {
+    padding: 1rem;
+  }
+  
+  .mobile-p-6 {
+    padding: 1.5rem;
+  }
+  
+  .mobile-mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mobile-full-width {
+    width: 100%;
+  }
+  
+  .mobile-stack {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-p-6 {
+    padding: 1.5rem;
+  }
+  
+  .tablet-p-8 {
+    padding: 2rem;
+  }
+}
+
+/* Touch-friendly targets */
+.touch-target {
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+}
+
+/* iOS-style Badge */
+.badge-ios {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Smooth transitions */
+.transition-ios {
+  transition: all var(--transition-normal);
+}
+
+.transition-ios-fast {
+  transition: all var(--transition-fast);
+}
+
+.transition-ios-slow {
+  transition: all var(--transition-slow);
+}
+
+/* Component Styles - Reusable Component Styles */
 
 /* Card Styles */
 .card {
@@ -208,4 +460,9 @@ p {
     padding-bottom: 1rem;
     margin-bottom: 1.5rem;
   }
+}
+
+/* Background Pattern with Plus Signs (SVG pattern only) */
+.bg-pattern-plus-radial {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
