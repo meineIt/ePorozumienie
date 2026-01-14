@@ -76,7 +76,7 @@ export default function SwissFrancSection() {
                     ></path>
                   </svg>
                   <span className="text-gray-700">
-                    <strong>AI-mediator</strong> przeszkolony na tysiącach wyroków i ugód
+                    <strong>AI-mediator</strong> przeszkolony na tysiącach wyroków i porozumień
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -92,7 +92,7 @@ export default function SwissFrancSection() {
                     ></path>
                   </svg>
                   <span className="text-gray-700">
-                    Automatyczne generowanie propozycji ugody zgodnych z orzecznictwem{' '}
+                    Automatyczne generowanie propozycji porozumienia zgodnych z orzecznictwem{' '}
                     <strong>SN/TSUE</strong>
                   </span>
                 </li>

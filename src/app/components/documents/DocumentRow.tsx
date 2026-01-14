@@ -20,7 +20,12 @@ export default function DocumentRow({ document, onClick, getDocumentIcon }: Docu
         {getDocumentIcon(document.category, document.type)}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-sm sm:text-base text-gray-900 truncate">{document.name}</h3>
+        <h3 
+          className="font-semibold text-gray-900 truncate"
+          style={{ fontSize: '0.875rem' }}
+        >
+          {document.name}
+        </h3>
         <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 text-xs sm:text-sm text-gray-500">
           <span className="flex items-center gap-1">
             <svg width="12" height="12" className="sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

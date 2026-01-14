@@ -126,7 +126,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
             <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Dodaj swoje stanowisko</h2>
+                <h2 className="heading-section mb-2" style={{ fontSize: '1.25rem' }}>Dodaj swoje stanowisko</h2>
                 <p className="text-gray-600">
                     Przedstaw swoje stanowisko w sprawie. Dodaj opis sytuacji z Twojej perspektywy oraz dokumenty, które mogą być pomocne.
                 </p>
@@ -154,7 +154,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                         <svg className="w-5 h-5 text-blue-700 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <h3 className="text-lg font-semibold text-blue-700">Dokumenty</h3>
+                        <h3 className="text-lg font-semibold text-blue-700" style={{ fontSize: '1.5rem' }}>Dokumenty</h3>
                     </div>
 
                     {/* Dropzone */}
@@ -177,15 +177,15 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                         {uploading ? (
                             <>
                                 <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                                <h4 className="text-lg font-semibold text-gray-900 mb-2">Przesyłanie plików...</h4>
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontSize: '1.5rem' }}>Przesyłanie plików...</h4>
                                 <p className="text-gray-500 mb-4">Proszę czekać</p>
                             </>
                         ) : (
                             <>
-                                <svg className="w-12 h-12 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                <svg className="w-12 h-12 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
-                                <h4 className="text-lg font-semibold text-gray-900 mb-2">Przeciągnij i upuść pliki tutaj</h4>
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontSize: '1.5rem' }}>Przeciągnij i upuść pliki tutaj</h4>
                                 <p className="text-gray-500 mb-4">lub kliknij, aby wybrać pliki z dysku</p>
                                 <button
                                     type="button"
@@ -223,7 +223,6 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                                         className="mx-4 px-3 py-1 border-[1.5px] border-gray-300 rounded-xl text-sm focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)]"
                                     >
                                         <option>Umowy</option>
-                                        <option>Korespondencja</option>
                                         <option>Faktury</option>
                                         <option>Zdjęcia</option>
                                         <option>Inne</option>

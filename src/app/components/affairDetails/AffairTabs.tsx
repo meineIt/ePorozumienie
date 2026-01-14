@@ -40,8 +40,8 @@ export default function AffairTabs({ activeTab, onTabChange }: AffairTabsProps) 
   ];
 
   return (
-    <div className="border-b border-gray-200 mb-6">
-      <div className="flex space-x-1">
+    <div className="border-b border-gray-200/50 mb-4 sm:mb-6 overflow-x-auto">
+      <div className="flex space-x-1 min-w-max sm:min-w-0">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -49,18 +49,19 @@ export default function AffairTabs({ activeTab, onTabChange }: AffairTabsProps) 
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
               className={`
-                flex items-center gap-2 px-6 py-4 font-semibold text-sm transition-all duration-200
-                border-b-2 relative
+                flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 font-semibold text-xs sm:text-sm transition-all duration-200
+                border-b-2 relative touch-target whitespace-nowrap
                 ${isActive
                   ? 'text-[#0A2463] border-[#0A2463]'
-                  : 'text-[#616161] border-transparent hover:text-[#0A2463] hover:border-gray-300'
+                  : 'text-[#616161] border-transparent hover:text-[#0A2463] hover:border-gray-300 active:text-[#0A2463]'
                 }
               `}
             >
-              <span className={`${isActive ? 'text-[#0A2463]' : 'text-[#616161]'}`}>
+              <span className={`shrink-0 ${isActive ? 'text-[#0A2463]' : 'text-[#616161]'}`}>
                 {tab.icon}
               </span>
-              <span>{tab.label}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
             </button>
           );
         })}

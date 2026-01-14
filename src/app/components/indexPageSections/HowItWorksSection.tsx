@@ -33,9 +33,9 @@ export default function HowItWorksSection() {
             <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
               3
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">Ugoda i e-podpis</h3>
+            <h3 className="text-xl font-semibold mb-3 text-gray-800">Porozumienie i e-podpis</h3>
             <p className="text-gray-600">
-              Po osiągnięciu porozumienia, system generuje gotową ugodę do podpisania za pomocą
+              Po osiągnięciu porozumienia, system generuje gotowe porozumienie do podpisania za pomocą
               <strong>podpisu elektronicznego</strong> bez wychodzenia z domu.
             </p>
           </div>

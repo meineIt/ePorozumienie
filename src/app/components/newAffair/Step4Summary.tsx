@@ -100,8 +100,8 @@ export default function Step4Summary({
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Sprawa została utworzona!</h2>
         <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
           {userExists 
-            ? 'Sprawa została przypisana do drugiej strony. Po dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję ugody.'
-            : 'Druga strona otrzyma email z zaproszeniem do rejestracji. Po utworzeniu konta i dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję ugody.'
+            ? 'Sprawa została przypisana do drugiej strony. Po dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję porozumienia.'
+            : 'Druga strona otrzyma email z zaproszeniem do rejestracji. Po utworzeniu konta i dołączeniu do sprawy, system AI przeanalizuje dokumenty i przedstawi propozycję porozumienia.'
           }
         </p>
         <a
@@ -116,9 +116,6 @@ export default function Step4Summary({
 
   return (
     <div>
-      <div className="mb-6 pb-4 border-b">
-        <h2 className="text-2xl font-bold text-gray-900">Krok 4: Podsumowanie i utworzenie sprawy</h2>
-      </div>
 
       {/* Error message */}
       {error && (
@@ -139,15 +136,12 @@ export default function Step4Summary({
       {!checkingUser && (
         <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
           <div className="flex items-start">
-            <svg className="w-5 h-5 text-blue-700 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
             <div>
               <h4 className="font-semibold text-blue-900 mb-1">Co dalej?</h4>
               <p className="text-sm text-gray-700">
                 {userExists 
-                  ? 'Druga strona ma już konto w systemie, więc sprawa została automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję ugody.'
-                  : 'Druga strona nie ma jeszcze konta w systemie. Po utworzeniu sprawy, otrzyma email z linkiem referencyjnym do rejestracji. Po utworzeniu konta przez ten link, sprawa zostanie automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję ugody.'
+                  ? 'Druga strona ma już konto w systemie, więc sprawa została automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję porozumienia.'
+                  : 'Druga strona nie ma jeszcze konta w systemie. Po utworzeniu sprawy, otrzyma email z linkiem referencyjnym do rejestracji. Po utworzeniu konta przez ten link, sprawa zostanie automatycznie przypisana do jej konta. Po dołączeniu obu stron, system AI przeanalizuje dokumenty i stanowiska, a następnie przedstawi propozycję porozumienia.'
                 }
               </p>
             </div>
@@ -213,7 +207,7 @@ export default function Step4Summary({
               <span className="font-semibold text-gray-900">30 PLN</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Propozycja ugody</span>
+              <span className="text-gray-600">Propozycja porozumienia</span>
               <span className="font-semibold text-gray-900">20 PLN</span>
             </div>
             <div className="border-t pt-3 flex justify-between">

@@ -75,12 +75,11 @@ export default function NewAffairPage() {
     }
     
     return (
-        <div className="min-h-screen bg-[#FAFAFA] ml-[230px]">
-            <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
               
               <StepIndicator 
-                currentStep={currentStep} 
-                onStepClick={goToStep}
+                currentStep={currentStep}
               />
     
               <div className="bg-white rounded-lg shadow-md p-8 mt-8">

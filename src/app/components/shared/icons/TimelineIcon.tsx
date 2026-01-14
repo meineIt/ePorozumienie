@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from './IconProps';
 
-export type TimelineEventType = 'creation' | 'party-added' | 'party-joined' | 'analysis' | 'proposal' | 'acceptance';
+export type TimelineEventType = 'creation' | 'party-added' | 'party-joined' | 'analysis' | 'proposal' | 'modification' | 'acceptance';
 
 interface TimelineIconProps extends IconProps {
   type: TimelineEventType;
@@ -50,6 +50,13 @@ export default function TimelineIcon({ type, className = "w-5 h-5" }: TimelineIc
           <polyline points="14 2 14 8 20 8"></polyline>
           <line x1="16" x2="8" y1="13" y2="13"></line>
           <line x1="16" x2="8" y1="17" y2="17"></line>
+        </svg>
+      );
+    case 'modification':
+      return (
+        <svg {...iconProps}>
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
         </svg>
       );
     case 'acceptance':

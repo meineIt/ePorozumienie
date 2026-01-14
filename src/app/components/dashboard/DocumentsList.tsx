@@ -75,8 +75,8 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="w-full max-w-7xl mx-auto ml-0 md:ml-[230px] p-3 sm:p-4 md:p-6">
+    <div className="min-h-screen bg-[#F5F5F7] pt-[94px] lg:pl-[240px]">
+      <div className="w-full max-w-7xl mx-auto p-3 sm:p-4 md:p-6">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
 
         <DocumentFilters
@@ -96,7 +96,7 @@ export default function DocumentsList({ userId }: DocumentsListProps) {
             <p className="text-gray-500">
               {searchQuery || selectedCategory !== 'all'
                 ? 'Nie znaleziono dokumentów'
-                : 'Brak dokumentów. Dodaj dokumenty do spraw!'}
+                : 'Tutaj będą wyświetlane dokumenty, które załączysz do spraw.'}
             </p>
           </div>
         ) : viewMode === 'grid' ? (

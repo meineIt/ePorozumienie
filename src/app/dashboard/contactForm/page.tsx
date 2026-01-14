@@ -29,7 +29,7 @@ export default function ContactFormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] py-12 px-4 sm:px-6 lg:px-8 pt-24 ml-[230px]">
+    <div className="min-h-screen bg-[#F5F5F7] pt-[94px] pb-12 px-4 sm:px-6 lg:px-8 lg:pl-[240px]">
       <div className="max-w-3xl mx-auto">
         <ContactForm 
           userEmail={user.email}

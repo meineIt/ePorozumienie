@@ -1,6 +1,89 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from '@/lib/prisma'
-import { getAuthUser } from '@/lib/auth/middleware'
+import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
+import { getAuthUser } from '@/lib/auth/middleware';
+import { analyzeAffairPositions, bothPartiesHavePositions } from '@/lib/ai/analyzer';
+
+type AffairWithDetails = Prisma.AffairGetPayload<{
+    select: {
+      id: true;
+      title: true;
+      category: true;
+      description: true;
+      affairCreatedAt: true;
+      affairValue: true;
+      files: true;
+      createdAt: true;
+      updatedAt: true;
+      creatorId: true;
+      involvedUserId: true;
+      inviteToken: true;
+      inviteTokenUsed: true;
+      aiAnalysis: true;
+      aiAnalysisGeneratedAt: true;
+      creator: {
+        select: {
+          id: true;
+          email: true;
+          firstName: true;
+          lastName: true;
+        };
+      };
+      involvedUser: {
+        select: {
+          id: true;
+          email: true;
+          firstName: true;
+          lastName: true;
+        };
+      };
+      participants: {
+        select: {
+          id: true;
+          userId: true;
+          status: true;
+          description: true;
+          files: true;
+          user: {
+            select: {
+              id: true;
+              firstName: true;
+              lastName: true;
+              email: true;
+            };
+          };
+        };
+      };
+    };
+  }>;
+
+type AffairWithParticipants = Prisma.AffairGetPayload<{
+    include: {
+        participants: {
+            select: {
+                userId: true;
+                description: true;
+                files: true;
+            };
+        };
+    };
+}>;
+
+interface PatchAffairBody {
+    status: 'REACTION_NEEDED' | 'WAITING' | 'DONE';
+}
+
+interface PutAffairBody {
+    description?: string;
+    documents?: Array<{
+        id: string;
+        name: string;
+        size: number;
+        type: string;
+        category: string;
+        path?: string | null;
+    }>;
+}
 
 export async function GET(
     request: NextRequest,
@@ -22,7 +105,22 @@ export async function GET(
 
         const affair = await prisma.affair.findUnique({
             where: { id },
-            include: {
+            select: {
+                id: true,
+                title: true,
+                category: true,
+                description: true,
+                affairCreatedAt: true,
+                affairValue: true,
+                files: true,
+                createdAt: true,
+                updatedAt: true,
+                creatorId: true,
+                involvedUserId: true,
+                inviteToken: true,
+                inviteTokenUsed: true,
+                aiAnalysis: true,
+                aiAnalysisGeneratedAt: true,
                 creator: {
                     select: {
                         id: true,
@@ -54,10 +152,10 @@ export async function GET(
                                 email: true
                             }
                         }
-                    } as any
+                    }
                 }
             }
-        });
+        }) as AffairWithDetails | null;
 
         if (!affair) {
             return NextResponse.json(
@@ -67,19 +165,7 @@ export async function GET(
         }
 
         // Dodaj status użytkownika do odpowiedzi
-        const participants = (affair as any).participants as Array<{
-            id: string;
-            userId: string;
-            status: string;
-            description: string | null;
-            files: string | null;
-            user: {
-                id: string;
-                firstName: string;
-                lastName: string;
-                email: string;
-            };
-        }>;
+        const participants = affair.participants;
         const currentUserParticipant = participants.find(p => p.userId === authUser.userId);
         const affairWithStatus = {
             ...affair,
@@ -123,7 +209,7 @@ export async function PATCH(
         }
 
         const { id } = await params;
-        const body = await request.json();
+        const body = await request.json() as PatchAffairBody;
         const { status } = body;
 
         if (!status || !['REACTION_NEEDED', 'WAITING', 'DONE'].includes(status)) {
@@ -258,7 +344,7 @@ export async function PUT(
         }
 
         const { id } = await params;
-        const body = await request.json();
+        const body = await request.json() as PutAffairBody;
         const { description, documents } = body;
 
         // Sprawdź czy sprawa istnieje i użytkownik ma do niej dostęp
@@ -315,7 +401,7 @@ export async function PUT(
                 data: {
                     description: description || null,
                     files: filesData
-                } as any
+                }
             });
 
             // Zmień status użytkownika na WAITING
@@ -355,6 +441,44 @@ export async function PUT(
                 }
             }
         });
+
+        // Sprawdź czy obie strony mają stanowiska i automatycznie wywołaj analizę AI w tle
+        // Nie czekamy na wynik - analiza wykonuje się asynchronicznie
+        (async () => {
+            try {
+                const affairWithParticipants = await prisma.affair.findUnique({
+                    where: { id },
+                    include: {
+                        participants: {
+                            select: {
+                                userId: true,
+                                description: true,
+                                files: true,
+                            },
+                        },
+                    },
+                }) as AffairWithParticipants | null;
+
+                if (affairWithParticipants && bothPartiesHavePositions(affairWithParticipants)) {
+                    // Sprawdź czy analiza już istnieje - jeśli tak, nie generuj ponownie
+                    if (!affairWithParticipants.aiAnalysis) {
+                        const analysis = await analyzeAffairPositions(id);
+                        
+                        // Zapisz wyniki analizy w bazie
+                        await prisma.affair.update({
+                            where: { id },
+                            data: {
+                                aiAnalysis: JSON.stringify(analysis),
+                                aiAnalysisGeneratedAt: new Date(),
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                // Loguj błąd ale nie przerywaj procesu
+                console.error('Error generating AI analysis:', error);
+            }
+        })();
 
         return NextResponse.json(
             { message: 'Stanowisko zostało zapisane pomyślnie' },

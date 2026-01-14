@@ -7,7 +7,7 @@ export default function HeroSection({ onCTAClick }: HeroSectionProps) {
     <header className="pt-28 pb-20 element-with-pattern">
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
         <div className="w-full text-center text-white mb-10 md:mb-0">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Ugoda w 3 kliknięcia</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Porozumienie w 3 kliknięcia</h1>
           <p className="text-xl mb-8">
             Pierwsza platforma do <strong>mediacji online</strong>, która wykorzystując AI
             <br />

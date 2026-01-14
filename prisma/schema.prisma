@@ -48,6 +48,10 @@ model Affair {
 
   // Relacja do uczestników sprawy z ich statusami
   participants AffairParticipant[]
+
+  // Analiza AI
+  aiAnalysis            String?   // JSON z wynikami analizy AI
+  aiAnalysisGeneratedAt DateTime? // data wygenerowania analizy
 }
 
 enum AffairStatus {

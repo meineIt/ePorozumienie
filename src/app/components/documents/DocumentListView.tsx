@@ -12,9 +12,9 @@ interface DocumentListViewProps {
 export default function DocumentListView({ documents, onDocumentClick, getDocumentIcon }: DocumentListViewProps) {
   return (
     <div className="divide-y divide-gray-200">
-      {documents.map((doc) => (
+      {documents.map((doc, index) => (
         <DocumentRow
-          key={doc.id}
+          key={`${doc.id}-${doc.affairId}-${index}`}
           document={doc}
           onClick={onDocumentClick}
           getDocumentIcon={getDocumentIcon}

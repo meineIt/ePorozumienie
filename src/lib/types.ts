@@ -45,6 +45,30 @@ export interface AffairParticipant {
   updatedAt: string;
 }
 
+// export interface Affair {
+//   id: string;
+//   title: string;
+//   category: string | null;
+//   description: string | null;
+//   createdAt: string;
+//   updatedAt: string;
+//   status?: AffairStatus;
+//   files?: string | null;
+//   creator: {
+//     id: string;
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//   };
+//   involvedUser: {
+//     id: string;
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//   } | null;
+//   participants?: AffairParticipant[];
+// }
+
 export interface Affair {
   id: string;
   title: string;
@@ -52,8 +76,10 @@ export interface Affair {
   description: string | null;
   createdAt: string;
   updatedAt: string;
-  status?: AffairStatus;
+  status?: AffairStatus | null;
   files?: string | null;
+  aiAnalysis?: string | null;
+  aiAnalysisGeneratedAt?: string | null;
   creator: {
     id: string;
     firstName: string;
@@ -66,7 +92,14 @@ export interface Affair {
     lastName: string;
     email: string;
   } | null;
-  participants?: AffairParticipant[];
+  participants?: Array<AffairParticipant & {
+    user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  }>;
 }
 
 export interface AffairFormData {

@@ -107,11 +107,11 @@ export default function AffairsList({ userId }: AffairsListProps) {
         case AffairStatus.REACTION_NEEDED:
           return 'bg-[rgba(255,152,0,0.1)] text-[#FF9800]';
         case AffairStatus.WAITING:
-          return 'bg-[rgba(76,175,80,0.1)] text-[#4CAF50]';
+          return 'bg-green-50 text-green-600';
         case AffairStatus.DONE:
           return 'bg-[rgba(33,150,243,0.1)] text-[#2196F3]';
         default:
-          return 'bg-[rgba(76,175,80,0.1)] text-[#4CAF50]';
+          return 'bg-green-50 text-green-600';
       }
     };
 
@@ -128,27 +128,62 @@ export default function AffairsList({ userId }: AffairsListProps) {
       }
     };
 
+    const getEmptyStateMessage = () => {
+      if (searchQuery) {
+        return {
+          title: 'Nie znaleziono spraw',
+          description: 'Spróbuj zmienić kryteria wyszukiwania lub wyczyść filtr.'
+        };
+      }
+
+      if (statusFilter === AffairStatus.REACTION_NEEDED) {
+        return {
+          title: 'Brak spraw wymagających reakcji',
+          description: 'Nie masz obecnie spraw, które wymagają Twojej reakcji. Wszystko jest na bieżąco!'
+        };
+      }
+
+      if (statusFilter === AffairStatus.WAITING) {
+        return {
+          title: 'Brak spraw oczekujących',
+          description: 'Nie masz obecnie spraw w statusie oczekujących. Sprawy pojawią się tutaj, gdy będą wymagały Twojej uwagi.'
+        };
+      }
+
+      if (statusFilter === AffairStatus.DONE) {
+        return {
+          title: 'Brak zawartych porozumień',
+          description: 'Nie masz jeszcze żadnych zawartych porozumień. Zakończone sprawy będą wyświetlane tutaj.'
+        };
+      }
+
+      return {
+        title: 'Brak spraw',
+        description: 'Tutaj będą wyświetlane Twoje sprawy. Utwórz nową sprawę, aby rozpocząć!'
+      };
+    };
+
     if (loading) {
         return (
-        <div className="flex items-center justify-center p-8">
-            <p className="text-gray-600">Ładowanie spraw...</p>
+        <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px] flex items-center justify-center p-8">
+            <p className="text-[#616161]">Ładowanie spraw...</p>
         </div>
         );
     }
 
   return (
-    <div className="ml-[230px] min-h-screen bg-[#FAFAFA]">
-      <div className="max-w-[1200px] mx-auto p-8">
+    <div className="min-h-screen bg-[#F5F5F7] pt-[70px] lg:pl-[240px]">
+      <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8">
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           
           <button
             onClick={() => setStatusFilter(statusFilter === AffairStatus.REACTION_NEEDED ? null : AffairStatus.REACTION_NEEDED)}
-            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+            className={`bg-white p-4 sm:p-5 rounded-2xl shadow-md border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 relative text-left touch-target ${
               statusFilter === AffairStatus.REACTION_NEEDED 
-                ? 'border-[#FF9800] border-2' 
-                : 'border-gray-200'
+                ? 'border-[#FF9800] border-2 shadow-lg' 
+                : 'border-gray-200/50'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -165,14 +200,14 @@ export default function AffairsList({ userId }: AffairsListProps) {
           
           <button
             onClick={() => setStatusFilter(statusFilter === AffairStatus.WAITING ? null : AffairStatus.WAITING)}
-            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+            className={`bg-white p-4 sm:p-5 rounded-2xl shadow-md border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 relative text-left touch-target ${
               statusFilter === AffairStatus.WAITING 
-                ? 'border-[#4CAF50] border-2' 
-                : 'border-gray-200'
+                ? 'border-[#4CAF50] border-2 shadow-lg' 
+                : 'border-gray-200/50'
             }`}
           >
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-lg bg-[#4CAF50] flex items-center justify-center text-white shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-green-500 flex items-center justify-center text-white shrink-0">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                 </svg>
@@ -184,10 +219,10 @@ export default function AffairsList({ userId }: AffairsListProps) {
           
           <button
             onClick={() => setStatusFilter(statusFilter === AffairStatus.DONE ? null : AffairStatus.DONE)}
-            className={`bg-white p-4 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-1 relative text-left ${
+            className={`bg-white p-4 sm:p-5 rounded-2xl shadow-md border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 relative text-left touch-target ${
               statusFilter === AffairStatus.DONE 
-                ? 'border-[#2196F3] border-2' 
-                : 'border-gray-200'
+                ? 'border-[#2196F3] border-2 shadow-lg' 
+                : 'border-gray-200/50'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -197,7 +232,7 @@ export default function AffairsList({ userId }: AffairsListProps) {
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
               </div>
-              <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Zawarte ugody</span>
+              <span className="text-sm text-[#616161] font-medium ml-3 flex-1">Zawarte porozumienia</span>
               <div className="text-3xl font-bold text-[#212121] font-['Space_Grotesk']">{stats.done}</div>
             </div>
           </button>
@@ -209,20 +244,20 @@ export default function AffairsList({ userId }: AffairsListProps) {
         </div>
 
         {/* Cases Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredAffairs.length === 0 ? (
-            <div className="col-span-full bg-white p-12 rounded-xl shadow-sm border border-gray-200 text-center">
+            <div className="col-span-full card card-padding text-center">
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-[#0A2463] text-4xl">
                 <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-[#212121]">Brak spraw</h3>
+              <h3 className="text-xl font-semibold mb-2 text-[#212121]">{getEmptyStateMessage().title}</h3>
               <p className="text-[#616161] mb-6 max-w-md mx-auto">
-                {searchQuery ? 'Nie znaleziono spraw' : 'Tutaj będą wyświetlane Twoje sprawy. Utwórz nową sprawę, aby rozpocząć!'}
+                {getEmptyStateMessage().description}
               </p>
-              {!searchQuery && (
+              {!searchQuery && !statusFilter && (
                 <Link
                   href="/dashboard/affairs/new"
                   className="inline-flex items-center gap-2 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] hover:shadow-lg hover:-translate-y-0.5 text-white py-3 px-6 rounded-full font-semibold transition-all duration-300"
@@ -239,25 +274,25 @@ export default function AffairsList({ userId }: AffairsListProps) {
               <Link
                 key={affair.id}
                 href={`/dashboard/affairs/${affair.id}`}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+                className="card overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 touch-target block"
               >
-                <div className="p-6 border-b border-gray-200 flex justify-between items-start">
-                  <div>
-                    <div className="font-semibold text-lg text-[#212121] mb-1">{affair.title}</div>
+                <div className="p-4 sm:p-6 border-b border-gray-200/50 flex justify-between items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-base sm:text-lg text-[#212121] mb-1 truncate">{affair.title}</div>
                   </div>
-                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadgeClass(affair.status)} uppercase tracking-wide`}>
+                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadgeClass(affair.status)} uppercase tracking-wide shrink-0`}>
                     {getStatusLabel(affair.status)}
                   </span>
                 </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
                     <div>
                       <div className="text-xs text-[#616161] mb-1">Strona A</div>
-                      <div className="font-semibold text-[#212121]">{affair.creator?.firstName} {affair.creator?.lastName}</div>
+                      <div className="font-semibold text-sm sm:text-base text-[#212121] truncate">{affair.creator?.firstName} {affair.creator?.lastName}</div>
                     </div>
                     <div>
                       <div className="text-xs text-[#616161] mb-1">Strona B</div>
-                      <div className="font-semibold text-[#212121]">
+                      <div className="font-semibold text-sm sm:text-base text-[#212121] truncate">
                         {affair.involvedUser ? `${affair.involvedUser.firstName} ${affair.involvedUser.lastName}` : '—'}
                       </div>
                     </div>
@@ -296,8 +331,8 @@ export default function AffairsList({ userId }: AffairsListProps) {
                       <span>Postęp</span>
                       <span>75%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#0A2463] rounded-full" style={{ width: '75%' }}></div>
+                    <div className="w-full h-2 bg-gray-200/50 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#0A2463] to-[#3E5C95] rounded-full transition-all duration-500" style={{ width: '75%' }}></div>
                     </div>
                   </div>
                 </div>

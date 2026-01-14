@@ -20,7 +20,7 @@ export default function DocumentIcon({ category, type, className = "w-6 h-6" }: 
     );
   }
   
-  if (category === 'Umowy' || category === 'Korespondencja') {
+  if (category === 'Umowy') {
     return (
       <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />

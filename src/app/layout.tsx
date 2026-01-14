@@ -21,12 +21,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "e-Porozumienie | Ugoda w 3 kliknięcia - Inwestycja",
+  title: "e-Porozumienie | Porozumienie w 3 kliknięcia - Inwestycja",
   description: "Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!",
   openGraph: {
     type: "website",
     url: "https://e-porozumienie.pl/",
-    title: "e-Porozumienie | Ugoda w 3 kliknięcia",
+    title: "e-Porozumienie | Porozumienie w 3 kliknięcia",
     description: "Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!",
     images: [
       {

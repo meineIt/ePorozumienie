@@ -56,9 +56,6 @@ export default function Step3OtherParty({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-6 pb-4 border-b">
-        <h2 className="text-2xl font-bold text-gray-900">Krok 3: Informacje o drugiej stronie</h2>
-      </div>
 
       {/* Info box */}
       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
@@ -69,7 +66,7 @@ export default function Step3OtherParty({
           <div>
             <h4 className="font-semibold text-blue-900 mb-1">Dlaczego te informacje są ważne?</h4>
             <p className="text-sm text-gray-700">
-              Uzupełnienie danych drugiej strony pozwoli na szybkie rozpoczęcie procesu mediacji. Druga strona otrzyma powiadomienie o chęci zawarcia ugody.
+              Uzupełnienie danych drugiej strony pozwoli na szybkie rozpoczęcie procesu mediacji. Druga strona otrzyma powiadomienie o chęci zawarcia porozumienia.
             </p>
           </div>
         </div>
@@ -250,7 +247,7 @@ export default function Step3OtherParty({
         </div>
 
         <p className="text-gray-600 mb-4">
-          Druga strona otrzyma powiadomienie o chęci zawarcia ugody. Możesz dodać własną wiadomość.
+          Druga strona otrzyma powiadomienie o chęci zawarcia porozumienia. Możesz dodać własną wiadomość.
         </p>
 
         <textarea
@@ -288,13 +285,13 @@ export default function Step3OtherParty({
               onChange={(e) => setNotifySMS(e.target.checked)}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
-            <span className="ml-2 text-sm font-medium text-gray-700">Powiadomienie SMS (jeśli podano numer telefonu)</span>
+            <span className="ml-2 text-sm font-medium text-gray-700">Powiadomienie SMS (jeśli podano numer telefonu) - nieaktywne</span>
           </label>
         </div>
       </div>
 
       {/* Akcje */}
-      <div className="flex justify-between pt-6 border-t">
+      <div className="flex justify-between pt-6">
         <button
           type="button"
           onClick={onPrev}
@@ -307,7 +304,7 @@ export default function Step3OtherParty({
         </button>
         <button
           type="submit"
-          className="px-6 py-2 gradient-bg hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
         >
           Dalej
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

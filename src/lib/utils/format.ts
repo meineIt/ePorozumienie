@@ -4,8 +4,18 @@
  * @param options - Opcje formatowania (includeYear - czy zawierać rok)
  * @returns Sformatowana data np. "15 sty 2024" lub "15 sty"
  */
-export function formatDate(dateString: string, options?: { includeYear?: boolean }): string {
+export function formatDate(dateString: string | null | undefined, options?: { includeYear?: boolean }): string {
+  if (!dateString) {
+    return 'Brak daty';
+  }
+  
   const date = new Date(dateString);
+  
+  // Sprawdź czy data jest prawidłowa
+  if (isNaN(date.getTime())) {
+    return 'Brak daty';
+  }
+  
   const day = date.getDate();
   const month = date.toLocaleDateString('pl-PL', { month: 'short' });
   

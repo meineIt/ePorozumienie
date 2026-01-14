@@ -16,7 +16,7 @@ export default function FeaturesSection() {
             </div>
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Dedykowany AI-mediator</h3>
             <p className="text-gray-600">
-              Model przeszkolony na tysiącach wyroków i ugód z bankami, wykorzystujący polski
+              Model przeszkolony na tysiącach wyroków i porozumień z bankami, wykorzystujący polski
               model językowy <strong>Bielik</strong>.
             </p>
           </div>
@@ -34,7 +34,7 @@ export default function FeaturesSection() {
             </div>
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Generator dokumentów</h3>
             <p className="text-gray-600">
-              Automatyczne tworzenie gotowych do podpisu ugód, pozwów i wniosków o zabezpieczenie
+              Automatyczne tworzenie gotowych do podpisu porozumień, pozwów i wniosków o zabezpieczenie
               z mocą prawną, zgodnie z <strong>aktualnym stanem prawnym</strong>.
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function FeaturesSection() {
             <p className="text-gray-600">
               Uwierzytelnianie użytkowników przez <strong>Profil Zaufany</strong> i{' '}
               <strong>ePUAP</strong> i integracja z <strong>podpisem elektronicznym</strong>{' '}
-              umożliwiającym podpisanie ugody bez wychodzenia z domu.
+              umożliwiającym podpisanie porozumienia bez wychodzenia z domu.
             </p>
           </div>
 

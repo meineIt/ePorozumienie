@@ -43,9 +43,6 @@ export default function Step1BasicInfo({
 
     return (
         <form onSubmit={handleSubmit}>
-          <div className="mb-6 pb-4 border-b">
-            <h2 className="text-2xl font-bold text-gray-900">Krok 1: Informacje o sprawie</h2>
-          </div>
     
           {/* Podstawowe informacje */}
           <div className="mb-8">
@@ -102,16 +99,13 @@ export default function Step1BasicInfo({
                 <textarea
                 value={formData.description}
                 onChange={(e) => updateFormData({ description: e.target.value })}
-                rows={5}
+                rows={12}
                 className={`w-full px-4 py-2 border-[1.5px] rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] ${
                     errors.description ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Opisz czego dotyczy sprawa, co jest przedmiotem sporu..."
                 />
                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-                <p className="text-sm text-gray-500 mt-1">
-                Krótko opisz czego dotyczy sprawa. Szczegóły przedstawisz w kolejnych krokach.
-                </p>
             </div>
             </div>
 
@@ -183,17 +177,10 @@ export default function Step1BasicInfo({
             </div>
 
             {/* Akcje */}
-            <div className="flex justify-between pt-6 border-t">
-            <button
-                type="button"
-                onClick={onCancel}
-                className="px-6 py-2 border-2 border-blue-300 text-blue-700 rounded-full font-semibold hover:bg-blue-50 transition-colors"
-            >
-                Anuluj
-            </button>
+            <div className="flex justify-end pt-6">
             <button
                 type="submit"
-                className="px-6 py-2 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300"
+                className="px-8 py-3 text-lg bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300"
             >
                 Dalej
             </button>

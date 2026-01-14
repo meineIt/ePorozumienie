@@ -36,6 +36,7 @@ export default function DashboardLayout({
     return null;
   });
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Sprawdź czy użytkownik istnieje i zakończ ładowanie
@@ -52,12 +53,24 @@ export default function DashboardLayout({
     return () => clearTimeout(timer);
   }, [user, router]);
 
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Ekran ładowania
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7]">
         <div className="text-center">
-          <p className="text-gray-600">Ładowanie...</p>
+          <p className="text-[#616161]">Ładowanie...</p>
         </div>
       </div>
     );
@@ -70,8 +83,23 @@ export default function DashboardLayout({
 
   return (
     <>
-      <DashboardNavbar firstName={user.firstName} />
-      <DashboardSidebar user={user} />
+      <DashboardNavbar 
+        firstName={user.firstName} 
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+      <DashboardSidebar 
+        user={user} 
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed top-[70px] left-0 right-0 bottom-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
       {children}
     </>
   );
