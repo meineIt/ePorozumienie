@@ -55,24 +55,58 @@ export async function apiRequest<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-    credentials: 'include', // Włącz cookies
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+      credentials: 'include', // Włącz cookies
+    });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(error.error || `HTTP error! status: ${response.status}`);
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (jsonError) {
+        // Jeśli response nie jest JSON, użyj domyślnego komunikatu
+        console.error('Error parsing error response JSON:', jsonError);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Error parsing success response JSON:', jsonError);
+      throw new Error('Invalid response format from server');
+    }
+  } catch (error) {
+    // Obsługa błędów sieciowych
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      // Błąd sieciowy (brak połączenia, timeout, etc.)
+      console.error('Network error:', error);
+      throw new Error('Brak połączenia z serwerem. Sprawdź swoje połączenie internetowe.');
+    } else if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        console.error('Request aborted:', error);
+        throw new Error('Żądanie zostało anulowane.');
+      } else if (error.message.includes('Connection closed') || error.message.includes('Failed to fetch')) {
+        console.error('Connection error:', error);
+        throw new Error('Połączenie zostało przerwane. Spróbuj ponownie.');
+      }
+      // Jeśli to już Error z komunikatem, przekaż dalej
+      throw error;
+    }
+    // Dla innych typów błędów
+    console.error('Unknown error:', error);
+    throw new Error('Wystąpił nieoczekiwany błąd. Spróbuj ponownie.');
   }
-
-  return response.json();
 }
 
 /**
  * Wykonuje POST request z autentykacją
  */
-export async function apiPost<T>(endpoint: string, data: any): Promise<T> {
+export async function apiPost<T>(endpoint: string, data: unknown): Promise<T> {
   return apiRequest<T>(endpoint, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -91,7 +125,7 @@ export async function apiGet<T>(endpoint: string): Promise<T> {
 /**
  * Wykonuje PATCH request z autentykacją
  */
-export async function apiPatch<T>(endpoint: string, data: any): Promise<T> {
+export async function apiPatch<T>(endpoint: string, data: unknown): Promise<T> {
   return apiRequest<T>(endpoint, {
     method: 'PATCH',
     body: JSON.stringify(data),

@@ -56,7 +56,17 @@ function LoginFormContent() {
           }),
         });
     
-        const data = await response.json();
+        let data;
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          // Jeśli response nie jest JSON, to prawdopodobnie błąd serwera
+          console.error('Error parsing response JSON:', jsonError);
+          setError('Błąd serwera. Spróbuj ponownie później.');
+          setLoading(false);
+          triggerShake();
+          return;
+        }
     
         if (!response.ok) {
           setError(data.error || 'Nieprawidłowy email lub hasło. Spróbuj ponownie.');
@@ -76,8 +86,24 @@ function LoginFormContent() {
     
         // Przekieruj do dashboardu
         router.push('/dashboard');
-      } catch {
-        setError('Wystąpił błąd połączenia. Spróbuj ponownie.');
+      } catch (error) {
+        // Obsługa różnych typów błędów sieciowych
+        console.error('Login error:', error);
+        
+        let errorMessage = 'Wystąpił błąd połączenia. Spróbuj ponownie.';
+        
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          // Błąd sieciowy (brak połączenia, timeout, etc.)
+          errorMessage = 'Brak połączenia z serwerem. Sprawdź swoje połączenie internetowe.';
+        } else if (error instanceof Error) {
+          if (error.name === 'AbortError') {
+            errorMessage = 'Żądanie zostało anulowane. Spróbuj ponownie.';
+          } else if (error.message.includes('Connection closed') || error.message.includes('Failed to fetch')) {
+            errorMessage = 'Połączenie zostało przerwane. Sprawdź swoje połączenie internetowe.';
+          }
+        }
+        
+        setError(errorMessage);
         setLoading(false);
         triggerShake();
       }

@@ -69,7 +69,14 @@ export async function POST(
                     settlementModificationRequests: true,
                 } as any
             });
-        }, 30000);
+        }, 30000) as {
+            id: string;
+            creatorId: string;
+            involvedUserId: string | null;
+            settlementProposalStatus: string | null;
+            settlementAcceptedBy: string | null;
+            settlementModificationRequests: string | null;
+        } | null;
 
         if (!affair) {
             return NextResponse.json(

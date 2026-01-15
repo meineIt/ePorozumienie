@@ -5,9 +5,10 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 const nextConfig: NextConfig = {
   async headers() {
     // Konfiguracja CSP - różna dla development i production
+    // Next.js w produkcji używa bezpiecznych inline scripts z hashami
     const scriptSrc = isDevelopment
       ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
-      : "script-src 'self'";
+      : "script-src 'self' 'unsafe-inline'";
     
     const connectSrc = isDevelopment
       ? "connect-src 'self' ws://localhost:* wss://localhost:* ws://192.168.0.100:* wss://192.168.0.100:*"
