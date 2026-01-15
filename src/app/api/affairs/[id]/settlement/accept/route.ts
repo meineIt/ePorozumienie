@@ -176,7 +176,8 @@ export async function POST(
                     console.error('Error updating aiAnalysis status:', error);
                 }
             }
-        });
+            });
+        }, 30000);
 
         return NextResponse.json(
             { message: 'Porozumienie zostało zaakceptowane' },

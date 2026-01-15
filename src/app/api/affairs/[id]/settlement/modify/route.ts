@@ -193,7 +193,8 @@ export async function POST(
                     } as any
                 });
             }
-        });
+            });
+        }, 30000);
 
         if (shouldRegenerate) {
             (async () => {
