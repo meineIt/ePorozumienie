@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Step3OtherPartyProps } from '@/lib/types';
 
 
@@ -34,8 +34,39 @@ export default function Step3OtherParty({
   const [notifyEmail, setNotifyEmail] = useState(formData.notifyEmail ?? true);
   const [notifySMS, setNotifySMS] = useState(formData.notifySMS ?? false);
 
+  // Get user email from localStorage for validation
+  const [userEmail, setUserEmail] = useState<string>('');
+
+  useEffect(() => {
+    const loadUserEmail = () => {
+      if (typeof window !== 'undefined') {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          try {
+            const parsedUser = JSON.parse(userData);
+            if (parsedUser && parsedUser.email) {
+              setUserEmail(parsedUser.email);
+            }
+          } catch (error) {
+            console.error('Error parsing user data:', error);
+          }
+        }
+      }
+    };
+
+    loadUserEmail();
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate that user is not entering their own email
+    const currentEmail = otherPartyType === 'person' ? personData.email : companyData.email;
+    if (currentEmail && userEmail && currentEmail.toLowerCase() === userEmail.toLowerCase()) {
+      alert('Nie możesz podać własnego adresu email jako drugiej strony');
+      return;
+    }
+
     updateFormData({
       knowsOtherParty,
       otherPartyType,
@@ -153,9 +184,16 @@ export default function Step3OtherParty({
                   type="email"
                   value={personData.email}
                   onChange={(e) => setPersonData({ ...personData, email: e.target.value })}
-                  className="w-full px-4 py-2 border-[1.5px] border-gray-300 rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)]"
+                  className={`w-full px-4 py-2 border-[1.5px] rounded-xl focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] ${
+                    personData.email && userEmail && personData.email.toLowerCase() === userEmail.toLowerCase()
+                      ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.25)]'
+                      : 'border-gray-300 focus:border-[#0A2463]'
+                  }`}
                   required
                 />
+                {personData.email && userEmail && personData.email.toLowerCase() === userEmail.toLowerCase() && (
+                  <p className="mt-1 text-sm text-red-600">Nie możesz podać własnego adresu email</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
@@ -213,9 +251,16 @@ export default function Step3OtherParty({
                   type="email"
                   value={companyData.email}
                   onChange={(e) => setCompanyData({ ...companyData, email: e.target.value })}
-                  className="w-full px-4 py-2 border-[1.5px] border-gray-300 rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)]"
+                  className={`w-full px-4 py-2 border-[1.5px] rounded-xl focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] ${
+                    companyData.email && userEmail && companyData.email.toLowerCase() === userEmail.toLowerCase()
+                      ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.25)]'
+                      : 'border-gray-300 focus:border-[#0A2463]'
+                  }`}
                   required
                 />
+                {companyData.email && userEmail && companyData.email.toLowerCase() === userEmail.toLowerCase() && (
+                  <p className="mt-1 text-sm text-red-600">Nie możesz podać własnego adresu email</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Telefon firmowy</label>
@@ -298,7 +343,16 @@ export default function Step3OtherParty({
         </button>
         <button
           type="submit"
-          className="px-6 py-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
+          disabled={Boolean(
+            (otherPartyType === 'person' && personData.email && userEmail && personData.email.toLowerCase() === userEmail.toLowerCase()) ||
+            (otherPartyType === 'company' && companyData.email && userEmail && companyData.email.toLowerCase() === userEmail.toLowerCase())
+          )}
+          className={`px-6 py-2 text-white rounded-full font-semibold transition-all duration-300 flex items-center ${
+            (otherPartyType === 'person' && personData.email && userEmail && personData.email.toLowerCase() === userEmail.toLowerCase()) ||
+            (otherPartyType === 'company' && companyData.email && userEmail && companyData.email.toLowerCase() === userEmail.toLowerCase())
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5'
+          }`}
         >
           Dalej
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

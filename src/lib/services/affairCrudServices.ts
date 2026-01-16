@@ -27,7 +27,12 @@ export async function createAffair(
         where: { email: data.otherPartyEmail }
       });
     }, 30000);
-  
+
+    // Sprawdź czy użytkownik nie próbuje utworzyć sprawy ze sobą samym
+    if (involvedUser && involvedUser.id === creatorId) {
+      throw new Error('Nie możesz utworzyć sprawy ze sobą samym');
+    }
+
     let affair: Affair;
     let inviteToken: string | null = null;
   

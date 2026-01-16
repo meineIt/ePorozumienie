@@ -47,7 +47,7 @@ export async function updateAffairStatus(
     await prismaWithTimeout(async (client) => {
       return client.$transaction(async (tx) => {
         // Znajdź lub utwórz uczestnika
-        let participant = await tx.affairParticipant.findUnique({
+        const participant = await tx.affairParticipant.findUnique({
           where: {
             userId_affairId: {
               userId: userId,
