@@ -1,6 +1,6 @@
 'use client';
 
-import { formatDate } from '@/lib/utils/format';
+import { formatDate, toISOStringSafe } from '@/lib/utils/format';
 import TimelineIcon from '../shared/icons/TimelineIcon';
 import { escapeHtml } from '@/lib/utils/escapeHtml';
 import { TimelineEvent, AffairTimelineProps } from '@/lib/types';
@@ -20,25 +20,29 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
   const creatorHasPosition = creatorParticipant && (creatorParticipant.description || creatorParticipant.files);
   const involvedHasPosition = involvedParticipant && (involvedParticipant.description || involvedParticipant.files);
   if (affair.createdAt && new Date(affair.createdAt).getTime()) {
-    events.push({
-      id: '1',
-      title: 'Sprawa utworzona ze stanowiskiem pierwszej strony',
-      description: creatorHasPosition 
-        ? `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} wraz ze stanowiskiem pierwszej strony.`
-        : `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)}.`,
-      date: typeof affair.createdAt === 'string' ? affair.createdAt : affair.createdAt.toISOString(),
-      type: 'creation',
-    });
+    const isoDate = toISOStringSafe(affair.createdAt);
+    if (isoDate) {
+      events.push({
+        id: '1',
+        title: 'Sprawa utworzona ze stanowiskiem pierwszej strony',
+        description: creatorHasPosition
+          ? `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} wraz ze stanowiskiem pierwszej strony.`
+          : `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)}.`,
+        date: isoDate,
+        type: 'creation',
+      });
+    }
   }
 
   if (affair.involvedUser && !involvedHasPosition) {
     const waitingDate = involvedParticipant?.createdAt || affair.updatedAt;
-    if (waitingDate && new Date(waitingDate).getTime()) {
+    const isoDate = toISOStringSafe(waitingDate);
+    if (isoDate) {
       events.push({
         id: '2',
         title: 'Oczekujemy na stanowisko drugiej strony',
         description: `Oczekujemy na wprowadzenie stanowiska przez ${escapeHtml(affair.involvedUser.firstName)} ${escapeHtml(affair.involvedUser.lastName)}.`,
-        date: waitingDate.toISOString(),
+        date: isoDate,
         type: 'party-joined',
       });
     }
@@ -46,70 +50,84 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
 
   if (involvedHasPosition && involvedParticipant) {
     const positionDate = involvedParticipant.updatedAt || involvedParticipant.createdAt;
-    if (positionDate && new Date(positionDate).getTime()) {
+    const isoDate = toISOStringSafe(positionDate);
+    if (isoDate) {
       events.push({
         id: '3',
         title: 'Druga strona wprowadziła swoje stanowisko',
         description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} wprowadził(a) swoje stanowisko w sprawie.`,
-        date: positionDate.toISOString(),
+        date: isoDate,
         type: 'party-added',
       });
     }
   }
 
   if (affair.aiAnalysis && affair.aiAnalysisGeneratedAt) {
-    if (new Date(affair.aiAnalysisGeneratedAt).getTime()) {
+    const isoDate = toISOStringSafe(affair.aiAnalysisGeneratedAt);
+    if (isoDate) {
       events.push({
         id: '4',
         title: 'Wygenerowano propozycję porozumienia',
         description: 'Asystent AI przeanalizował stanowiska obu stron i wygenerował propozycję porozumienia.',
-        date: affair.aiAnalysisGeneratedAt!.toISOString(),
+        date: isoDate,
         type: 'proposal',
       });
     }
   }
 
   if (affair.aiAnalysis) {
-    if (creatorParticipant?.settlementModificationRequestedAt && new Date(creatorParticipant.settlementModificationRequestedAt).getTime()) {
-      events.push({
-        id: '5a',
-        title: 'Strona A poprosiła o modyfikację porozumienia',
-        description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} poprosił(a) o modyfikację propozycji porozumienia.`,
-        date: creatorParticipant.settlementModificationRequestedAt!.toISOString(),
-        type: 'modification',
-      });
+    if (creatorParticipant?.settlementModificationRequestedAt) {
+      const isoDate = toISOStringSafe(creatorParticipant.settlementModificationRequestedAt);
+      if (isoDate) {
+        events.push({
+          id: '5a',
+          title: 'Strona A poprosiła o modyfikację porozumienia',
+          description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} poprosił(a) o modyfikację propozycji porozumienia.`,
+          date: isoDate,
+          type: 'modification',
+        });
+      }
     }
-    
-    if (involvedParticipant?.settlementModificationRequestedAt && new Date(involvedParticipant.settlementModificationRequestedAt).getTime()) {
-      events.push({
-        id: '5b',
-        title: 'Strona B poprosiła o modyfikację porozumienia',
-        description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} poprosił(a) o modyfikację propozycji porozumienia.`,
-        date: involvedParticipant.settlementModificationRequestedAt!.toISOString(),
-        type: 'modification',
-      });
+
+    if (involvedParticipant?.settlementModificationRequestedAt) {
+      const isoDate = toISOStringSafe(involvedParticipant.settlementModificationRequestedAt);
+      if (isoDate) {
+        events.push({
+          id: '5b',
+          title: 'Strona B poprosiła o modyfikację porozumienia',
+          description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} poprosił(a) o modyfikację propozycji porozumienia.`,
+          date: isoDate,
+          type: 'modification',
+        });
+      }
     }
   }
 
   if (affair.aiAnalysis) {
-    if (creatorParticipant?.settlementAcceptedAt && new Date(creatorParticipant.settlementAcceptedAt).getTime()) {
-      events.push({
-        id: '6a',
-        title: 'Strona A zaakceptowała porozumienie',
-        description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} zaakceptował(a) propozycję porozumienia.`,
-        date: creatorParticipant.settlementAcceptedAt!.toISOString(),
-        type: 'acceptance',
-      });
+    if (creatorParticipant?.settlementAcceptedAt) {
+      const isoDate = toISOStringSafe(creatorParticipant.settlementAcceptedAt);
+      if (isoDate) {
+        events.push({
+          id: '6a',
+          title: 'Strona A zaakceptowała porozumienie',
+          description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} zaakceptował(a) propozycję porozumienia.`,
+          date: isoDate,
+          type: 'acceptance',
+        });
+      }
     }
-    
-    if (involvedParticipant?.settlementAcceptedAt && new Date(involvedParticipant.settlementAcceptedAt).getTime()) {
-      events.push({
-        id: '6b',
-        title: 'Strona B zaakceptowała porozumienie',
-        description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} zaakceptował(a) propozycję porozumienia.`,
-        date: involvedParticipant.settlementAcceptedAt!.toISOString(),
-        type: 'acceptance',
-      });
+
+    if (involvedParticipant?.settlementAcceptedAt) {
+      const isoDate = toISOStringSafe(involvedParticipant.settlementAcceptedAt);
+      if (isoDate) {
+        events.push({
+          id: '6b',
+          title: 'Strona B zaakceptowała porozumienie',
+          description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} zaakceptował(a) propozycję porozumienia.`,
+          date: isoDate,
+          type: 'acceptance',
+        });
+      }
     }
   }
 
@@ -119,13 +137,14 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         ? creatorParticipant.settlementAcceptedAt
         : involvedParticipant.settlementAcceptedAt
       : creatorParticipant?.settlementAcceptedAt || involvedParticipant?.settlementAcceptedAt;
-    
-    if (lastAcceptanceDate && new Date(lastAcceptanceDate).getTime()) {
+
+    const isoDate = toISOStringSafe(lastAcceptanceDate);
+    if (isoDate) {
       events.push({
         id: '7',
         title: 'Zawarto porozumienie',
         description: 'Obie strony zaakceptowały propozycję porozumienia. Sprawa została zakończona.',
-        date: lastAcceptanceDate!.toISOString(),
+        date: isoDate,
         type: 'acceptance',
       });
     }

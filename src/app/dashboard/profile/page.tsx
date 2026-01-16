@@ -22,7 +22,8 @@ export default function ProfilePage() {
           setUser(parsedUser);
           setFirstName(parsedUser.firstName || '');
           setLastName(parsedUser.lastName || '');
-        } catch {
+        } catch (error) {
+          console.error('Error parsing user data from localStorage:', error);
         }
       }
     }
@@ -71,9 +72,10 @@ export default function ProfilePage() {
         setSaveMessage(null);
       }, 3000);
     } catch (error) {
-      setSaveMessage({ 
-        type: 'error', 
-        text: error instanceof Error ? error.message : 'Wystąpił błąd podczas zapisywania' 
+      console.error('Error updating profile:', error);
+      setSaveMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Wystąpił błąd podczas zapisywania'
       });
     } finally {
       setIsSaving(false);

@@ -19,6 +19,7 @@ export default function SettlementStatusCard({
       await apiPost(`/api/affairs/${affairId}/settlement/accept`, {});
       onRefresh();
     } catch (error) {
+      console.error('Error accepting settlement:', error);
       const errorMessage = error instanceof Error ? error.message : 'Wystąpił błąd podczas akceptacji porozumienia';
       alert(errorMessage);
     }

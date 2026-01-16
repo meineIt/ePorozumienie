@@ -64,7 +64,8 @@ const PopupModal = forwardRef<PopupModalRef>((_, ref) => {
         // Błąd
         alert(data.error || 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie.');
       }
-    } catch {
+    } catch (error) {
+      console.error('Error submitting discount form:', error);
       alert('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie.');
     }
   };

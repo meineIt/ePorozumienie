@@ -19,7 +19,8 @@ export async function withAuth(request: NextRequest): Promise<NextResponse | nul
   try {
     getAuthUserFromHeaders(request);
     return null; // Autentykacja OK
-  } catch {
+  } catch (error) {
+    console.error('Error in auth proxy:', error);
     return unauthorized();
   }
 }
@@ -40,7 +41,8 @@ export function withRateLimit(
       const id = typeof identifier === 'function' ? await identifier(req) : identifier;
       await limiter.check(limit, id, request || { headers: req.headers, url: req.url });
       return null; // Rate limit OK
-    } catch {
+    } catch (error) {
+      console.error('Error in rate limit proxy:', error);
       return tooManyRequests();
     }
   };

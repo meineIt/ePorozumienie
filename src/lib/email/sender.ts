@@ -50,6 +50,7 @@ export async function sendEmail(options: EmailOptions): Promise<{ success: boole
             messageId: info.messageId,
         };
     } catch (error) {
+        console.error('Error sending email:', error);
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Unknown error',

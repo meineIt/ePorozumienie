@@ -116,6 +116,7 @@ export async function PATCH(
     try {
       await updateAffairStatus(id, authUser.userId, status);
     } catch (error) {
+      console.error('Error updating affair status:', error);
       if (error instanceof Error) {
         if (error.message.includes('nie została znaleziona')) {
           return notFound(error.message);
@@ -171,6 +172,7 @@ export async function PUT(
     try {
       await updatePartyPosition(id, authUser.userId, bodyResult);
     } catch (error) {
+      console.error('Error updating party position:', error);
       if (error instanceof Error) {
         if (error.message.includes('nie została znaleziona')) {
           return notFound(error.message);

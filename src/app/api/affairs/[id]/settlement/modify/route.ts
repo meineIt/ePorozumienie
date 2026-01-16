@@ -111,7 +111,8 @@ export async function POST(
         if (affair.settlementModificationRequests) {
             try {
                 modificationRequests = JSON.parse(affair.settlementModificationRequests);
-            } catch {
+            } catch (error) {
+                console.error('Error parsing settlement modification requests:', error);
                 modificationRequests = [];
             }
         }

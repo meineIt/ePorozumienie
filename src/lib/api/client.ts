@@ -156,7 +156,8 @@ async function handleErrorResponse(response: Response): Promise<never> {
   try {
     const errorData = await response.json() as ApiResponse;
     errorMessage = errorData.error || errorMessage;
-  } catch {
+  } catch (error) {
+    console.error('Error parsing error response JSON:', error);
     // Jeśli response nie jest JSON, użyj domyślnego komunikatu
   }
   
@@ -264,6 +265,7 @@ export async function apiRequest<T>(
 
     return parseJsonResponse<T>(response);
   } catch (error) {
+    console.error('Error in API request:', error);
     return handleNetworkError(error);
   }
 }

@@ -50,7 +50,8 @@ export default function Step2Documents({
           updateFormData({ 
               documents: [...formData.documents, ...newDocuments] 
           });
-      } catch {
+      } catch (error) {
+          console.error('Error uploading documents:', error);
           alert('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
       } finally {
           setUploading(false);

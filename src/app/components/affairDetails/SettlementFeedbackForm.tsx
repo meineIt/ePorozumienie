@@ -26,6 +26,7 @@ export default function SettlementFeedbackForm({
       onClose();
       onSuccess();
     } catch (error) {
+      console.error('Error submitting settlement feedback:', error);
       const errorMessage = error instanceof Error ? error.message : 'Wystąpił błąd podczas wysyłania propozycji zmian';
       alert(errorMessage);
     }

@@ -139,18 +139,19 @@ export async function validateBody<T>(
     const validated = schema.parse(body);
     return validated;
   } catch (error) {
+    console.error('Error validating request body:', error);
     if (error instanceof z.ZodError) {
       // Zwróć pierwszy błąd walidacji
       const firstError = error.issues[0];
       const message = firstError?.message || 'Nieprawidłowe dane wejściowe';
       return badRequest(message);
     }
-    
+
     // Błąd parsowania JSON
     if (error instanceof SyntaxError) {
       return badRequest('Nieprawidłowy format JSON');
     }
-    
+
     return badRequest('Błąd walidacji danych');
   }
 }

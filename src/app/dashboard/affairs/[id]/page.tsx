@@ -35,7 +35,8 @@ export default function AffairDetailsPage() {
         try {
           const user = JSON.parse(userData);
           setUserId(user.id);
-        } catch {
+        } catch (error) {
+          console.error('Error parsing user data from localStorage:', error);
         }
       }
     }
@@ -66,7 +67,8 @@ export default function AffairDetailsPage() {
         } else if (response.status === 404 || response.status === 403) {
           window.location.href = '/dashboard';
         }
-      } catch {
+      } catch (error) {
+        console.error('Error fetching affair:', error);
       } finally {
         setLoading(false);
       }

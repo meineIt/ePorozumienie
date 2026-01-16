@@ -47,3 +47,27 @@ export function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toUpperCase() || 'FILE';
 }
 
+/**
+ * Bezpiecznie konwertuje wartość daty (Date, string lub null/undefined) na ISO string
+ * @param dateValue - Wartość daty do konwersji
+ * @returns ISO string lub null jeśli data jest nieprawidłowa
+ */
+export function toISOStringSafe(dateValue: Date | string | null | undefined): string | null {
+  if (!dateValue) {
+    return null;
+  }
+
+  try {
+    const date = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
+
+    // Sprawdź czy data jest prawidłowa
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+
+    return date.toISOString();
+  } catch (error) {
+    console.error('Error converting date to ISO string:', error, dateValue);
+    return null;
+  }
+}

@@ -58,6 +58,7 @@ export default function Step4Summary({
       setIsSuccess(true)
       onCreateAffair();
     } catch (err) {
+      console.error('Error creating affair:', err);
       setIsCreating(false);
       setError(err instanceof Error ? err.message : 'Wystąpił błąd podczas tworzenia sprawy');
     }

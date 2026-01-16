@@ -113,6 +113,7 @@ export function parseAIAnalysis(affair: Affair | null, userId: string | null): P
       isAnalyzing: false,
     };
   } catch (error) {
+    console.error('Error parsing AI analysis:', error);
     return {
       analysisData: { agreements: [], negotiations: [], disagreements: [] },
       settlementProposal: undefined,

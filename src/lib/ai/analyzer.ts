@@ -74,7 +74,8 @@ function preparePrompt(affair: AffairWithParticipants, modificationRequests?: st
         prompt += `[Umowa]\n`;
         prompt += `Dokumenty umowy zostały przesłane. W analizie uwzględnij treść umowy na podstawie dostępnych dokumentów.\n\n`;
       }
-    } catch {
+    } catch (error) {
+      console.error('Error parsing affair files for AI analysis:', error);
     }
   }
 

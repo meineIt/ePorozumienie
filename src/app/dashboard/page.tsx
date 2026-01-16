@@ -99,7 +99,8 @@ export default function AffairsList() {
       try {
         const documents = JSON.parse(affair.files);
         return Array.isArray(documents) ? documents.length : 0;
-        } catch {
+        } catch (error) {
+          console.error('Error parsing affair documents:', error);
         return 0;
       }
     };

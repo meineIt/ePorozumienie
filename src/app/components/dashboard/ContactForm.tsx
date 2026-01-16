@@ -54,6 +54,7 @@ export default function ContactForm({ userEmail, userName }: ContactFormProps) {
         message: '',
       });
     } catch (error) {
+      console.error('Error sending contact form:', error);
       setSubmitStatus({
         type: 'error',
         message: error instanceof Error ? error.message : 'Wystąpił błąd podczas wysyłania wiadomości',

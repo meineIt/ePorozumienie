@@ -51,7 +51,7 @@ export async function verifyTokenEdge(token: string): Promise<JWTPayload | null>
     // jose wymaga secret jako Uint8Array
     const secret = new TextEncoder().encode(JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
-    
+
     // Sprawdź czy payload ma wymagane pola
     if (typeof payload.userId === 'string' && typeof payload.email === 'string') {
       return {
@@ -60,7 +60,8 @@ export async function verifyTokenEdge(token: string): Promise<JWTPayload | null>
       };
     }
     return null;
-  } catch {
+  } catch (error) {
+    console.error('Error verifying JWT token:', error);
     return null;
   }
 }
@@ -87,7 +88,8 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
       };
     }
     return null;
-  } catch {
+  } catch (error) {
+    console.error('Error verifying JWT token:', error);
     return null;
   }
 }

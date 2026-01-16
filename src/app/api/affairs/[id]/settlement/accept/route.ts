@@ -63,7 +63,8 @@ export async function POST(
         if (acceptedByStr) {
             try {
                 acceptedBy = JSON.parse(acceptedByStr);
-            } catch {
+            } catch (error) {
+                console.error('Error parsing settlement accepted by:', error);
                 acceptedBy = [];
             }
         }

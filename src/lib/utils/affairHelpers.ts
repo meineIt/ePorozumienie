@@ -17,7 +17,8 @@ export function parseDocuments(filesString: string | null | undefined): Document
   try {
     const parsed = JSON.parse(filesString);
     return Array.isArray(parsed) ? parsed : [];
-  } catch {
+  } catch (error) {
+    console.error('Error parsing documents:', error);
     return [];
   }
 }

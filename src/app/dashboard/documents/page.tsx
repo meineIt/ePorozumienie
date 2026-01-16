@@ -40,7 +40,8 @@ export default function DocumentsList() {
         } else if (response.status === 401) {
           window.location.href = '/login';
         }
-      } catch {
+      } catch (error) {
+        console.error('Error fetching documents:', error);
       } finally {
         setLoading(false);
       }

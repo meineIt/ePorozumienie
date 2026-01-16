@@ -46,7 +46,8 @@ export async function GET(
                     { status: 400 }
                 );
             }
-        } catch {
+        } catch (error) {
+            console.error('Error checking file existence:', error);
             return NextResponse.json(
                 { error: 'Plik nie został znaleziony' },
                 { status: 404 }

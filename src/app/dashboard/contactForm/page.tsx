@@ -21,7 +21,8 @@ export default function ContactFormPage() {
               typeof parsedUser.lastName === 'string')  {
             setUser(parsedUser as User);
               }
-        } catch {
+        } catch (error) {
+          console.error('Error parsing user data from localStorage:', error);
         }
       }
     }

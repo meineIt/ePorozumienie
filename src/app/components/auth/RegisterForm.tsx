@@ -120,7 +120,8 @@ function RegisterFormContent() {
   
       // Sukces - przekieruj do logowania (lub dashboard jeśli auto-login)
       router.push('/login?registered=true');
-    } catch {
+    } catch (error) {
+      console.error('Error during registration:', error);
       setError('Wystąpił błąd połączenia. Spróbuj ponownie.');
       setLoading(false);
       triggerShake();

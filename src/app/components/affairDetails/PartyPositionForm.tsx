@@ -50,7 +50,8 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
             }));
 
             setDocuments([...documents, ...newDocuments]);
-        } catch {
+        } catch (error) {
+            console.error('Error uploading files:', error);
             setError('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
         } finally {
             setUploading(false);
@@ -88,6 +89,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
 
             onSave();
         } catch (error) {
+            console.error('Error saving position:', error);
             setError(error instanceof Error ? error.message : 'Wystąpił błąd podczas zapisywania stanowiska');
         } finally {
             setSaving(false);
