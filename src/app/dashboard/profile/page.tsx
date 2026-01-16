@@ -100,7 +100,7 @@ export default function ProfilePage() {
               <div className="space-y-6">
                 {/* Avatar Section */}
                 <div className="flex items-center space-x-6 pb-6">
-                  <div className="w-24 h-24 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-semibold">
+                  <div className="w-24 h-24 rounded-full bg-[#0A2463] text-white flex items-center justify-center text-3xl font-semibold">
                     {`${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase()}
                   </div>
                   <div>
@@ -185,7 +185,7 @@ export default function ProfilePage() {
                     disabled={!hasChanges || isSaving}
                     className={`px-6 py-2 rounded-lg transition-colors font-medium ${
                       hasChanges && !isSaving
-                        ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
+                        ? 'bg-[#0A2463] text-white hover:bg-[#051740] cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >

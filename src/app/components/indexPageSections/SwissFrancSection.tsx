@@ -13,7 +13,7 @@ export default function SwissFrancSection() {
               <h3 className="text-2xl font-bold mb-6 text-gray-900">Skala problemu</h3>
               <ul className="space-y-4">
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -31,7 +31,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -49,7 +49,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -153,7 +153,7 @@ export default function SwissFrancSection() {
               <h3 className="text-2xl font-bold mb-6 text-blue-800">Potencjał rynkowy</h3>
               <ul className="space-y-4">
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -172,7 +172,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -191,7 +191,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-[#0A2463]/20 rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#0A2463]/30 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -211,7 +211,7 @@ export default function SwissFrancSection() {
                 </li>
               </ul>
             </div>
-            <div className="bg-linear-to-br from-blue-50 to-blue-100/50 p-6 rounded-2xl border border-blue-200/50">
+            <div className="bg-linear-to-br from-[#0A2463]/5 to-[#0A2463]/10 p-6 rounded-2xl border border-[#0A2463]/20">
               <h4 className="font-bold text-blue-800 mb-4 text-lg">Kluczowe wskaźniki finansowe</h4>
               <ul className="space-y-3">
                 <li className="flex items-center group">

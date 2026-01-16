@@ -1,16 +1,16 @@
-import { Affair } from '@/lib/types';
+import { Affair, AnalysisPoint } from '@/lib/types';
 import { bothPartiesHavePositions } from './affairHelpers';
 
-interface AnalysisPoint {
+interface AIAnalysisPoint {
   referencja: string;
   podsumowanie: string;
   uzasadnienie: string;
 }
 
 interface AIAnalysis {
-  punkty_zgodne: AnalysisPoint[];
-  punkty_do_negocjacji: AnalysisPoint[];
-  punkty_sporne: AnalysisPoint[];
+  punkty_zgodne: AIAnalysisPoint[];
+  punkty_do_negocjacji: AIAnalysisPoint[];
+  punkty_sporne: AIAnalysisPoint[];
   propozycja_porozumienia: {
     content: string;
     status: 'awaiting-you' | 'awaiting-other' | 'accepted-you' | 'accepted-all';
@@ -32,7 +32,7 @@ export interface ParsedAIAnalysis {
 /**
  * Mapuje punkty analizy AI do formatu komponentów
  */
-function mapToComponentFormat(points: AnalysisPoint[]): Array<{ id: string; title: string; description: string }> {
+function mapToComponentFormat(points: AIAnalysisPoint[]): Array<{ id: string; title: string; description: string }> {
   return points.map((point, index) => ({
     id: `point-${index}`,
     title: point.referencja.replace(/^\[|\]$/g, ''), // Usuń nawiasy kwadratowe z początku i końca

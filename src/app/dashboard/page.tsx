@@ -289,7 +289,7 @@ export default function AffairsList() {
                         <line x1="8" x2="8" y1="2" y2="6"></line>
                         <line x1="3" x2="21" y1="10" y2="10"></line>
                       </svg>
-                      <span>{formatDate(affair.createdAt, { includeYear: false })}</span>
+                      <span>{formatDate(typeof affair.createdAt === 'string' ? affair.createdAt : affair.createdAt.toISOString(), { includeYear: false })}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

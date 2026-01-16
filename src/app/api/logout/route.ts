@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   // Tworzenie odpowiedzi
   const response = NextResponse.json(
     { message: 'Wylogowanie pomyślne' },
@@ -11,7 +11,7 @@ export async function POST() {
   // Używamy tych samych ustawień co przy logowaniu dla spójności
   response.cookies.set('auth-token', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: request.headers.get('x-forwarded-proto') === 'https' || request.url.startsWith('https://'),
     sameSite: 'lax',
     maxAge: 0, // Natychmiastowe wygaśnięcie
     path: '/',

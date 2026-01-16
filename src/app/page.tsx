@@ -26,7 +26,7 @@ export default function Home() {
     <div className="bg-gray-50">
       <PopupModal ref={popupRef} />
       <Navigation />
-      <HeroSection onCTAClick={handleCTAClick} />
+      <HeroSection />
       <StatsSection />
       <HowItWorksSection />
       <BenefitsSection />

@@ -79,11 +79,11 @@ export default function PricingSection() {
               </li>
             </ul>
           </div>
-          <div className="relative element-with-pattern p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 border border-blue-500/20 hover:-translate-y-1 transform md:scale-105">
+          <div className="relative element-with-pattern p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 border border-[#0A2463]/30 hover:-translate-y-1 transform md:scale-105">
             <div className="text-center mb-8 relative z-10">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Kancelarie prawne</h3>
               <div className="text-5xl md:text-6xl font-bold text-white mb-2">od 299 zł</div>
-              <p className="text-blue-100 text-lg">miesięcznie</p>
+              <p className="text-[#0A2463]/80 text-lg">miesięcznie</p>
             </div>
             <ul className="space-y-4 mb-8 relative z-10">
               <li className="flex items-start group">

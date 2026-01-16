@@ -52,7 +52,7 @@ export default function Step3OtherParty({
     <form onSubmit={handleSubmit}>
 
       {/* Info box */}
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
+      <div className="bg-[#0A2463]/10 border-l-4 border-[#0A2463] p-4 mb-6 rounded">
         <div className="flex items-start">
           <svg className="w-5 h-5 text-blue-700 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -76,7 +76,7 @@ export default function Step3OtherParty({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+          <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-[#0A2463] transition-colors">
             <input
               type="radio"
               name="knowsOtherParty"
@@ -87,7 +87,7 @@ export default function Step3OtherParty({
             <span className="font-medium text-gray-700">Znam drugą stronę i mam jej dane kontaktowe</span>
           </label>
 
-          <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+          <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-[#0A2463] transition-colors">
             <input
               type="radio"
               name="knowsOtherParty"
@@ -100,7 +100,7 @@ export default function Step3OtherParty({
         </div>
 
         {!knowsOtherParty && (
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
+          <div className="bg-[#0A2463]/10 border-l-4 border-[#0A2463] p-4 mb-6 rounded">
             <p className="text-sm text-gray-700">
               Jeśli nie znasz danych kontaktowych drugiej strony, ale posiadasz nazwę firmy lub inne informacje identyfikujące, wprowadź je poniżej.
             </p>
@@ -289,7 +289,7 @@ export default function Step3OtherParty({
         <button
           type="button"
           onClick={onPrev}
-          className="px-6 py-2 border-2 border-blue-300 text-blue-700 rounded-full font-semibold hover:bg-blue-50 transition-colors flex items-center"
+          className="px-6 py-2 border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors flex items-center"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

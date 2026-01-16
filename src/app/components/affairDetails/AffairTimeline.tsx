@@ -26,7 +26,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
       description: creatorHasPosition 
         ? `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} wraz ze stanowiskiem pierwszej strony.`
         : `Sprawa została utworzona przez ${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)}.`,
-      date: affair.createdAt,
+      date: typeof affair.createdAt === 'string' ? affair.createdAt : affair.createdAt.toISOString(),
       type: 'creation',
     });
   }
@@ -38,7 +38,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '2',
         title: 'Oczekujemy na stanowisko drugiej strony',
         description: `Oczekujemy na wprowadzenie stanowiska przez ${escapeHtml(affair.involvedUser.firstName)} ${escapeHtml(affair.involvedUser.lastName)}.`,
-        date: waitingDate,
+        date: waitingDate.toISOString(),
         type: 'party-joined',
       });
     }
@@ -51,7 +51,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '3',
         title: 'Druga strona wprowadziła swoje stanowisko',
         description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} wprowadził(a) swoje stanowisko w sprawie.`,
-        date: positionDate,
+        date: positionDate.toISOString(),
         type: 'party-added',
       });
     }
@@ -63,7 +63,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '4',
         title: 'Wygenerowano propozycję porozumienia',
         description: 'Asystent AI przeanalizował stanowiska obu stron i wygenerował propozycję porozumienia.',
-        date: affair.aiAnalysisGeneratedAt,
+        date: affair.aiAnalysisGeneratedAt!.toISOString(),
         type: 'proposal',
       });
     }
@@ -75,7 +75,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '5a',
         title: 'Strona A poprosiła o modyfikację porozumienia',
         description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} poprosił(a) o modyfikację propozycji porozumienia.`,
-        date: creatorParticipant.settlementModificationRequestedAt,
+        date: creatorParticipant.settlementModificationRequestedAt!.toISOString(),
         type: 'modification',
       });
     }
@@ -85,7 +85,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '5b',
         title: 'Strona B poprosiła o modyfikację porozumienia',
         description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} poprosił(a) o modyfikację propozycji porozumienia.`,
-        date: involvedParticipant.settlementModificationRequestedAt,
+        date: involvedParticipant.settlementModificationRequestedAt!.toISOString(),
         type: 'modification',
       });
     }
@@ -97,7 +97,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '6a',
         title: 'Strona A zaakceptowała porozumienie',
         description: `${escapeHtml(affair.creator.firstName)} ${escapeHtml(affair.creator.lastName)} zaakceptował(a) propozycję porozumienia.`,
-        date: creatorParticipant.settlementAcceptedAt,
+        date: creatorParticipant.settlementAcceptedAt!.toISOString(),
         type: 'acceptance',
       });
     }
@@ -107,7 +107,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '6b',
         title: 'Strona B zaakceptowała porozumienie',
         description: `${escapeHtml(affair.involvedUser?.firstName || '')} ${escapeHtml(affair.involvedUser?.lastName || '')} zaakceptował(a) propozycję porozumienia.`,
-        date: involvedParticipant.settlementAcceptedAt,
+        date: involvedParticipant.settlementAcceptedAt!.toISOString(),
         type: 'acceptance',
       });
     }
@@ -125,7 +125,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         id: '7',
         title: 'Zawarto porozumienie',
         description: 'Obie strony zaakceptowały propozycję porozumienia. Sprawa została zakończona.',
-        date: lastAcceptanceDate,
+        date: lastAcceptanceDate!.toISOString(),
         type: 'acceptance',
       });
     }

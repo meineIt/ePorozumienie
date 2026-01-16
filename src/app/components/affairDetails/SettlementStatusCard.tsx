@@ -54,9 +54,9 @@ export default function SettlementStatusCard({
   return (
     <div className="shrink-0 min-w-[280px] sm:min-w-[320px]">
       {proposal.status === 'accepted-you' && (
-        <div className="p-4 sm:p-5 bg-blue-50 border-2 border-blue-300 rounded-xl shadow-sm">
+        <div className="p-4 sm:p-5 bg-[#0A2463]/10 border-2 border-[#0A2463]/30 rounded-xl shadow-sm">
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-500 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#0A2463]/100 flex items-center justify-center shrink-0 mt-0.5">
               <svg width="14" height="14" fill="none" stroke="white" viewBox="0 0 24 24" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>

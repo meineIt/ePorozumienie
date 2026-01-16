@@ -20,7 +20,7 @@ export default function FormHelper({
             type="checkbox"
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
-            className="w-5 h-5 rounded-lg border-2 border-gray-300 text-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+            className="w-5 h-5 rounded-lg border-2 border-gray-300 text-blue-700 focus:ring-2 focus:ring-[#0A2463] focus:ring-offset-2 cursor-pointer"
           />
           <span className="text-gray-700 text-sm">{checkboxLabel}</span>
         </label>

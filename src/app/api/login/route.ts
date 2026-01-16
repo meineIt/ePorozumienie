@@ -68,10 +68,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       token
     }, 200);
 
+    console.log('x-forwarded-proto:', request.headers.get('x-forwarded-proto'));
+    console.log('request.url:', request.url);
+    console.log('secure będzie:', request.headers.get('x-forwarded-proto') === 'https' || request.url.startsWith('https://'));
+
     // Ustaw httpOnly cookie z tokenem
     response.cookies.set('auth-token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+
+      secure: request.headers.get('x-forwarded-proto') === 'https' || request.url.startsWith('https://'),
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 dni
       path: '/',

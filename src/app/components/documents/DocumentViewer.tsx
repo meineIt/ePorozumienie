@@ -89,7 +89,7 @@ export default function DocumentViewer({ document, isOpen, onClose, getDocumentU
               <a
                 href={getDocumentUrl(document.path)}
                 download={document.name}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center gap-2"
+                className="px-6 py-3 bg-[#0A2463] text-white rounded-lg hover:bg-[#051740] transition-colors font-semibold flex items-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="m21 15-9 9-9-9" />

@@ -28,7 +28,7 @@ export default function FormInput({
             type={type}
             id={id}
             name={name}
-            className="form-control w-full px-5 py-4 text-base rounded-2xl border-2 border-gray-200 bg-white transition-all duration-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none placeholder:text-gray-400"
+            className="form-control w-full px-5 py-4 text-base rounded-2xl border-2 border-gray-200 bg-white transition-all duration-200 focus:border-[#0A2463] focus:ring-4 focus:ring-[#0A2463]/20 outline-none placeholder:text-gray-400"
             placeholder={placeholder}
             value={value}
             onChange={onChange}

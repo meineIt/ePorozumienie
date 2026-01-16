@@ -97,10 +97,10 @@ export default function BenefitsSection() {
               </li>
             </ul>
           </div>
-          <div className="bg-linear-to-br from-blue-600 to-blue-700 p-8 md:p-10 rounded-3xl shadow-2xl border border-blue-500/20 hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-br from-blue-400/10 to-transparent"></div>
+          <div className="bg-linear-to-br from-[#0A2463] to-[#051740] p-8 md:p-10 rounded-3xl shadow-2xl border border-[#0A2463]/30 hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-br from-[#0A2463]/15 to-transparent"></div>
             <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-bold mb-8 text-white border-b-2 border-blue-400/30 pb-4">
+              <h3 className="text-2xl md:text-3xl font-bold mb-8 text-white border-b-2 border-[#0A2463]/40 pb-4">
                 e-Porozumienie
               </h3>
               <ul className="space-y-5">

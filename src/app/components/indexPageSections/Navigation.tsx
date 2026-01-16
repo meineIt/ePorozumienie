@@ -24,31 +24,31 @@ export default function Navigation() {
               <div className="hidden md:flex items-center gap-2 lg:gap-3">
                 <a
                   href="#jak-to-dziala"
-                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-[#0A2463]/10 active:scale-95"
                 >
                   Jak to działa
                 </a>
                 <a
                   href="#korzysci"
-                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-[#0A2463]/10 active:scale-95"
                 >
                   Korzyści
                 </a>
                 <a
                   href="#kredyty-frankowe"
-                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-[#0A2463]/10 active:scale-95"
                 >
                   Kredyty frankowe
                 </a>
                 <a
                   href="#cennik"
-                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-[#0A2463]/10 active:scale-95"
                 >
                   Model biznesowy
                 </a>
                 <a
                   href="#zespol"
-                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-blue-50 active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl text-gray-700 hover:text-blue-700 font-semibold text-base transition-all duration-200 hover:bg-[#0A2463]/10 active:scale-95"
                 >
                   Zespół
                 </a>
@@ -58,7 +58,7 @@ export default function Navigation() {
               <div>
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-blue-700 text-white font-bold rounded-3xl text-base md:text-lg shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 active:scale-95"
+                  className="inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-[#0A2463] text-white font-bold rounded-3xl text-base md:text-lg transition-all duration-200 active:scale-95"
                 >
                   Logowanie
                 </Link>

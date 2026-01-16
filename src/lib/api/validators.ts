@@ -93,9 +93,10 @@ export const createAffairSchema = z.object({
 
 // Affair status update
 export const updateAffairStatusSchema = z.object({
-  status: z.enum(['REACTION_NEEDED', 'WAITING', 'DONE'], {
-    errorMap: () => ({ message: 'Nieprawidłowy status. Dozwolone wartości: REACTION_NEEDED, WAITING, DONE' }),
-  }),
+  status: z.enum(['REACTION_NEEDED', 'WAITING', 'DONE']).refine(
+    (val) => ['REACTION_NEEDED', 'WAITING', 'DONE'].includes(val),
+    { message: 'Nieprawidłowy status. Dozwolone wartości: REACTION_NEEDED, WAITING, DONE' }
+  ),
 });
 
 // Party position update
@@ -140,7 +141,7 @@ export async function validateBody<T>(
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Zwróć pierwszy błąd walidacji
-      const firstError = error.errors[0];
+      const firstError = error.issues[0];
       const message = firstError?.message || 'Nieprawidłowe dane wejściowe';
       return badRequest(message);
     }

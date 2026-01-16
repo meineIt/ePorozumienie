@@ -127,8 +127,8 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                         onClick={() => !uploading && fileInputRef.current?.click()}
                         className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors mb-6 ${
                             uploading 
-                                ? 'border-blue-500 bg-blue-50 cursor-wait' 
-                                : 'border-gray-300 cursor-pointer hover:border-blue-500 hover:bg-blue-50'
+                                ? 'border-[#0A2463] bg-[#0A2463]/10 cursor-wait' 
+                                : 'border-gray-300 cursor-pointer hover:border-[#0A2463] hover:bg-[#0A2463]/10'
                         }`}
                     >
                         <input
@@ -141,7 +141,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                         />
                         {uploading ? (
                             <>
-                                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                <div className="w-12 h-12 border-4 border-[#0A2463] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                                 <h4 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontSize: '1.5rem' }}>Przesyłanie plików...</h4>
                                 <p className="text-gray-500 mb-4">Proszę czekać</p>
                             </>
@@ -154,7 +154,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                                 <p className="text-gray-500 mb-4">lub kliknij, aby wybrać pliki z dysku</p>
                                 <button
                                     type="button"
-                                    className="px-6 py-2 border-2 border-blue-300 text-blue-700 rounded-full font-semibold hover:bg-blue-50 transition-colors"
+                                    className="px-6 py-2 border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors"
                                 >
                                     Wybierz pliki
                                 </button>
@@ -170,7 +170,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                                     key={doc.id}
                                     className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"
                                 >
-                                    <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center text-white mr-4">
+                                    <div className="w-10 h-10 bg-[#0A2463] rounded flex items-center justify-center text-white mr-4">
                                         <DocumentIcon category={doc.category} type={doc.type} className="w-6 h-6" />
                                     </div>
                                     <div className="flex-1 min-w-0">

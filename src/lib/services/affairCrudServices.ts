@@ -87,7 +87,7 @@ export async function createAffair(
   
           return createdAffair;
         });
-      }, 30000);
+      }, 30000) as unknown as Affair;
     } else {
       // Użytkownik nie istnieje - utwórz sprawę z tokenem zaproszenia
       inviteToken = crypto.randomBytes(32).toString('base64url');
@@ -113,8 +113,7 @@ export async function createAffair(
                   firstName: true,
                   lastName: true
                 }
-              },
-              involvedUser: false
+              }
             }
           });
   
@@ -131,7 +130,7 @@ export async function createAffair(
   
           return createdAffair;
         });
-      }, 30000);
+      }, 30000) as unknown as Affair;
   
       // Wyślij email z zaproszeniem
       try {

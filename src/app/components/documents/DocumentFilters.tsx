@@ -45,7 +45,7 @@ export default function DocumentFilters({
                 onClick={() => onCategoryChange(cat === 'Wszystkie' ? 'all' : cat)}
                 className={`px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
                   (cat === 'Wszystkie' && selectedCategory === 'all') || selectedCategory === cat
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-[#0A2463] text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -60,7 +60,7 @@ export default function DocumentFilters({
               <select
                 value={sortBy}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="text-xs sm:text-sm border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors w-full sm:w-auto"
+                className="text-xs sm:text-sm border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#0A2463] focus:border-[#0A2463] transition-colors w-full sm:w-auto"
               >
                 <option value="newest">Najnowsze</option>
                 <option value="oldest">Najstarsze</option>
@@ -75,7 +75,7 @@ export default function DocumentFilters({
                 onClick={() => onViewModeChange('grid')}
                 className={`p-1.5 sm:p-2 rounded transition-all duration-200 ${
                   viewMode === 'grid'
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-[#0A2463] text-white shadow-sm'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 aria-label="Widok siatki"
@@ -91,7 +91,7 @@ export default function DocumentFilters({
                 onClick={() => onViewModeChange('list')}
                 className={`p-1.5 sm:p-2 rounded transition-all duration-200 ${
                   viewMode === 'list'
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-[#0A2463] text-white shadow-sm'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 aria-label="Widok listy"

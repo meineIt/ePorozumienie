@@ -22,7 +22,7 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/"
-              className="bg-blue-700 hover:bg-blue-800 text-white py-3 px-8 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+              className="bg-[#0A2463] hover:bg-[#051740] text-white py-3 px-8 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
             >
               Powrót do strony głównej
             </Link>

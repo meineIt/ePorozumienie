@@ -37,7 +37,7 @@ export default function CTASection({ onCTAClick }: CTASectionProps) {
             className="group relative inline-flex items-center justify-center px-8 py-4 md:px-10 md:py-5 bg-white text-blue-800 rounded-3xl font-semibold text-lg md:text-xl shadow-2xl shadow-black/20 hover:shadow-3xl hover:shadow-black/30 transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
           >
             <span className="relative z-10">Odbierz zniżkę</span>
-            <span className="absolute inset-0 bg-linear-to-r from-blue-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <span className="absolute inset-0 bg-linear-to-r from-[#0A2463]/10 to-[#0A2463]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </button>
         </div>
       </div>

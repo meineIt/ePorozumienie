@@ -41,7 +41,7 @@ const DiscountForm = ({ onSubmit }: DiscountFormProps) => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 px-6 rounded-lg font-semibold transition duration-300"
+          className="w-full bg-[#0A2463] hover:bg-[#051740] text-white py-3 px-6 rounded-lg font-semibold transition duration-300"
         >
           Zapisz
         </button>

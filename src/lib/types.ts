@@ -41,10 +41,10 @@ export interface AffairParticipant {
   status: AffairStatus;
   description?: string | null;
   files?: string | null;
-  createdAt: string;
-  updatedAt: string;
-  settlementAcceptedAt?: string | null;
-  settlementModificationRequestedAt?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  settlementAcceptedAt?: Date | null;
+  settlementModificationRequestedAt?: Date | null;
 }
 
 export interface Affair {
@@ -52,12 +52,12 @@ export interface Affair {
   title: string;
   category: string | null;
   description: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   status?: AffairStatus | null;
   files?: string | null;
   aiAnalysis?: string | null;
-  aiAnalysisGeneratedAt?: string | null;
+  aiAnalysisGeneratedAt?: Date | null;
   settlementProposalStatus?: string | null;
   settlementAcceptedBy?: string | null;
   settlementModificationRequests?: string | null;
@@ -130,7 +130,7 @@ export interface TimelineEvent {
 
 export interface AffairWithAnalysis extends Affair {
   aiAnalysis?: string | null;
-  aiAnalysisGeneratedAt?: string | null;
+  aiAnalysisGeneratedAt?: Date | null;
 }
 
 export interface AffairTimelineProps {
@@ -147,7 +147,7 @@ export interface AnalysisPoint {
 
 export interface AnalysisPointsProps {
   type: AnalysisType;
-  points: AnalysisPoint[];
+  points: Array<{ id: string; title: string; description: string }>;
 }
 
 export interface PartyPositionFormProps {

@@ -80,7 +80,7 @@ export default function Step4Summary({
         </p>
         <a
           href="/dashboard"
-          className="inline-block px-6 py-2 bg-white border-2 border-blue-300 text-blue-700 rounded-full font-semibold hover:bg-blue-50 transition-colors"
+          className="inline-block px-6 py-2 bg-white border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors"
         >
           Przejdź do pulpitu
         </a>
@@ -108,7 +108,7 @@ export default function Step4Summary({
 
       {/* Info box */}
       {!checkingUser && (
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
+        <div className="bg-[#0A2463]/10 border-l-4 border-[#0A2463] p-4 mb-6 rounded">
           <div className="flex items-start">
             <div>
               <h4 className="font-semibold text-blue-900 mb-1">Co dalej?</h4>
@@ -212,7 +212,7 @@ export default function Step4Summary({
         <button
           type="button"
           onClick={onPrev}
-          className="px-6 py-2 border-2 border-blue-300 text-blue-700 rounded-full font-semibold hover:bg-blue-50 transition-colors flex items-center"
+          className="px-6 py-2 border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors flex items-center"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
