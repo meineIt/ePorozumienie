@@ -1,41 +1,39 @@
 {
-  "name": "eporozumienie",
-  "version": "1.0",
-  "private": true,
-  "engines": {
-    "node": ">=20.9.0",
-    "npm": ">=10.0.0"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "prisma migrate deploy && next start",
-    "lint": "eslint",
-    "postinstall": "prisma generate"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.19.1",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/nodemailer": "^7.0.4",
-    "bcryptjs": "^2.4.3",
-    "jose": "^6.1.3",
-    "jsonwebtoken": "^9.0.3",
-    "next": "16.1.1",
-    "nodemailer": "^7.0.6",
-    "openai": "^6.16.0",
-    "prisma": "^6.19.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "redis": "^5.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "name": "eporozumienie",
+    "version": "1.0",
+    "private": true,
+    "engines": {
+      "node": ">=20.9.0",
+      "npm": ">=10.0.0"
+    },
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "prisma migrate deploy && next start",
+      "lint": "eslint",
+      "postinstall": "prisma generate"
+    },
+    "dependencies": {
+      "@prisma/client": "^6.19.1",
+      "@types/bcryptjs": "^2.4.6",
+      "@types/nodemailer": "^7.0.4",
+      "bcryptjs": "^2.4.3",
+      "jose": "^6.1.3",
+      "next": "16.1.1",
+      "nodemailer": "^7.0.6",
+      "openai": "^6.16.0",
+      "prisma": "^6.19.1",
+      "react": "19.2.3",
+      "react-dom": "19.2.3",
+      "redis": "^5.0.0"
+    },
+    "devDependencies": {
+      "@tailwindcss/postcss": "^4",
+      "@types/react": "^19",
+      "@types/react-dom": "^19",
+      "eslint": "^9",
+      "eslint-config-next": "16.1.1",
+      "tailwindcss": "^4",
+      "typescript": "^5"
+    }
   }
-}

@@ -5,7 +5,7 @@
 /**
  * Waliduje czy wszystkie wymagane pola są obecne
  */
-export function validateRequiredFields<T extends Record<string, any>>(
+export function validateRequiredFields<T extends Record<string, unknown>>(
   data: T,
   requiredFields: (keyof T)[]
 ): { isValid: boolean; missingFields: string[] } {
@@ -41,14 +41,14 @@ export function isNotEmpty(value: string | null | undefined): boolean {
 /**
  * Waliduje czy wartość jest liczbą
  */
-export function isNumber(value: any): value is number {
+export function isNumber(value: number): value is number {
   return typeof value === 'number' && !isNaN(value);
 }
 
 /**
  * Waliduje czy wartość jest dodatnią liczbą
  */
-export function isPositiveNumber(value: any): boolean {
-  return isNumber(value) && value > 0;
+export function isPositiveNumber(value: unknown): value is number {
+    return typeof value === 'number' && !isNaN(value) && value > 0;
 }
 

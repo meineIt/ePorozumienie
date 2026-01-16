@@ -1,6 +1,4 @@
-interface TrustedProfileButtonProps {
-    text: string;
-}
+import { TrustedProfileButtonProps } from '@/lib/types';
 
 export default function TrustedProfileButton({ text }: TrustedProfileButtonProps) {
     return (

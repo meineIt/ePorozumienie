@@ -1,11 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-interface ContactFormProps {
-  userEmail?: string;
-  userName?: string;
-}
+import { ContactFormProps } from '@/lib/types';
 
 export default function ContactForm({ userEmail, userName }: ContactFormProps) {
   const [formData, setFormData] = useState({
@@ -131,7 +127,7 @@ export default function ContactForm({ userEmail, userName }: ContactFormProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-8 py-3 bg-gradient-to-br from-[#0A2463] to-[#3E5C95] text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center gap-2"
+              className="px-8 py-3 bg-linear-to-br from-[#0A2463] to-[#3E5C95] text-white rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center gap-2"
             >
               {isSubmitting ? (
                 <>

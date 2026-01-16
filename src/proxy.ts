@@ -20,11 +20,11 @@ function isPublicPath(pathname: string): boolean {
 }
 
 /**
- * Middleware Next.js do globalnej autentykacji
+ * Proxy Next.js do globalnej autentykacji
  * Automatycznie weryfikuje autentykację dla wszystkich chronionych ścieżek API
  * Używa jose dla weryfikacji tokenów w Edge Runtime
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Sprawdź czy to ścieżka API
@@ -41,7 +41,6 @@ export async function middleware(request: NextRequest) {
   const user = await getAuthenticatedUserEdge(request);
 
   if (!user) {
-    // Loguj próbę nieautoryzowanego dostępu
     logUnauthorizedAccess('Unauthorized access attempt - middleware', {
       headers: request.headers,
       url: request.url,

@@ -2,13 +2,8 @@
 
 import { formatFileSize, formatDate, getFileExtension } from '@/lib/utils/format';
 import { getCategoryColor } from '@/lib/utils/constants';
-import { DocumentWithAffair } from '@/lib/types';
+import { DocumentRowProps } from '@/lib/types';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-
-interface DocumentRowProps {
-  document: DocumentWithAffair;
-  onClick: (doc: DocumentWithAffair) => void;
-}
 
 export default function DocumentRow({ document, onClick }: DocumentRowProps) {
   return (

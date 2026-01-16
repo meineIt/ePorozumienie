@@ -2,13 +2,8 @@
 
 import { formatFileSize, formatDate, getFileExtension } from '@/lib/utils/format';
 import { getCategoryColor } from '@/lib/utils/constants';
-import { DocumentWithAffair } from '@/lib/types';
+import { DocumentCardProps } from '@/lib/types';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-
-interface DocumentCardProps {
-  document: DocumentWithAffair;
-  onClick: (doc: DocumentWithAffair) => void;
-}
 
 export default function DocumentCard({ document, onClick }: DocumentCardProps) {
   return (
@@ -16,7 +11,7 @@ export default function DocumentCard({ document, onClick }: DocumentCardProps) {
       onClick={() => onClick(document)}
       className="border border-gray-200/50 rounded-2xl overflow-hidden hover:shadow-lg active:shadow-md transition-all duration-300 cursor-pointer bg-white touch-target hover:-translate-y-1 active:translate-y-0"
     >
-      <div className="p-3 sm:p-4 bg-gradient-to-br from-[#F5F5F7] to-white border-b border-gray-200/50 relative">
+      <div className="p-3 sm:p-4 bg-linear-to-br from-[#F5F5F7] to-white border-b border-gray-200/50 relative">
         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${getCategoryColor(document.category)} flex items-center justify-center mb-2 shadow-sm`}>
           <DocumentIcon category={document.category} type={document.type} className="w-6 h-6 sm:w-8 sm:h-8" />
         </div>

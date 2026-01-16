@@ -1,138 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma, prismaWithTimeout } from '@/lib/prisma'
-import { getAuthUserFromHeaders } from '@/lib/auth/middleware'
-import { rateLimit } from '@/lib/auth/rateLimit';
-
-// Rate limiting: 30 zapytań na 1 minutę na użytkownika
-const documentsRateLimit = rateLimit({
-  interval: 60 * 1000, // 1 minuta
-  uniqueTokenPerInterval: 500,
-});
+import { NextRequest } from 'next/server';
+import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
+import { getRateLimit } from '@/lib/auth/rateLimitConfig';
+import { withErrorHandling, ok } from '@/lib/api/response';
+import { withRateLimit } from '@/lib/api/proxy';
+import { getUserDocuments } from '@/lib/services/documentService';
 
 export async function GET(request: NextRequest) {
-    try {
-        // Autentykacja jest obsługiwana przez globalny middleware
-        const authUser = getAuthUserFromHeaders(request)
+  return withErrorHandling(async () => {
+    const authUser = getAuthUserFromHeaders(request);
 
-        // Rate limiting
-        try {
-            await documentsRateLimit.check(30, authUser.userId, request);
-        } catch {
-            return NextResponse.json(
-                { error: 'Zbyt wiele zapytań. Spróbuj ponownie za chwilę.' },
-                { status: 429 }
-            );
-        }
-
-        // Pobierz wszystkie sprawy użytkownika
-        const affairs = await prismaWithTimeout(async (client) => {
-            return client.affair.findMany({
-                where: {
-                    OR: [
-                        { creatorId: authUser.userId },
-                        { involvedUserId: authUser.userId }
-                    ]
-                },
-                select: {
-                    id: true,
-                    title: true,
-                    files: true,
-                    createdAt: true,
-                    participants: {
-                        where: {
-                            userId: authUser.userId
-                        },
-                        select: {
-                            files: true
-                        }
-                    }
-                },
-                orderBy: {
-                    createdAt: 'desc'
-                }
-            });
-        }, 30000);
-
-        // Spłaszcz dokumenty z wszystkich spraw
-        interface ParsedDocument {
-            id?: string;
-            name: string;
-            size?: number;
-            type?: string;
-            category?: string;
-            path?: string;
-        }
-
-        const allDocuments: Array<{
-            id: string;
-            name: string;
-            size: number;
-            type: string;
-            category: string;
-            path: string | null;
-            affairId: string;
-            affairTitle: string;
-            affairCreatedAt: Date;
-        }> = [];
-
-        affairs.forEach((affair) => {
-            // Dokumenty z Affair (dla kompatybilności wstecznej)
-            if (affair.files) {
-                try {
-                    const documents = JSON.parse(affair.files);
-                    if (Array.isArray(documents)) {
-                        documents.forEach((doc: ParsedDocument) => {
-                            allDocuments.push({
-                                id: doc.id || Math.random().toString(36).substr(2, 9),
-                                name: doc.name,
-                                size: doc.size || 0,
-                                type: doc.type || 'application/octet-stream',
-                                category: doc.category || 'Inne',
-                                path: doc.path || null,
-                                affairId: affair.id,
-                                affairTitle: affair.title,
-                                affairCreatedAt: affair.createdAt
-                            });
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error parsing documents for affair:', affair.id, error);
-                }
-            }
-
-            // Dokumenty z AffairParticipant
-            affair.participants.forEach((participant) => {
-                if (participant.files) {
-                    try {
-                        const documents = JSON.parse(participant.files);
-                        if (Array.isArray(documents)) {
-                            documents.forEach((doc: ParsedDocument) => {
-                                allDocuments.push({
-                                    id: doc.id || Math.random().toString(36).substr(2, 9),
-                                    name: doc.name,
-                                    size: doc.size || 0,
-                                    type: doc.type || 'application/octet-stream',
-                                    category: doc.category || 'Inne',
-                                    path: doc.path || null,
-                                    affairId: affair.id,
-                                    affairTitle: affair.title,
-                                    affairCreatedAt: affair.createdAt
-                                });
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Error parsing participant documents for affair:', affair.id, error);
-                    }
-                }
-            });
-        });
-        return NextResponse.json({ documents: allDocuments }, { status: 200 });
-
-    } catch (error) {
-        console.error('Error fetching docs: ', error);
-        return NextResponse.json(
-            { error: 'Wystąpił błąd podczas pobierania dokumentów' },
-            { status: 500 }
-        );
+    // Rate limiting
+    const rateLimitConfig = getRateLimit('documents-get');
+    const rateLimitMiddleware = withRateLimit(
+      rateLimitConfig.limit,
+      rateLimitConfig.interval,
+      authUser.userId,
+      { headers: request.headers, url: request.url }
+    );
+    
+    const rateLimitResult = await rateLimitMiddleware(request);
+    if (rateLimitResult) {
+      return rateLimitResult;
     }
+
+    // Pobierz dokumenty użytkownika
+    const documents = await getUserDocuments(authUser.userId);
+
+    return ok({ documents });
+  });
 }

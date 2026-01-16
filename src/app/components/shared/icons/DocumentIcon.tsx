@@ -1,14 +1,6 @@
-import React from 'react';
-import { IconProps } from './IconProps';
+import { DocumentIconProps } from '@/lib/types';
 
-interface DocumentIconProps extends IconProps {
-  category: string;
-  type: string;
-}
 
-/**
- * Komponent ikony dokumentu na podstawie kategorii i typu
- */
 export default function DocumentIcon({ category, type, className = "w-6 h-6" }: DocumentIconProps) {
   if (type.startsWith('image/')) {
     return (

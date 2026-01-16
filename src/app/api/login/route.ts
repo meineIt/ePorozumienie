@@ -1,118 +1,72 @@
-import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { prisma, prismaWithTimeout } from '@/lib/prisma'
-import { generateToken, getAuthenticatedUser } from '@/lib/auth/jwt'
-import { rateLimit } from '@/lib/auth/rateLimit'
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import { prismaWithTimeout } from '@/lib/prisma';
+import { generateToken } from '@/lib/auth/jwt';
+import { getRateLimit } from '@/lib/auth/rateLimitConfig';
+import { withErrorHandling, ok, unauthorized } from '@/lib/api/response';
+import { validateBody, loginSchema } from '@/lib/api/validators';
+import { withRateLimit } from '@/lib/api/proxy';
 
-// Rate limiting: 5 prób na 15 minut
-const loginRateLimit = rateLimit({
-  interval: 15 * 60 * 1000, // 15 minut
-  uniqueTokenPerInterval: 500,
-})
-
-export async function POST(request: NextRequest) {
-  try {
-    // Rate limiting - spróbuj wyciągnąć userId z JWT jeśli użytkownik jest już zalogowany
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
-    const authenticatedUser = getAuthenticatedUser(request)
-    const userId = authenticatedUser?.userId
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  return withErrorHandling(async (): Promise<NextResponse> => {
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
-    try {
-      await loginRateLimit.check(5, ip, request, userId)
-    } catch {
-      return NextResponse.json(
-        { error: 'Zbyt wiele prób logowania. Spróbuj ponownie za chwilę.' },
-        { status: 429 }
-      )
+    const rateLimitConfig = getRateLimit('login');
+    const rateLimitMiddleware = withRateLimit(
+      rateLimitConfig.limit,
+      rateLimitConfig.interval,
+      ip,
+      { headers: request.headers, url: request.url }
+    );
+    
+    const rateLimitResult = await rateLimitMiddleware(request);
+    if (rateLimitResult instanceof NextResponse) {
+      return rateLimitResult;
     }
 
-    const body = await request.json()
-    const { email, password } = body
-
-    // Walidacja typów
-    if (typeof email !== 'string' || typeof password !== 'string') {
-      return NextResponse.json(
-        { error: 'Email i hasło muszą być ciągami znaków' },
-        { status: 400 }
-      )
+    // Walidacja body
+    const bodyResult = await validateBody(loginSchema, request);
+    if (bodyResult instanceof NextResponse) {
+      return bodyResult;
     }
-
-    // Walidacja
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email i hasło są wymagane' },
-        { status: 400 }
-      )
-    }
-
-    // Walidacja długości - ochrona przed DoS
-    if (email.length > 200) {
-      return NextResponse.json(
-        { error: 'Email nie może być dłuższy niż 200 znaków' },
-        { status: 400 }
-      )
-    }
-
-    if (password.length > 128) {
-      return NextResponse.json(
-        { error: 'Hasło nie może być dłuższe niż 128 znaków' },
-        { status: 400 }
-      )
-    }
-
-    // Walidacja email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Nieprawidłowy format email' },
-        { status: 400 }
-      )
-    }
+    const { email, password } = bodyResult;
 
     // Znajdź użytkownika
     const user = await prismaWithTimeout(async (client) => {
-        return client.user.findUnique({
-            where: { email }
-        });
-    }, 30000)
+      return client.user.findUnique({
+        where: { email }
+      });
+    }, 30000);
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Nieprawidłowy email lub hasło' },
-        { status: 401 }
-      )
+      return unauthorized('Nieprawidłowy email lub hasło');
     }
 
     // Sprawdź hasło
-    const isPasswordValid = await bcrypt.compare(password, user.password)
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return NextResponse.json(
-        { error: 'Nieprawidłowy email lub hasło' },
-        { status: 401 }
-      )
+      return unauthorized('Nieprawidłowy email lub hasło');
     }
 
     // Generuj JWT token
-    const token = generateToken({
+    const token = await generateToken({
       userId: user.id,
       email: user.email,
-    })
+    });
 
     // Sukces - zwróć dane użytkownika i token
-    const response = NextResponse.json(
-      {
-        message: 'Logowanie pomyślne',
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName
-        },
-        token
+    const response = ok({
+      message: 'Logowanie pomyślne',
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName
       },
-      { status: 200 }
-    )
+      token
+    }, 200);
 
     // Ustaw httpOnly cookie z tokenem
     response.cookies.set('auth-token', token, {
@@ -121,14 +75,8 @@ export async function POST(request: NextRequest) {
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 dni
       path: '/',
-    })
+    });
 
-    return response
-  } catch (error) {
-    console.error('Login error:', error)
-    return NextResponse.json(
-      { error: 'Wystąpił błąd podczas logowania' },
-      { status: 500 }
-    )
-  }
+    return response;
+  });
 }

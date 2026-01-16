@@ -1,6 +1,8 @@
+'use-client';
+
 export default function SwissFrancSection() {
   return (
-    <section id="kredyty-frankowe" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section id="kredyty-frankowe" className="py-20 md:py-24 bg-linear-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
           Kredyty frankowe - rozwiązujemy Twój problem
@@ -11,7 +13,7 @@ export default function SwissFrancSection() {
               <h3 className="text-2xl font-bold mb-6 text-gray-900">Skala problemu</h3>
               <ul className="space-y-4">
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -29,7 +31,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -47,7 +49,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -70,7 +72,7 @@ export default function SwissFrancSection() {
               <h3 className="text-2xl font-bold mb-6 text-gray-900">Nasze rozwiązanie</h3>
               <ul className="space-y-4">
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-green-600"
                       fill="currentColor"
@@ -88,7 +90,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-green-600"
                       fill="currentColor"
@@ -107,7 +109,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-green-600"
                       fill="currentColor"
@@ -125,7 +127,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-green-600"
                       fill="currentColor"
@@ -151,7 +153,7 @@ export default function SwissFrancSection() {
               <h3 className="text-2xl font-bold mb-6 text-blue-800">Potencjał rynkowy</h3>
               <ul className="space-y-4">
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -170,7 +172,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -189,7 +191,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-start group">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                  <div className="shrink-0 w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="h-5 w-5 text-blue-700"
                       fill="currentColor"
@@ -209,11 +211,11 @@ export default function SwissFrancSection() {
                 </li>
               </ul>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 rounded-2xl border border-blue-200/50">
+            <div className="bg-linear-to-br from-blue-50 to-blue-100/50 p-6 rounded-2xl border border-blue-200/50">
               <h4 className="font-bold text-blue-800 mb-4 text-lg">Kluczowe wskaźniki finansowe</h4>
               <ul className="space-y-3">
                 <li className="flex items-center group">
-                  <div className="flex-shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-4 w-4 text-green-600"
                       fill="currentColor"
@@ -231,7 +233,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-center group">
-                  <div className="flex-shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-4 w-4 text-green-600"
                       fill="currentColor"
@@ -249,7 +251,7 @@ export default function SwissFrancSection() {
                   </span>
                 </li>
                 <li className="flex items-center group">
-                  <div className="flex-shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
+                  <div className="shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="h-4 w-4 text-green-600"
                       fill="currentColor"

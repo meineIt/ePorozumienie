@@ -63,7 +63,6 @@ p {
   letter-spacing: -0.01em;
 }
 
-/* iOS-inspired Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -236,7 +235,7 @@ p {
   background: var(--glass-bg);
 }
 
-/* iOS-style Card */
+
 .card-ios {
   background: var(--bg-primary);
   border-radius: var(--radius-lg);
@@ -255,7 +254,6 @@ p {
   box-shadow: var(--shadow-md);
 }
 
-/* iOS-style Button */
 .button-ios {
   background: var(--gradient-primary);
   color: white;
@@ -290,7 +288,7 @@ p {
   transform: none;
 }
 
-/* iOS-style Input */
+
 .input-ios {
   width: 100%;
   padding: 0.875rem 1rem;
@@ -357,7 +355,6 @@ p {
   min-height: var(--touch-target-min);
 }
 
-/* iOS-style Badge */
 .badge-ios {
   display: inline-flex;
   align-items: center;

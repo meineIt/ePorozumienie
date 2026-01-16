@@ -3,6 +3,7 @@ import { readFile, stat } from 'fs/promises';
 import { resolve, normalize } from 'path';
 import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
 import { prismaWithTimeout } from '@/lib/prisma';
+import { ParsedDocument } from '@/lib/api/types';
 
 export async function GET(
     request: NextRequest,
@@ -85,7 +86,7 @@ export async function GET(
                 try {
                     const documents = JSON.parse(affair.files);
                     if (Array.isArray(documents)) {
-                        const fileInDocuments = documents.some((doc: any) => {
+                        const fileInDocuments = documents.some((doc: ParsedDocument) => {
                             const docPath = doc.path || '';
                             return docPath.includes(fileName) || docPath.endsWith(fileName);
                         });
@@ -105,7 +106,7 @@ export async function GET(
                     try {
                         const documents = JSON.parse(participant.files);
                         if (Array.isArray(documents)) {
-                            const fileInDocuments = documents.some((doc: any) => {
+                            const fileInDocuments = documents.some((doc: ParsedDocument) => {
                                 const docPath = doc.path || '';
                                 return docPath.includes(fileName) || docPath.endsWith(fileName);
                             });

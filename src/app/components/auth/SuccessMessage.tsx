@@ -1,9 +1,6 @@
-interface SuccessMessageProps {
-    message: string;
-    onClose?: () => void;
-}
+import { SuccessMessageProps } from '@/lib/types';
 
-export default function SuccessMessage({ message, onClose }: SuccessMessageProps) {
+export default function SuccessMessage({ message }: SuccessMessageProps) {
     if (!message) return null;
 
     return (

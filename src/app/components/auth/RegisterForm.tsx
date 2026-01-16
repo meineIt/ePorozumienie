@@ -46,7 +46,6 @@ function RegisterFormContent() {
       setError('Email jest wymagany');
       return false;
     }
-    // Wzmocnione wymagania dotyczące hasła
     if (formData.password.length < 8) {
       setError('Hasło musi mieć co najmniej 8 znaków');
       return false;
@@ -185,7 +184,7 @@ function RegisterFormContent() {
           name="password"
           type="password"
           label="Hasło"
-          placeholder="Minimum 6 znaków"
+          placeholder="Minimum 8 znaków"
           value={formData.password}
           onChange={handleChange}
           required

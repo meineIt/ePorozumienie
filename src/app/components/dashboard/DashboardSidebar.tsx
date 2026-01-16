@@ -3,18 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { DashboardSidebarProps } from '@/lib/types';
 
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
-interface DashboardSidebarProps {
-  user: User | null;
-  isOpen?: boolean;
-  onClose?: () => void;
-}
 
 export default function DashboardSidebar({ user, isOpen = true, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();

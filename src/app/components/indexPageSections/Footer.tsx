@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-white to-gray-50 text-gray-800 py-16 md:py-20 border-t border-gray-200/50">
+    <footer className="bg-linear-to-b from-white to-gray-50 text-gray-800 py-16 md:py-20 border-t border-gray-200/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
@@ -55,7 +55,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#jak-to-dziala"
-                  className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base inline-block hover:translate-x-1 transform transition-transform"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
                 >
                   Jak to działa
                 </a>
@@ -63,7 +63,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#korzysci"
-                  className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base inline-block hover:translate-x-1 transform transition-transform"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
                 >
                   Korzyści
                 </a>
@@ -71,7 +71,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#kredyty-frankowe"
-                  className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base inline-block hover:translate-x-1 transform transition-transform"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
                 >
                   Kredyty frankowe
                 </a>
@@ -79,7 +79,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#cennik"
-                  className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base inline-block hover:translate-x-1 transform transition-transform"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
                 >
                   Model biznesowy
                 </a>
@@ -87,7 +87,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#zespol"
-                  className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base inline-block hover:translate-x-1 transform transition-transform"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
                 >
                   Zespół
                 </a>

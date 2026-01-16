@@ -1,12 +1,7 @@
 'use client';
 
 import DocumentRow from './DocumentRow';
-import { DocumentWithAffair } from '@/lib/types';
-
-interface DocumentListViewProps {
-  documents: DocumentWithAffair[];
-  onDocumentClick: (doc: DocumentWithAffair) => void;
-}
+import { DocumentListViewProps } from '@/lib/types';
 
 export default function DocumentListView({ documents, onDocumentClick }: DocumentListViewProps) {
   return (

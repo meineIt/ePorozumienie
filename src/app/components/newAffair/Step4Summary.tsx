@@ -1,18 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AffairFormData, User } from '@/lib/types';
+import { Step4SummaryProps } from '@/lib/types';
+import { apiPost } from '@/lib/api/client';
 
-interface Step4SummaryProps {
-  formData: AffairFormData;
-  user: User;
-  onPrev: () => void;
-  onCreateAffair: () => void;
-}
 
 export default function Step4Summary({
   formData,
-  user,
   onPrev,
   onCreateAffair,
 }: Step4SummaryProps) {
@@ -48,36 +42,17 @@ export default function Step4Summary({
         throw new Error('Email drugiej strony jest wymagany');
       }
 
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-      if (!token) {
-        throw new Error('Brak autentykacji. Zaloguj się ponownie.');
-      }
-
-      const response = await fetch('/api/affairs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          title: formData.title,
-          category: formData.category,
-          description: formData.description,
-          disputeValue: formData.disputeValue,
-          documents: formData.documents,
-          otherPartyEmail,
-          otherPartyType: formData.otherPartyType,
-          otherPartyPerson: formData.otherPartyPerson,
-          otherPartyCompany: formData.otherPartyCompany,
-        }),
+      await apiPost('/api/affairs', {
+        title: formData.title,
+        category: formData.category,
+        description: formData.description,
+        disputeValue: formData.disputeValue,
+        documents: formData.documents,
+        otherPartyEmail,
+        otherPartyType: formData.otherPartyType,
+        otherPartyPerson: formData.otherPartyPerson,
+        otherPartyCompany: formData.otherPartyCompany,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Wystąpił błąd podczas tworzenia sprawy' )
-      }
 
       setIsCreating(false)
       setIsSuccess(true)

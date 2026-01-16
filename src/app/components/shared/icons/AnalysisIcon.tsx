@@ -1,15 +1,6 @@
-import React from 'react';
-import { IconProps } from './IconProps';
+import { AnalysisIconProps } from '@/lib/types';
 
-export type AnalysisType = 'agreements' | 'negotiations' | 'disagreements';
 
-interface AnalysisIconProps extends IconProps {
-  type: AnalysisType;
-}
-
-/**
- * Komponent ikony dla punktów analizy
- */
 export default function AnalysisIcon({ type, className = "w-4 h-4" }: AnalysisIconProps) {
   const iconProps = {
     className,

@@ -1,12 +1,7 @@
 'use client';
 
 import DocumentCard from './DocumentCard';
-import { DocumentWithAffair } from '@/lib/types';
-
-interface DocumentGridProps {
-  documents: DocumentWithAffair[];
-  onDocumentClick: (doc: DocumentWithAffair) => void;
-}
+import { DocumentGridProps } from '@/lib/types';
 
 export default function DocumentGrid({ documents, onDocumentClick }: DocumentGridProps) {
   return (

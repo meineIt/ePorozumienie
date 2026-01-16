@@ -1,18 +1,8 @@
 'use client';
 
-import AnalysisIcon, { AnalysisType } from '../shared/icons/AnalysisIcon';
+import AnalysisIcon from '../shared/icons/AnalysisIcon';
 import { escapeHtml } from '@/lib/utils/escapeHtml';
-
-interface AnalysisPoint {
-  id: string;
-  title: string;
-  description: string;
-}
-
-interface AnalysisPointsProps {
-  type: AnalysisType;
-  points: AnalysisPoint[];
-}
+import { AnalysisPointsProps } from '@/lib/types';
 
 export default function AnalysisPoints({ type, points }: AnalysisPointsProps) {
   const config = {
@@ -43,7 +33,7 @@ export default function AnalysisPoints({ type, points }: AnalysisPointsProps) {
 
   if (points.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-[#F5F5F7] to-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+      <div className="bg-linear-to-br from-[#F5F5F7] to-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
         <div className={`w-16 h-16 mx-auto mb-4 rounded-xl ${currentConfig.iconBg} flex items-center justify-center ${currentConfig.iconColor} shadow-sm`}>
           <div className="scale-110">
             {currentConfig.icon}
@@ -60,7 +50,7 @@ export default function AnalysisPoints({ type, points }: AnalysisPointsProps) {
       {points.map((point) => (
         <div
           key={point.id}
-          className="bg-gradient-to-br from-white to-[#F5F5F7] rounded-lg shadow-sm border border-gray-200/50 p-4 hover:shadow-md hover:border-[#3E5C95]/30 transition-all duration-200 border-l-4 border-l-[#0A2463]"
+          className="bg-linear-to-br from-white to-[#F5F5F7] rounded-lg shadow-sm border border-gray-200/50 p-4 hover:shadow-md hover:border-[#3E5C95]/30 transition-all duration-200 border-l-4 border-l-[#0A2463]"
         >
           <div className="flex gap-3">
             <div className={`w-10 h-10 rounded-lg ${currentConfig.iconBg} flex items-center justify-center shrink-0 ${currentConfig.iconColor} shadow-sm`}>

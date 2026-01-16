@@ -1,9 +1,6 @@
 'use client';
 
-interface AffairTabsProps {
-  activeTab: 'agreements' | 'negotiations' | 'disagreements';
-  onTabChange: (tab: 'agreements' | 'negotiations' | 'disagreements') => void;
-}
+import { AffairTabsProps } from '@/lib/types';
 
 export default function AffairTabs({ activeTab, onTabChange }: AffairTabsProps) {
   const tabs = [

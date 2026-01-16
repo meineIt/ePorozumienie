@@ -2,15 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { escapeHtml } from '@/lib/utils/escapeHtml';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { apiPatch } from '@/lib/api/client';
+import { User, ProfileUpdateResponse } from '@/lib/api/types';
 
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
@@ -29,7 +22,7 @@ export default function ProfilePage() {
           setUser(parsedUser);
           setFirstName(parsedUser.firstName || '');
           setLastName(parsedUser.lastName || '');
-        } catch (error) {
+        } catch {
         }
       }
     }
@@ -60,28 +53,13 @@ export default function ProfilePage() {
         return;
       }
 
-      const response = await fetch('/api/profile', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Błąd podczas zapisywania');
+      const data = await apiPatch<ProfileUpdateResponse>("/api/profile", 
+       {   firstName: firstName.trim(),
+          lastName: lastName.trim()
       }
-
-      const data = await response.json();
+    );
       
-      // Aktualizuj dane użytkownika w localStorage
-      const updatedUser = { ...user, ...data.user };
+      const updatedUser = { ...user,firstName: data.user.firstName, lastName: data.user.lastName, updatedAt: typeof data.user.updatedAt === 'string' ? data.user.updatedAt : data.user.updatedAt.toISOString()};
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       

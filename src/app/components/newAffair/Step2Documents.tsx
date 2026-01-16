@@ -1,16 +1,10 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { AffairFormData, Document } from '@/lib/types';
+import { Document, Step2DocumentsProps } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-
-interface Step2DocumentsProps {
-    formData: AffairFormData;
-    updateFormData: (data: Partial<AffairFormData>) => void;
-    onNext: () => void;
-    onPrev: () => void;
-  }
+import { apiUpload } from '@/lib/api/client';
 
 export default function Step2Documents({
     formData,
@@ -41,16 +35,7 @@ export default function Step2Documents({
               uploadFormData.append('files', file);
           });
 
-          const response = await fetch('/api/upload', {
-              method: 'POST',
-              body: uploadFormData,
-          });
-
-          if (!response.ok) {
-              throw new Error('Błąd podczas przesyłania plików');
-          }
-
-          const data = await response.json();
+          const data = await apiUpload<{ files: UploadedFile[] }>('/api/upload', uploadFormData);
           
           // Dodaj przesłane pliki do formData
           const newDocuments: Document[] = data.files.map((file: UploadedFile) => ({
@@ -65,7 +50,7 @@ export default function Step2Documents({
           updateFormData({ 
               documents: [...formData.documents, ...newDocuments] 
           });
-      } catch (error) {
+      } catch {
           alert('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
       } finally {
           setUploading(false);
@@ -207,7 +192,7 @@ export default function Step2Documents({
             <button
               type="button"
               onClick={onNext}
-              className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
+              className="px-6 py-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
             >
               Dalej
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

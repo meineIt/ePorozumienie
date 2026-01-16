@@ -1,28 +1,9 @@
 'use client';
 
 import { formatDate } from '@/lib/utils/format';
-import TimelineIcon, { TimelineEventType } from '../shared/icons/TimelineIcon';
-import { Affair } from '@/lib/types';
+import TimelineIcon from '../shared/icons/TimelineIcon';
 import { escapeHtml } from '@/lib/utils/escapeHtml';
-
-interface TimelineEvent {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  type: TimelineEventType;
-}
-
-interface AffairWithAnalysis extends Affair {
-  aiAnalysis?: string | null;
-  aiAnalysisGeneratedAt?: string | null;
-}
-
-interface AffairTimelineProps {
-  affair: AffairWithAnalysis | null;
-  currentUserId: string | null;
-  settlementProposalStatus?: 'awaiting-you' | 'awaiting-other' | 'accepted-you' | 'accepted-all';
-}
+import { TimelineEvent, AffairTimelineProps } from '@/lib/types';
 
 export default function AffairTimeline({ affair, settlementProposalStatus }: AffairTimelineProps) {
   if (!affair) {
@@ -164,7 +145,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
         </h3>
       </div>
       <div className="relative pl-8 sm:pl-10">
-        <div className="absolute left-4 sm:left-5 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#3E5C95] via-[#3E5C95] to-transparent opacity-40"></div>
+        <div className="absolute left-4 sm:left-5 top-0 bottom-0 w-0.5 bg-linear-to-b from-[#3E5C95] via-[#3E5C95] to-transparent opacity-40"></div>
         
         <div className="space-y-4">
           {events.map((event) => (
@@ -180,7 +161,7 @@ export default function AffairTimeline({ affair, settlementProposalStatus }: Aff
               </div>
               
               <div className="flex-1 pl-2 sm:pl-3 pb-3 sm:pb-4">
-                <div className="bg-gradient-to-br from-[#F5F5F7] to-white border border-gray-200/50 rounded-lg p-3 shadow-sm hover:shadow-md hover:border-[#3E5C95]/30 transition-all duration-300">
+                <div className="bg-linear-to-br from-[#F5F5F7] to-white border border-gray-200/50 rounded-lg p-3 shadow-sm hover:shadow-md hover:border-[#3E5C95]/30 transition-all duration-300">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-0 mb-1.5">
                     <h4 className="font-bold text-[#212121] pr-2" style={{ fontSize: '0.875rem', lineHeight: '1.25' }}>{event.title}</h4>
                     <span className="text-xs text-[#616161] whitespace-nowrap shrink-0 font-medium">

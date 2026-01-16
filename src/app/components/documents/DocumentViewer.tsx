@@ -1,13 +1,7 @@
 'use client';
 
-import { DocumentWithAffair } from '@/lib/types';
-
-interface DocumentViewerProps {
-  document: DocumentWithAffair | null;
-  isOpen: boolean;
-  onClose: () => void;
-  getDocumentUrl: (path: string) => string;
-}
+import { DocumentViewerProps } from '@/lib/types';
+import Image from 'next/image';
 
 export default function DocumentViewer({ document, isOpen, onClose, getDocumentUrl }: DocumentViewerProps) {
   if (!isOpen || !document || !document.path) {
@@ -68,9 +62,11 @@ export default function DocumentViewer({ document, isOpen, onClose, getDocumentU
         <div className="flex-1 overflow-auto bg-gray-50 p-4">
           {document.type.startsWith('image/') ? (
             <div className="flex items-center justify-center h-full">
-              <img
+              <Image
                 src={getDocumentUrl(document.path)}
                 alt={document.name}
+                width={800}
+                height={800}
                 className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
               />
             </div>

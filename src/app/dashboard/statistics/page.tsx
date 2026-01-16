@@ -25,13 +25,13 @@ export default function StatisticsPage() {
           </p>
 
           {/* Features List */}
-          <div className="bg-gradient-to-br from-[#F5F5F7] to-white rounded-xl p-4 sm:p-6 mb-6 border border-gray-200/50">
+          <div className="bg-linear-to-br from-[#F5F5F7] to-white rounded-xl p-4 sm:p-6 mb-6 border border-gray-200/50">
             <p className="text-sm font-semibold text-[#212121] mb-4">
               Co będziesz mógł zobaczyć:
             </p>
             <ul className="space-y-3 text-left max-w-sm mx-auto">
               <li className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
+                <div className="shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
                   <svg className="w-4 h-4 text-[#2196F3]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
@@ -39,7 +39,7 @@ export default function StatisticsPage() {
                 <span className="text-[#616161] text-sm">Analiza Twoich spraw i postępów</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
+                <div className="shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
                   <svg className="w-4 h-4 text-[#2196F3]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
@@ -47,7 +47,7 @@ export default function StatisticsPage() {
                 <span className="text-[#616161] text-sm">Trendy i wzorce w Twoich działaniach</span>
               </li>
               <li className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
+                <div className="shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
                   <svg className="w-4 h-4 text-[#2196F3]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>

@@ -2,7 +2,7 @@
  * Szablon emaila z kodem rabatowym dla użytkownika
  */
 export function getDiscountConfirmationEmailTemplate(userName: string, discountCode?: string): string {
-  const code = discountCode || process.env.RABAT_CODE || 'RABAT30';
+  const code = discountCode || process.env.RABAT_CODE;
   
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

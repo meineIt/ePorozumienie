@@ -1,184 +1,91 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prismaWithTimeout } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
-import { requireCSRF } from '@/lib/auth/csrf';
-import { rateLimit } from '@/lib/auth/rateLimit';
-import { sanitizeName } from '@/lib/utils/sanitize';
+import { getRateLimit } from '@/lib/auth/rateLimitConfig';
+import { withErrorHandling, ok, notFound, badRequest } from '@/lib/api/response';
+import { validateBody, profileUpdateSchema } from '@/lib/api/validators';
+import { withRateLimit, withCSRF, withContentLength } from '@/lib/api/proxy';
+import { getUserProfile, updateUserProfile } from '@/lib/services/userService';
 
-// Rate limiting: 10 aktualizacji na 15 minut na użytkownika
-const profileRateLimit = rateLimit({
-  interval: 15 * 60 * 1000, // 15 minut
-  uniqueTokenPerInterval: 500,
-});
-
-// Rate limiting dla GET: 30 zapytań na 15 minut na użytkownika
-const profileGetRateLimit = rateLimit({
-  interval: 15 * 60 * 1000, // 15 minut
-  uniqueTokenPerInterval: 500,
-});
-
-/**
- * GET - Pobiera dane użytkownika (weryfikacja autentykacji)
- */
 export async function GET(request: NextRequest) {
-  try {
-    // Autentykacja jest obsługiwana przez globalny middleware
+  return withErrorHandling(async () => {
     const authUser = getAuthUserFromHeaders(request);
 
     // Rate limiting
-    try {
-      await profileGetRateLimit.check(30, authUser.userId, request);
-    } catch {
-      return NextResponse.json(
-        { error: 'Zbyt wiele prób. Spróbuj ponownie za chwilę.' },
-        { status: 429 }
-      );
+    const rateLimitConfig = getRateLimit('profile-get');
+    const rateLimitMiddleware = withRateLimit(
+      rateLimitConfig.limit,
+      rateLimitConfig.interval,
+      authUser.userId,
+      { headers: request.headers, url: request.url }
+    );
+    
+    const rateLimitResult = await rateLimitMiddleware(request);
+    if (rateLimitResult) {
+      return rateLimitResult;
     }
 
-    // Pobierz dane użytkownika z bazy
-    const user = await prismaWithTimeout(async (client) => {
-      return client.user.findUnique({
-        where: { id: authUser.userId },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-    }, 30000);
+    // Pobierz dane użytkownika
+    const user = await getUserProfile(authUser.userId);
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Użytkownik nie został znaleziony' },
-        { status: 404 }
-      );
+      return notFound('Użytkownik nie został znaleziony');
     }
 
-    return NextResponse.json(
-      {
-        user,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Profile get error:', error);
-    // Jeśli błąd autentykacji (Unauthorized), zwróć 401
-    if (error instanceof Error && error.message === 'Unauthorized - user data not found in headers') {
-      return NextResponse.json(
-        { error: 'Wymagana autentykacja' },
-        { status: 401 }
-      );
-    }
-    return NextResponse.json(
-      { error: 'Wystąpił błąd podczas pobierania profilu' },
-      { status: 500 }
-    );
-  }
+    return ok({ user });
+  });
 }
 
 export async function PATCH(request: NextRequest) {
-  try {
-    // Autentykacja jest obsługiwana przez globalny middleware
+  return withErrorHandling(async () => {
     const authUser = getAuthUserFromHeaders(request);
 
     // Rate limiting
-    try {
-      await profileRateLimit.check(10, authUser.userId, request);
-    } catch {
-      return NextResponse.json(
-        { error: 'Zbyt wiele prób aktualizacji profilu. Spróbuj ponownie za chwilę.' },
-        { status: 429 }
-      );
+    const rateLimitConfig = getRateLimit('profile-update');
+    const rateLimitMiddleware = withRateLimit(
+      rateLimitConfig.limit,
+      rateLimitConfig.interval,
+      authUser.userId,
+      { headers: request.headers, url: request.url }
+    );
+    
+    const rateLimitResult = await rateLimitMiddleware(request);
+    if (rateLimitResult) {
+      return rateLimitResult;
     }
 
     // CSRF protection
-    const csrfError = requireCSRF(request)
-    if (csrfError) {
-      return csrfError
+    const csrfResult = await withCSRF(request);
+    if (csrfResult) {
+      return csrfResult;
     }
 
-    // Walidacja rozmiaru requestu (max 10KB)
-    const contentLength = request.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > 10 * 1024) {
-      return NextResponse.json(
-        { error: 'Request zbyt duży' },
-        { status: 413 }
-      );
+    // Content length check
+    const contentLengthResult = await withContentLength(10 * 1024)(request);
+    if (contentLengthResult) {
+      return contentLengthResult;
     }
 
-    const body = await request.json();
-    const { firstName, lastName, userId } = body;
-
-    // Walidacja uprawnień: odrzuć userId jeśli został podany
-    // Endpoint zawsze aktualizuje profil zalogowanego użytkownika
-    if (userId !== undefined && userId !== null) {
-      return NextResponse.json(
-        { error: 'Nie można modyfikować userId. Endpoint aktualizuje tylko profil zalogowanego użytkownika.' },
-        { status: 400 }
-      );
+    // Walidacja body
+    const bodyResult = await validateBody(profileUpdateSchema, request);
+    if (bodyResult instanceof Response) {
+      return bodyResult;
     }
+    const { firstName, lastName } = bodyResult;
 
-    // Walidacja
-    if (!firstName || !lastName) {
-      return NextResponse.json(
-        { error: 'Imię i nazwisko są wymagane' },
-        { status: 400 }
-      );
-    }
-
-    // Walidacja długości
+    // Walidacja - sprawdź czy nie są puste po trim
     if (firstName.trim().length === 0 || lastName.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Imię i nazwisko nie mogą być puste' },
-        { status: 400 }
-      );
+      return badRequest('Imię i nazwisko nie mogą być puste');
     }
 
-    if (firstName.length > 100 || lastName.length > 100) {
-      return NextResponse.json(
-        { error: 'Imię i nazwisko nie mogą być dłuższe niż 100 znaków' },
-        { status: 400 }
-      );
-    }
+    // Aktualizuj profil
+    const updatedUser = await updateUserProfile(authUser.userId, {
+      firstName,
+      lastName
+    });
 
-    // Sanityzacja danych przed zapisem
-    const sanitizedFirstName = sanitizeName(firstName.trim())
-    const sanitizedLastName = sanitizeName(lastName.trim())
-
-    // Aktualizuj profil użytkownika
-    const updatedUser = await prismaWithTimeout(async (client) => {
-        return client.user.update({
-            where: { id: authUser.userId },
-            data: {
-                firstName: sanitizedFirstName,
-                lastName: sanitizedLastName,
-            },
-            select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
-    }, 30000);
-
-    return NextResponse.json(
-      {
-        message: 'Profil został zaktualizowany',
-        user: updatedUser,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Profile update error:', error);
-    return NextResponse.json(
-      { error: 'Wystąpił błąd podczas aktualizacji profilu' },
-      { status: 500 }
-    );
-  }
+    return ok({
+      message: 'Profil został zaktualizowany',
+      user: updatedUser
+    });
+  });
 }

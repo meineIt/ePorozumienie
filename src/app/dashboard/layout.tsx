@@ -4,15 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardNavbar from '../components/dashboard/DashboardNavbar';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { User } from '@/lib/types';
 
 export default function DashboardLayout({
   children,
@@ -40,7 +32,7 @@ export default function DashboardLayout({
         const response = await fetch('/api/profile', {
           method: 'GET',
           headers,
-          credentials: 'include', // Włącz cookies
+          credentials: 'include',
         });
 
         if (!response.ok) {
@@ -98,7 +90,6 @@ export default function DashboardLayout({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Ekran ładowania
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7]">
@@ -117,7 +108,6 @@ export default function DashboardLayout({
   return (
     <>
       <DashboardNavbar 
-        firstName={user.firstName} 
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />

@@ -1,17 +1,8 @@
 'use client';
 
 import { DOCUMENT_CATEGORIES } from '@/lib/utils/constants';
+import { DocumentFiltersProps } from '@/lib/types';
 
-interface DocumentFiltersProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
-  sortBy: string;
-  onSortChange: (sort: string) => void;
-  viewMode: 'grid' | 'list';
-  onViewModeChange: (mode: 'grid' | 'list') => void;
-}
 
 export default function DocumentFilters({
   searchQuery,
@@ -63,7 +54,7 @@ export default function DocumentFilters({
             ))}
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto shrink-0">
             <div className="flex items-center gap-2">
               <span className="text-xs sm:text-sm font-medium text-gray-700 hidden sm:inline">Sortuj:</span>
               <select

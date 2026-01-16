@@ -1,8 +1,4 @@
-interface SubmitButtonProps {
-    loading: boolean;
-    loadingText: string;
-    text: string;
-}
+import { SubmitButtonProps } from '@/lib/types';
 
 export default function SubmitButton({
     loading,

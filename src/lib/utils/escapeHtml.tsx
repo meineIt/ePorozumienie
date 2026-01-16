@@ -1,9 +1,4 @@
 /**
- * Narzędzia do escape'owania HTML w komponentach React
- * React automatycznie escape'uje wartości, ale te funkcje zapewniają dodatkową warstwę bezpieczeństwa
- */
-
-/**
  * Escape'uje znaki HTML w stringu dla bezpiecznego wyświetlania w React
  * React już to robi automatycznie, ale to zapewnia dodatkową warstwę bezpieczeństwa
  */

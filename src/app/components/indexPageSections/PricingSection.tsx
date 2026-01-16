@@ -1,6 +1,6 @@
 export default function PricingSection() {
   return (
-    <section id="cennik" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section id="cennik" className="py-20 md:py-24 bg-linear-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
           Model biznesowy
@@ -14,7 +14,7 @@ export default function PricingSection() {
             </div>
             <ul className="space-y-4 mb-8">
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -30,7 +30,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Mediacja online w sprawie frankowej</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -46,7 +46,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Wsparcie AI-mediatora</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -62,7 +62,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Generowanie dokumentów</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -87,7 +87,7 @@ export default function PricingSection() {
             </div>
             <ul className="space-y-4 mb-8 relative z-10">
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
+                <div className="shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
                   <svg
                     className="h-4 w-4 text-white"
                     fill="currentColor"
@@ -103,7 +103,7 @@ export default function PricingSection() {
                 <span className="text-white text-base leading-relaxed">Abonament na obsługę wielu spraw</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
+                <div className="shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
                   <svg
                     className="h-4 w-4 text-white"
                     fill="currentColor"
@@ -119,7 +119,7 @@ export default function PricingSection() {
                 <span className="text-white text-base leading-relaxed">Panel zarządzania sprawami</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
+                <div className="shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
                   <svg
                     className="h-4 w-4 text-white"
                     fill="currentColor"
@@ -135,7 +135,7 @@ export default function PricingSection() {
                 <span className="text-white text-base leading-relaxed">Zaawansowana analityka</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
+                <div className="shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
                   <svg
                     className="h-4 w-4 text-white"
                     fill="currentColor"
@@ -151,7 +151,7 @@ export default function PricingSection() {
                 <span className="text-white text-base leading-relaxed">Priorytetowe wsparcie</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
+                <div className="shrink-0 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-white/30 transition-colors border border-white/30">
                   <svg
                     className="h-4 w-4 text-white"
                     fill="currentColor"
@@ -171,11 +171,11 @@ export default function PricingSection() {
           <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 hover:-translate-y-1">
             <div className="text-center mb-8">
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Instytucje</h3>
-              <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-700 mb-2 break-words">Skontaktuj się</div>
+              <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-700 mb-2 wrap-break-words">Skontaktuj się</div>
             </div>
             <ul className="space-y-4 mb-8">
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -191,7 +191,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Licencje dla banków i instytucji</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -207,7 +207,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Integracja z systemami wewnętrznymi</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -223,7 +223,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Dedykowane rozwiązania</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"
@@ -239,7 +239,7 @@ export default function PricingSection() {
                 <span className="text-gray-700 text-base leading-relaxed">Wsparcie 24/7</span>
               </li>
               <li className="flex items-start group">
-                <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
+                <div className="shrink-0 w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3 mt-0.5 group-hover:bg-green-200 transition-colors">
                   <svg
                     className="h-4 w-4 text-green-600"
                     fill="currentColor"

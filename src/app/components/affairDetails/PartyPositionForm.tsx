@@ -4,11 +4,8 @@ import { useState, useRef } from 'react';
 import { Document } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-
-interface PartyPositionFormProps {
-    affairId: string;
-    onSave: () => void;
-}
+import { apiUpload, apiRequest } from '@/lib/api/client';
+import { PartyPositionFormProps } from '@/lib/types';
 
 export default function PartyPositionForm({ affairId, onSave }: PartyPositionFormProps) {
     const [description, setDescription] = useState('');
@@ -39,20 +36,8 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                 uploadFormData.append('files', file);
             });
 
-            const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: uploadFormData,
-            });
-
-            if (!response.ok) {
-                throw new Error('Błąd podczas przesyłania plików');
-            }
-
-            const data = await response.json();
+            // Użyj apiUpload() z automatycznym CSRF
+            const data = await apiUpload<{ files: UploadedFile[] }>('/api/upload', uploadFormData);
             
             // Dodaj przesłane pliki do listy dokumentów
             const newDocuments: Document[] = data.files.map((file: UploadedFile) => ({
@@ -65,11 +50,10 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
             }));
 
             setDocuments([...documents, ...newDocuments]);
-        } catch (error) {
+        } catch {
             setError('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
         } finally {
             setUploading(false);
-            // Reset input
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
@@ -94,24 +78,13 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
         setError(null);
 
         try {
-            const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-            const response = await fetch(`/api/affairs/${affairId}`, {
+            await apiRequest(`/api/affairs/${affairId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                credentials: 'include',
                 body: JSON.stringify({
                     description: description || null,
                     documents: documents.length > 0 ? documents : null
                 }),
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Błąd podczas zapisywania stanowiska');
-            }
 
             onSave();
         } catch (error) {
@@ -246,7 +219,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                     <button
                         type="submit"
                         disabled={saving}
-                        className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {saving ? (
                             <>

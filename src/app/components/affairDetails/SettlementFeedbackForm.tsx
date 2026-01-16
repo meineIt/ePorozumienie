@@ -1,13 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-interface SettlementFeedbackFormProps {
-  affairId: string;
-  onClose: () => void;
-  onSuccess: () => void;
-}
+import { apiPost } from '@/lib/api/client';
+import { SettlementFeedbackFormProps } from '@/lib/types';
 
 export default function SettlementFeedbackForm({
   affairId,
@@ -15,7 +10,6 @@ export default function SettlementFeedbackForm({
   onSuccess,
 }: SettlementFeedbackFormProps) {
   const [feedbackText, setFeedbackText] = useState('');
-  const router = useRouter();
 
   const handleSubmit = async () => {
     if (!feedbackText.trim()) {
@@ -24,39 +18,23 @@ export default function SettlementFeedbackForm({
     }
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-      if (!token) {
-        router.push('/login');
-        return;
-      }
-
-      const response = await fetch(`/api/affairs/${affairId}/settlement/modify`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ feedback: feedbackText }),
+      await apiPost(`/api/affairs/${affairId}/settlement/modify`, {
+        feedback: feedbackText,
       });
 
-      if (response.ok) {
-        setFeedbackText('');
-        onClose();
-        onSuccess();
-      } else {
-        const error = await response.json();
-        alert(error.error || 'Wystąpił błąd podczas wysyłania propozycji zmian');
-      }
+      setFeedbackText('');
+      onClose();
+      onSuccess();
     } catch (error) {
-      alert('Wystąpił błąd podczas wysyłania propozycji zmian');
+      const errorMessage = error instanceof Error ? error.message : 'Wystąpił błąd podczas wysyłania propozycji zmian';
+      alert(errorMessage);
     }
   };
 
   return (
     <div className="card card-padding card-margin">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
+        <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -82,7 +60,7 @@ export default function SettlementFeedbackForm({
         </button>
         <button
           onClick={handleSubmit}
-          className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm bg-gradient-to-br from-[#0A2463] to-[#3E5C95] text-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 touch-target"
+          className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm bg-linear-to-br from-[#0A2463] to-[#3E5C95] text-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 touch-target"
         >
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>

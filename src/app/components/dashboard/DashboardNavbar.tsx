@@ -2,15 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-interface User {
-  firstName: string;
-}
-
-interface DashboardNavbarProps extends User {
-  sidebarOpen?: boolean;
-  setSidebarOpen?: (open: boolean) => void;
-}
+import { DashboardNavbarProps  } from '@/lib/types';
 
 export default function DashboardNavbar({ sidebarOpen, setSidebarOpen }: DashboardNavbarProps) {
     const pathname = usePathname();
@@ -71,7 +63,7 @@ export default function DashboardNavbar({ sidebarOpen, setSidebarOpen }: Dashboa
           <div className="flex items-center gap-4 relative z-10">
             <Link
               href="/dashboard/affairs/new"
-              className="bg-gradient-to-br from-white to-gray-100 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-gray-900 py-2.5 px-4 lg:px-5 rounded-full font-semibold transition-all duration-300 text-sm flex items-center gap-2 touch-target"
+              className="bg-linear-to-br from-white to-gray-100 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-gray-900 py-2.5 px-4 lg:px-5 rounded-full font-semibold transition-all duration-300 text-sm flex items-center gap-2 touch-target"
             >
               <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 5v14M5 12h14"></path>

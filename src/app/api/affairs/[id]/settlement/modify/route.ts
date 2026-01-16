@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma, prismaWithTimeout } from '@/lib/prisma';
+import { prismaWithTimeout } from '@/lib/prisma';
 import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
 import { requireCSRF } from '@/lib/auth/csrf';
 import { analyzeAffairPositions, bothPartiesHavePositions } from '@/lib/ai/analyzer';
@@ -14,10 +14,8 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Autentykacja jest obsługiwana przez globalny middleware
         const authUser = getAuthUserFromHeaders(request)
 
-        // CSRF protection
         const csrfError = requireCSRF(request)
         if (csrfError) {
             return csrfError
@@ -35,7 +33,6 @@ export async function POST(
         const body = await request.json() as ModifySettlementBody;
         const { feedback } = body;
 
-        // Walidacja typu
         if (typeof feedback !== 'string') {
             return NextResponse.json(
                 { error: 'Propozycja zmian musi być ciągiem znaków' },
@@ -67,7 +64,7 @@ export async function POST(
                     settlementProposalStatus: true,
                     settlementAcceptedBy: true,
                     settlementModificationRequests: true,
-                } as any
+                }
             });
         }, 30000) as {
             id: string;
@@ -151,7 +148,7 @@ export async function POST(
                 where: { id: participant.id },
                 data: {
                     settlementModificationRequestedAt: new Date()
-                } as any
+                }
             });
 
             if (shouldRegenerate) {
@@ -162,7 +159,7 @@ export async function POST(
                         settlementAcceptedBy: null,
                         settlementModificationRequests: null,
                         settlementProposalStatus: 'awaiting-both'
-                    } as any
+                    }
                 });
 
                 if (otherParticipant) {
@@ -171,7 +168,7 @@ export async function POST(
                         data: {
                             settlementAcceptedAt: null,
                             settlementModificationRequestedAt: null
-                        } as any
+                        }
                     });
                 }
                 await tx.affairParticipant.update({
@@ -180,7 +177,7 @@ export async function POST(
                         settlementAcceptedAt: null,
                         settlementModificationRequestedAt: new Date(),
                         status: 'WAITING'
-                    } as any
+                    }
                 });
             } else {
                 // Tylko zapisz propozycję zmian
@@ -189,7 +186,7 @@ export async function POST(
                     data: {
                         settlementProposalStatus: 'modification-requested',
                         settlementModificationRequests: JSON.stringify(modificationRequests)
-                    } as any
+                    }
                 });
 
                 await tx.affairParticipant.update({
@@ -197,7 +194,7 @@ export async function POST(
                     data: {
                         settlementModificationRequestedAt: new Date(),
                         status: 'WAITING'
-                    } as any
+                    }
                 });
             }
             });
@@ -233,8 +230,8 @@ export async function POST(
                                     aiAnalysis: JSON.stringify(analysis),
                                     aiAnalysisGeneratedAt: new Date(),
                                     settlementProposalStatus: 'awaiting-both',
-                                    settlementModificationRequests: null // Wyczyść po regeneracji
-                                } as any
+                                    settlementModificationRequests: null
+                                }
                             });
                         }, 30000);
 
@@ -244,7 +241,7 @@ export async function POST(
                                 data: {
                                     settlementModificationRequestedAt: null,
                                     status: 'REACTION_NEEDED'
-                                } as any
+                                }
                             });
                         }, 30000);
                     }

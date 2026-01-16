@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import ContactForm from '@/app/components/dashboard/ContactForm';
+import { User } from '@/lib/types';
+
 
 export default function ContactFormPage() {
-  const [user, setUser] = useState<{ email: string; firstName: string; lastName: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -12,12 +14,14 @@ export default function ContactFormPage() {
       if (userData) {
         try {
           const parsedUser = JSON.parse(userData);
-          setUser({
-            email: parsedUser.email,
-            firstName: parsedUser.firstName,
-            lastName: parsedUser.lastName,
-          });
-        } catch (error) {
+          if (parsedUser &&
+              typeof parsedUser.id === 'string' &&
+              typeof parsedUser.email === 'string' &&
+              typeof parsedUser.firstName === 'string' &&
+              typeof parsedUser.lastName === 'string')  {
+            setUser(parsedUser as User);
+              }
+        } catch {
         }
       }
     }

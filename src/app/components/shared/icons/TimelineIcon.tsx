@@ -1,15 +1,5 @@
-import React from 'react';
-import { IconProps } from './IconProps';
+import { TimelineIconProps } from '@/lib/types';
 
-export type TimelineEventType = 'creation' | 'party-added' | 'party-joined' | 'analysis' | 'proposal' | 'modification' | 'acceptance';
-
-interface TimelineIconProps extends IconProps {
-  type: TimelineEventType;
-}
-
-/**
- * Komponent ikony dla wydarzeń w timeline sprawy
- */
 export default function TimelineIcon({ type, className = "w-5 h-5" }: TimelineIconProps) {
   const iconProps = {
     className,

@@ -2,14 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getTokenFromRequest } from './jwt';
 import { TOKEN_LENGTH_LIMITS } from '@/lib/utils/constants';
+import { logCSRFFailed } from '../utils/securityLogger';
 
 function getCSRFSecret(): string {
   const secret = process.env.CSRF_SECRET;
   if (!secret) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('CSRF_SECRET environment variable is required in production');
+      throw new Error('Ustaw CSRF_SECRET');
     }
-    throw new Error('CSRF_SECRET environment variable is required. Please set it in your .env file');
+    throw new Error('Ustaw CSRF_SECRET');
   }
   return secret;
 }
@@ -86,11 +87,11 @@ export function validateCSRF(request: NextRequest): boolean {
  */
 export function requireCSRF(request: NextRequest): NextResponse | null {
   if (!validateCSRF(request)) {
-    const { logCSRFFailed } = require('@/lib/utils/securityLogger');
-    logCSRFFailed('CSRF token validation failed', {
-      url: request.url,
-      method: request.method,
-    }, request);
+    logCSRFFailed(
+      'CSRF token validation failed',
+      { headers: request.headers, url: request.url },
+      { method: request.method }
+    );
     return NextResponse.json(
       { error: 'Invalid or missing CSRF token' },
       { status: 403 }

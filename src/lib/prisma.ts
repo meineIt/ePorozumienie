@@ -4,9 +4,9 @@ function getDatabaseUrl(): string {
   const url = process.env.DATABASE_URL;
   if (!url) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('DATABASE_URL environment variable is required in production');
+      throw new Error('Ustaw DATABASE_URL');
     }
-    throw new Error('DATABASE_URL environment variable is required. Please set it in your .env file');
+    throw new Error('Ustaw DATABASE_URL');
   }
   return url;
 }
@@ -16,8 +16,6 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  // log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  // Timeout dla operacji (30 sekund)
   datasources: {
     db: {
       url: getDatabaseUrl(),

@@ -2,12 +2,10 @@
 
 import { useState, useEffect, FormEvent, useImperativeHandle, forwardRef } from 'react';
 import DiscountForm from './DiscountForm';
+import { PopupModalRef } from '@/lib/types';
 
-export interface PopupModalRef {
-  open: () => void;
-}
 
-const PopupModal = forwardRef<PopupModalRef>((props, ref) => {
+const PopupModal = forwardRef<PopupModalRef>((_, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasShown, setHasShown] = useState(false);
 
@@ -19,7 +17,6 @@ const PopupModal = forwardRef<PopupModalRef>((props, ref) => {
   }));
 
   useEffect(() => {
-    // Show popup after 2 seconds if it hasn't been shown yet
     const timer = setTimeout(() => {
       if (!hasShown) {
         setIsOpen(true);
@@ -67,7 +64,7 @@ const PopupModal = forwardRef<PopupModalRef>((props, ref) => {
         // Błąd
         alert(data.error || 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie.');
       }
-    } catch (error) {
+    } catch {
       alert('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie.');
     }
   };

@@ -1,7 +1,12 @@
-import jwt, { SignOptions } from 'jsonwebtoken';
-import { jwtVerify } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
+import type {JWTPayload as JosePayload} from 'jose';
 import { NextRequest } from 'next/server';
 import { TOKEN_LENGTH_LIMITS } from '@/lib/utils/constants';
+
+export interface JWTPayload extends JosePayload {
+  userId: string;
+  email: string;
+}
 
 function getJWTSecret(): string {
   const secret = process.env.JWT_SECRET;
@@ -25,10 +30,12 @@ export interface JWTPayload {
 /**
  * Generuje JWT token dla użytkownika
  */
-export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN,
-  } as SignOptions);
+export async function generateToken(payload: JWTPayload): Promise<string> {
+  const secret = new TextEncoder().encode(JWT_SECRET);
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime(JWT_EXPIRES_IN)
+    .sign(secret);
 }
 
 /**
@@ -52,9 +59,8 @@ export async function verifyTokenEdge(token: string): Promise<JWTPayload | null>
         email: payload.email,
       };
     }
-    
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -62,15 +68,25 @@ export async function verifyTokenEdge(token: string): Promise<JWTPayload | null>
 /**
  * Weryfikuje JWT token i zwraca payload (dla Node.js runtime - API routes)
  */
-export function verifyToken(token: string): JWTPayload | null {
+export async function verifyToken(token: string): Promise<JWTPayload | null> {
   // Walidacja długości tokenu - ochrona przed atakami DoS
   if (token.length > TOKEN_LENGTH_LIMITS.JWT) {
     return null;
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
-    return decoded;
+    const secret = new TextEncoder().encode(JWT_SECRET);
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ['HS256'],
+    });
+
+    if (typeof payload.userId === 'string' && typeof payload.email === 'string') {
+      return {
+        userId: payload.userId,
+        email: payload.email,
+      };
+    }
+    return null;
   } catch {
     return null;
   }
@@ -119,12 +135,12 @@ export async function getAuthenticatedUserEdge(request: NextRequest): Promise<JW
 /**
  * Weryfikuje autentykację użytkownika z requestu (dla Node.js runtime - API routes)
  */
-export function getAuthenticatedUser(request: NextRequest): JWTPayload | null {
+export async function getAuthenticatedUser(request: NextRequest): Promise<JWTPayload | null> {
   const token = getTokenFromRequest(request);
   if (!token) {
     return null;
   }
 
-  return verifyToken(token);
+  return await verifyToken(token);
 }
 

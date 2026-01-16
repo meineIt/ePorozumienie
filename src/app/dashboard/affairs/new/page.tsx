@@ -24,7 +24,7 @@ export default function NewAffairPage() {
                     if (parsedUser && parsedUser.email && parsedUser.firstName && parsedUser.lastName) {
                         return parsedUser;
                     }
-                } catch (error) {
+                } catch {
                 }
             }
         }

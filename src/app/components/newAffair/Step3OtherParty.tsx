@@ -1,14 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { AffairFormData } from '@/lib/types';
+import { Step3OtherPartyProps } from '@/lib/types';
 
-interface Step3OtherPartyProps {
-  formData: AffairFormData;
-  updateFormData: (data: Partial<AffairFormData>) => void;
-  onNext: () => void;
-  onPrev: () => void;
-}
 
 export default function Step3OtherParty({
   formData,
@@ -304,7 +298,7 @@ export default function Step3OtherParty({
         </button>
         <button
           type="submit"
-          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
+          className="px-6 py-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300 flex items-center"
         >
           Dalej
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,15 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { AffairParticipant } from '@/lib/types';
+import { PartyPositionSectionProps } from '@/lib/types';
 import { parseDocuments } from '@/lib/utils/affairHelpers';
 import { escapeHtml } from '@/lib/utils/escapeHtml';
-
-interface PartyPositionSectionProps {
-  participant: AffairParticipant & { user: { id: string; firstName: string; lastName: string; email: string } };
-  title: string;
-  defaultExpanded?: boolean;
-}
 
 export default function PartyPositionSection({
   participant,
@@ -27,7 +21,7 @@ export default function PartyPositionSection({
         className="w-full flex items-center justify-between hover:bg-gray-50/50 transition-colors touch-target -m-2 p-2 rounded-lg"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
+          <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
@@ -56,7 +50,7 @@ export default function PartyPositionSection({
         }`}
       >
         <div className="space-y-4">
-          <div className="bg-gradient-to-br from-[#F5F5F7] to-white rounded-lg p-4 border border-gray-200/50">
+          <div className="bg-linear-to-br from-[#F5F5F7] to-white rounded-lg p-4 border border-gray-200/50">
             {participant.description && (
               <div className="mb-4">
                 <div className="bg-white rounded-lg p-3 border border-gray-200/50">

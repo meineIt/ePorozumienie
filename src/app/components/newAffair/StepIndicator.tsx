@@ -1,8 +1,6 @@
 'use client';
+import { StepIndicatorProps } from '@/lib/types';
 
-interface StepIndicatorProps {
-    currentStep: number;
-}
 
 export default function StepIndicator({ currentStep }: StepIndicatorProps) {
     const steps = [
@@ -14,7 +12,6 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
 
     const getStepStatus = (stepNumber: number) => {
         if (stepNumber < currentStep) return 'completed';
-        // Jeśli jesteśmy na ostatnim kroku i to jest ostatni krok, oznacz jako completed
         if (stepNumber === currentStep && currentStep === steps.length) return 'completed';
         if (stepNumber === currentStep) return 'active';
         return 'pending';
@@ -22,9 +19,9 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
 
     return (
     <div className="relative px-2 sm:px-0">
-        <div className="absolute top-6 sm:top-8 left-4 sm:left-6 right-4 sm:right-6 h-0.5 bg-gradient-to-r from-gray-200 via-gray-200 to-gray-200 -z-10" />
+        <div className="absolute top-6 sm:top-8 left-4 sm:left-6 right-4 sm:right-6 h-0.5 bg-linear-to-r from-gray-200 via-gray-200 to-gray-200 -z-10" />
         <div 
-          className="absolute top-6 sm:top-8 left-4 sm:left-6 h-0.5 bg-gradient-to-r from-green-500 to-[#0A2463] -z-10 transition-all duration-500"
+          className="absolute top-6 sm:top-8 left-4 sm:left-6 h-0.5 bg-linear-to-r from-green-500 to-[#0A2463] -z-10 transition-all duration-500"
           style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
         />
         
@@ -43,9 +40,9 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                     transition-all duration-300 mb-2 sm:mb-3 shadow-md
                     ${
                     status === 'completed'
-                        ? 'bg-gradient-to-br from-green-500 to-green-600 text-white shadow-lg'
+                        ? 'bg-linear-to-br from-green-500 to-green-600 text-white shadow-lg'
                         : status === 'active'
-                        ? 'bg-gradient-to-br from-[#0A2463] to-[#3E5C95] text-white ring-4 ring-[rgba(10,36,99,0.15)] shadow-lg scale-110'
+                        ? 'bg-linear-to-br from-[#0A2463] to-[#3E5C95] text-white ring-4 ring-[rgba(10,36,99,0.15)] shadow-lg scale-110'
                         : 'bg-white border-2 border-gray-300 text-gray-400'
                     }
                 `}

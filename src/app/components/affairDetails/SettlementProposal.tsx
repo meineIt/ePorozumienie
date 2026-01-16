@@ -1,13 +1,7 @@
 'use client';
 
 import { escapeHtml } from '@/lib/utils/escapeHtml';
-
-interface SettlementProposalProps {
-  proposal?: {
-    content: string;
-    status: 'awaiting-you' | 'awaiting-other' | 'accepted-you' | 'accepted-all';
-  };
-}
+import { SettlementProposalProps } from '@/lib/types';
 
 export default function SettlementProposal({ proposal }: SettlementProposalProps) {
   if (!proposal) {
@@ -24,7 +18,7 @@ export default function SettlementProposal({ proposal }: SettlementProposalProps
   return (
     <div className="card card-padding">
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200/60">
-        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
+        <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
@@ -36,7 +30,7 @@ export default function SettlementProposal({ proposal }: SettlementProposalProps
         <h3 className="heading-section text-lg" style={{ fontSize: '1.25rem' }}>Propozycja porozumienia</h3>
       </div>
 
-      <div className="bg-gradient-to-br from-[#F5F5F7] to-white border border-gray-200/50 rounded-lg p-4 mb-4 shadow-sm">
+      <div className="bg-linear-to-br from-[#F5F5F7] to-white border border-gray-200/50 rounded-lg p-4 mb-4 shadow-sm">
         <div className="prose prose-sm max-w-none">
           <div className="whitespace-pre-wrap text-sm text-[#616161] leading-relaxed">
             {escapeHtml(proposal.content)}

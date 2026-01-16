@@ -1,20 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { AffairFormData } from '@/lib/types';
+import { Step1BasicInfoProps } from '@/lib/types';
 
-interface Step1BasicInfoProps {
-    formData: AffairFormData;
-    updateFormData: (data: Partial<AffairFormData>) => void;
-    onNext: () => void;
-    onCancel: () => void;
-}
 
 export default function Step1BasicInfo({
   formData,
   updateFormData,
   onNext,
-  onCancel,  
 }: Step1BasicInfoProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
     
@@ -180,7 +173,7 @@ export default function Step1BasicInfo({
             <div className="flex justify-end pt-6">
             <button
                 type="submit"
-                className="px-8 py-3 text-lg bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300"
+                className="px-8 py-3 text-lg bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:-translate-y-0.5 text-white rounded-full font-semibold transition-all duration-300"
             >
                 Dalej
             </button>

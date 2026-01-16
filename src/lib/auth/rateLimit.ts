@@ -148,7 +148,7 @@ export function rateLimit(options: RateLimitOptions) {
         const retryAfter = Math.ceil((resetTime - now) / 1000);
         logRateLimitExceeded(
           `Rate limit exceeded for token: ${rateLimitKey.substring(0, 8)}...`,
-          request,
+          request || undefined,
           {
             limit,
             count,

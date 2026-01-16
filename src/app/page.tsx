@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import PopupModal, { PopupModalRef } from './components/popUp/discount/DiscountModal';
+import PopupModal from './components/popUp/discount/DiscountModal';
+import { PopupModalRef } from '@/lib/types';
 import Navigation from './components/indexPageSections/Navigation';
 import Footer from './components/indexPageSections/Footer';
 import HeroSection from './components/indexPageSections/HeroSection';

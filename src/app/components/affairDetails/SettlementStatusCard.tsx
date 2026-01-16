@@ -1,16 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
-interface SettlementStatusCardProps {
-  proposal?: {
-    content: string;
-    status: 'awaiting-you' | 'awaiting-other' | 'accepted-you' | 'accepted-all';
-  };
-  affairId: string;
-  onFeedbackClick: () => void;
-  onRefresh: () => void;
-}
+import { apiPost } from '@/lib/api/client';
+import { SettlementStatusCardProps } from '@/lib/types';
 
 export default function SettlementStatusCard({
   proposal,
@@ -18,7 +9,6 @@ export default function SettlementStatusCard({
   onFeedbackClick,
   onRefresh,
 }: SettlementStatusCardProps) {
-  const router = useRouter();
 
   if (!proposal) {
     return null;
@@ -26,28 +16,11 @@ export default function SettlementStatusCard({
 
   const handleAccept = async () => {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-      if (!token) {
-        router.push('/login');
-        return;
-      }
-
-      const response = await fetch(`/api/affairs/${affairId}/settlement/accept`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        onRefresh();
-      } else {
-        const error = await response.json();
-        alert(error.error || 'Wystąpił błąd podczas akceptacji porozumienia');
-      }
+      await apiPost(`/api/affairs/${affairId}/settlement/accept`, {});
+      onRefresh();
     } catch (error) {
-      alert('Wystąpił błąd podczas akceptacji porozumienia');
+      const errorMessage = error instanceof Error ? error.message : 'Wystąpił błąd podczas akceptacji porozumienia';
+      alert(errorMessage);
     }
   };
 
@@ -66,7 +39,7 @@ export default function SettlementStatusCard({
         </button>
         <button
           onClick={handleAccept}
-          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 hover:scale-105 active:scale-100 shadow-lg hover:shadow-xl transition-all duration-200"
+          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base bg-linear-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 hover:scale-105 active:scale-100 shadow-lg hover:shadow-xl transition-all duration-200"
         >
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>

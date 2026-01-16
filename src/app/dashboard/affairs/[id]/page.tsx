@@ -186,7 +186,7 @@ export default function AffairDetailsPage() {
             {settlementProposal && (
             <div className="card card-padding overflow-hidden">
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200/60">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#0A2463] to-[#3E5C95] flex items-center justify-center text-white shadow-sm">
                   <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 11l3 3L22 4"></path>
                     <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
@@ -199,8 +199,8 @@ export default function AffairDetailsPage() {
               
               <div className="mt-4">
                 {isAnalyzing ? (
-                  <div className="bg-gradient-to-br from-[#F5F5F7] to-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-[rgba(33,150,243,0.15)] to-[rgba(33,150,243,0.05)] flex items-center justify-center text-[#2196F3]">
+                  <div className="bg-linear-to-br from-[#F5F5F7] to-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-linear-to-br from-[rgba(33,150,243,0.15)] to-[rgba(33,150,243,0.05)] flex items-center justify-center text-[#2196F3]">
                       <div className="w-8 h-8 border-4 border-[#2196F3] border-t-transparent rounded-full animate-spin"></div>
                     </div>
                     <h3 className="text-lg font-semibold mb-2 text-[#212121]">Analiza w toku</h3>
@@ -237,7 +237,7 @@ export default function AffairDetailsPage() {
             {currentUserHasPosition && !otherPartyHasPosition && otherPartyUser && (
               <div className="card card-padding overflow-hidden">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white shadow-sm">
+                  <div className="w-10 h-10 rounded-lg bg-linear-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white shadow-sm">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"></circle>
                       <polyline points="12 6 12 12 16 14"></polyline>
@@ -245,7 +245,7 @@ export default function AffairDetailsPage() {
                   </div>
                   <h2 className="heading-section text-lg" style={{ fontSize: '1.25rem' }}>Oczekiwanie na stanowisko drugiej strony</h2>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 to-white rounded-lg p-4 border border-amber-200/50">
+                <div className="bg-linear-to-br from-amber-50 to-white rounded-lg p-4 border border-amber-200/50">
                   <p className="text-sm text-gray-700 leading-relaxed">
                     Przedstawiłeś swoje stanowisko. Stanowisko drugiej strony ({escapeHtml(otherPartyUser.firstName)} {escapeHtml(otherPartyUser.lastName)}) 
                     zostanie ujawnione, gdy również przedstawi swoje stanowisko w sprawie.

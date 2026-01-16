@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma, prismaWithTimeout } from '@/lib/prisma';
+import { prismaWithTimeout } from '@/lib/prisma';
 import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
 import { requireCSRF } from '@/lib/auth/csrf';
 
@@ -8,10 +8,8 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Autentykacja jest obsługiwana przez globalny middleware
         const authUser = getAuthUserFromHeaders(request)
 
-        // CSRF protection
         const csrfError = requireCSRF(request)
         if (csrfError) {
             return csrfError
@@ -29,16 +27,9 @@ export async function POST(
                     settlementProposalStatus: true,
                     settlementAcceptedBy: true,
                     aiAnalysis: true,
-                } as any
+                }
             });
-        }, 30000) as {
-            id: string;
-            creatorId: string;
-            involvedUserId: string | null;
-            settlementProposalStatus: string | null;
-            settlementAcceptedBy: string | null;
-            aiAnalysis: string | null;
-        } | null;
+        }, 30000)
 
         if (!affair) {
             return NextResponse.json(
@@ -96,7 +87,7 @@ export async function POST(
                 where: { id: participant.id },
                 data: {
                     settlementAcceptedAt: new Date()
-                } as any
+                }
             });
 
             const otherParticipant = otherUserId ? await tx.affairParticipant.findUnique({
@@ -109,10 +100,10 @@ export async function POST(
                 select: {
                     id: true,
                     settlementAcceptedAt: true
-                } as any
+                }
             }) : null;
 
-            const otherHasAccepted = otherParticipant && (otherParticipant as any).settlementAcceptedAt !== null;
+            const otherHasAccepted = otherParticipant && (otherParticipant).settlementAcceptedAt !== null;
 
             if (otherHasAccepted) {
                 await tx.affair.update({
@@ -120,7 +111,7 @@ export async function POST(
                     data: {
                         settlementProposalStatus: 'accepted-all',
                         settlementAcceptedBy: JSON.stringify(acceptedBy)
-                    } as any
+                    }
                 });
 
                 await tx.affairParticipant.update({
@@ -144,7 +135,7 @@ export async function POST(
                     data: {
                         settlementProposalStatus: newStatus,
                         settlementAcceptedBy: JSON.stringify(acceptedBy)
-                    } as any
+                    }
                 });
 
                 await tx.affairParticipant.update({

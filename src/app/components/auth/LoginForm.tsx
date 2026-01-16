@@ -83,8 +83,6 @@ function LoginFormContent() {
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
-    
-        // Przekieruj do dashboardu
         router.push('/dashboard');
       } catch (error) {
         // Obsługa różnych typów błędów sieciowych

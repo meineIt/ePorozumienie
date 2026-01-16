@@ -1,75 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { sendContactEmail, sendContactConfirmationEmail } from '@/lib/utils/email';
-import { rateLimit } from '@/lib/auth/rateLimit';
-import { isValidEmail } from '@/lib/api/validation';
+import { getRateLimit } from '@/lib/auth/rateLimitConfig';
+import { withErrorHandling, ok, internalError } from '@/lib/api/response';
+import { validateBody, contactSchema } from '@/lib/api/validators';
+import { withRateLimit, withContentLength } from '@/lib/api/proxy';
 import { sanitizeString, sanitizeText } from '@/lib/utils/sanitize';
 
-// Rate limiting: 5 wiadomości na 15 minut
-const contactRateLimit = rateLimit({
-  interval: 15 * 60 * 1000, // 15 minut
-  uniqueTokenPerInterval: 500,
-});
-
 export async function POST(request: NextRequest) {
-  try {
-    // Rate limiting
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
-    try {
-      await contactRateLimit.check(5, ip, request)
-    } catch {
-      return NextResponse.json(
-        { error: 'Zbyt wiele prób wysłania wiadomości. Spróbuj ponownie za chwilę.' },
-        { status: 429 }
-      )
+  return withErrorHandling(async () => {
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const rateLimitConfig = getRateLimit('contact');
+    const rateLimitMiddleware = withRateLimit(
+      rateLimitConfig.limit,
+      rateLimitConfig.interval,
+      ip,
+      { headers: request.headers, url: request.url }
+    );
+    
+    const rateLimitResult = await rateLimitMiddleware(request);
+    if (rateLimitResult) {
+      return rateLimitResult;
     }
 
-    // Walidacja rozmiaru requestu (max 50KB)
-    const contentLength = request.headers.get('content-length')
-    if (contentLength && parseInt(contentLength) > 50 * 1024) {
-      return NextResponse.json(
-        { error: 'Request zbyt duży' },
-        { status: 413 }
-      )
+    const contentLengthResult = await withContentLength(50 * 1024)(request);
+    if (contentLengthResult) {
+      return contentLengthResult;
     }
 
-    const body = await request.json();
-    const { name, email, message, subject } = body;
-
-    // Walidacja
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Imię, email i wiadomość są wymagane' },
-        { status: 400 }
-      );
+    const bodyResult = await validateBody(contactSchema, request);
+    if (bodyResult instanceof Response) {
+      return bodyResult;
     }
-
-    // Walidacja email
-    if (!isValidEmail(email)) {
-      return NextResponse.json(
-        { error: 'Nieprawidłowy format email' },
-        { status: 400 }
-      );
-    }
-
-    // Walidacja długości pól
-    if (name.length > 200 || email.length > 200 || (subject && subject.length > 200)) {
-      return NextResponse.json(
-        { error: 'Pola są zbyt długie' },
-        { status: 400 }
-      );
-    }
-
-    if (message.length > 5000) {
-      return NextResponse.json(
-        { error: 'Wiadomość jest zbyt długa (max 5000 znaków)' },
-        { status: 400 }
-      );
-    }
+    const { name, email, message, subject } = bodyResult;
 
     // Sanityzacja danych przed wysłaniem emaila
-    const sanitizedName = sanitizeString(name)
-    const sanitizedMessage = sanitizeText(message)
-    const sanitizedSubject = subject ? sanitizeString(subject) : undefined
+    const sanitizedName = sanitizeString(name);
+    const sanitizedMessage = sanitizeText(message);
+    const sanitizedSubject = subject ? sanitizeString(subject) : undefined;
 
     // Wyślij email do administratora
     const adminEmailResult = await sendContactEmail({
@@ -81,10 +48,7 @@ export async function POST(request: NextRequest) {
 
     if (!adminEmailResult.success) {
       console.error('Failed to send admin email:', adminEmailResult.error);
-      return NextResponse.json(
-        { error: 'Wystąpił błąd podczas wysyłania wiadomości' },
-        { status: 500 }
-      );
+      return internalError('Wystąpił błąd podczas wysyłania wiadomości');
     }
 
     // Wyślij email potwierdzający do użytkownika
@@ -94,19 +58,9 @@ export async function POST(request: NextRequest) {
       // Nie przerywamy - główny email został wysłany
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Wiadomość została wysłana pomyślnie',
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Contact form error:', error);
-    return NextResponse.json(
-      { error: 'Wystąpił błąd podczas przetwarzania żądania' },
-      { status: 500 }
-    );
-  }
+    return ok({
+      success: true,
+      message: 'Wiadomość została wysłana pomyślnie',
+    });
+  });
 }
-

@@ -2,14 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { getAuthUserFromHeaders } from '@/lib/auth/middleware';
 import { requireCSRF } from '@/lib/auth/csrf';
 import { validateFile, validateFileMagicBytes, MAX_FILES } from '@/lib/utils/fileValidation';
 
 export async function POST(request: NextRequest) {
     try {
-        // Autentykacja jest obsługiwana przez globalny middleware
-        const authUser = getAuthUserFromHeaders(request);
 
         // CSRF protection
         const csrfError = requireCSRF(request)
