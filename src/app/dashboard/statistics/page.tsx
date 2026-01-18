@@ -21,14 +21,11 @@ export default function StatisticsPage() {
 
           {/* Description */}
           <p className="text-[#616161] text-base sm:text-lg leading-relaxed mb-8 max-w-md mx-auto">
-            Aplikacja uczy się o Twoich preferencjach i zachowaniach, aby dostarczyć Ci najbardziej przydatne statystyki i analitykę.
+            Platforma gromadzi informacje dotyczące twoich preferencji. Co będziesz mógł zobaczyć:
           </p>
 
           {/* Features List */}
           <div className="bg-linear-to-br from-[#F5F5F7] to-white rounded-xl p-4 sm:p-6 mb-6 border border-gray-200/50">
-            <p className="text-sm font-semibold text-[#212121] mb-4">
-              Co będziesz mógł zobaczyć:
-            </p>
             <ul className="space-y-3 text-left max-w-sm mx-auto">
               <li className="flex items-start gap-3">
                 <div className="shrink-0 w-6 h-6 bg-[rgba(33,150,243,0.15)] rounded-lg flex items-center justify-center mt-0.5">
@@ -59,7 +56,7 @@ export default function StatisticsPage() {
 
           {/* Additional Info */}
           <p className="text-sm text-[#616161]">
-            Wróć tutaj za kilka dni, aby zobaczyć swoje pierwsze statystyki!
+            Ciągle pracujemy nad udoskonaleniem platformy. Wkrótce będziesz mógł zobaczyć swoje statystyki.
           </p>
         </div>
       </div>

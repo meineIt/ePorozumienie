@@ -26,6 +26,7 @@ function createTransporter() {
         host: process.env.SMTP_HOST!,
         port: parseInt(process.env.SMTP_PORT || '587'),
         secure: process.env.SMTP_SECURE === 'true',
+        // requireTLS: process.env.SMTP_PORT === '587',
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASSWORD,
@@ -35,7 +36,7 @@ function createTransporter() {
 export async function sendEmail(options: EmailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
         const transporter = createTransporter();
-        const fromEmail = options.from || process.env.EMAIL_FROM || 'noreply@eporozumienie.pl';
+        const fromEmail = options.from || process.env.EMAIL_FROM;
 
         const info = await transporter.sendMail({
             from: fromEmail,

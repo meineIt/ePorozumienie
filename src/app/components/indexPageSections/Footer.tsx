@@ -1,8 +1,10 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-linear-to-b from-white to-gray-50 text-gray-800 py-16 md:py-20 border-t border-gray-200/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto">
           {/* Contact Info */}
           <div>
             <h4 className="text-xl font-bold mb-6 text-gray-900">Kontakt</h4>
@@ -22,7 +24,7 @@ export default function Footer() {
                   href="mailto:eporozumienie@protonmail.com"
                   className="text-gray-700 hover:text-blue-700 transition-colors duration-200 text-base"
                 >
-                  eporozumienie@protonmail.com
+                  eporozumienie@gmail.com
                 </a>
               </div>
               <div className="flex items-start group">
@@ -46,6 +48,29 @@ export default function Footer() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h4 className="text-xl font-bold mb-6 text-gray-900">Informacje prawne</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/rules"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
+                >
+                  Regulamin
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="text-gray-700 hover:text-blue-700 transition-all duration-200 text-base inline-block hover:translate-x-1 transform"
+                >
+                  Polityka prywatności
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Quick Links */}

@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 export default function Navigation() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const isRulesPage = pathname === '/rules';
+  const isPrivacyPolicyPage = pathname === '/privacy-policy';
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
@@ -54,7 +56,7 @@ export default function Navigation() {
                 </a>
               </div>
             )}
-            {isHomePage && (
+            {(isHomePage || isRulesPage || isPrivacyPolicyPage) && (
               <div>
                 <Link
                   href="/login"
