@@ -126,13 +126,6 @@ export default function PrivacyPolicy() {
                         <p>Niniejsza Polityka Prywatności może zostać zmieniona przez Administratora w przypadku rozwoju technologii AI, wprowadzenia nowych funkcjonalności w Serwisie lub zmiany powszechnie obowiązujących przepisów prawa.</p>
 
                         <p>O wszelkich istotnych zmianach Użytkownicy zostaną poinformowani drogą e-mailową na adres wskazany podczas rejestracji lub poprzez czytelny komunikat wyświetlany w Serwisie.</p>
-
-                        <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
-                            <p className="text-sm text-gray-600">
-                                <strong>Inspektor Ochrony Danych:</strong> W sprawach związanych z ochroną danych osobowych prosimy o kontakt pod adresem:
-                                <a href="mailto:kontakt@e-porozumienie.pl" className="text-blue-600 hover:text-blue-800 ml-1">kontakt@e-porozumienie.pl</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -20,9 +20,10 @@ export function validateEnvironmentVariables(): EnvValidationResult {
     'JWT_SECRET',
     'CSRF_SECRET',
     'DATABASE_URL',
-    'SMTP_HOST',
-    'SMTP_USER',
-    'SMTP_PASSWORD',
+    'BREVO_API_KEY',
+    // 'SMTP_HOST',
+    // 'SMTP_USER',
+    // 'SMTP_PASSWORD',
   ];
 
   // Wymagane zmienne w każdym środowisku

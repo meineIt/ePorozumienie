@@ -1,4 +1,4 @@
-import { sendEmail as sendEmailFromSender } from '../email/sender';
+import { sendBrevoEmail as sendEmailFromSender } from '../email/sender';
 import { getContactEmailTemplate } from '../email/templates/contact';
 import { getContactConfirmationEmailTemplate } from '../email/templates/contactConfirmation';
 import { getDiscountEmailTemplate } from '../email/templates/discount';
@@ -26,7 +26,7 @@ export interface DiscountFormData {
 }
 
 export async function sendContactEmail(data: ContactFormData): Promise<{ success: boolean; messageId?: string; error?: string }> {
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || 'admin@eporozumienie.pl';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || 'eporozumienie@gmail.com';
     const subject = data.subject || `Wiadomość z formularza kontaktowego od ${data.name}`;
     const html = getContactEmailTemplate(data);
 
@@ -47,7 +47,7 @@ export async function sendContactConfirmationEmail(userEmail: string, userName: 
     });
 }
 export async function sendDiscountEmail(data: DiscountFormData): Promise<{ success: boolean; messageId?: string; error?: string }> {
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || 'admin@eporozumienie.pl';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || 'eporozumienie@gmail.com';
     const subject = `Nowy zapis na zniżkę 30% - ${data.name}`;
     const html = getDiscountEmailTemplate(data);
 
