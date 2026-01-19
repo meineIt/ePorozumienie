@@ -29,12 +29,12 @@ export const metadata: Metadata = {
   description: "Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!",
   openGraph: {
     type: "website",
-    url: "https://e-porozumienie.pl/",
+    url: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
     title: "e-Porozumienie | Porozumienie w 3 kliknięcia",
     description: "Pierwsza platforma do mediacji online, która wykorzystując AI rozwiązuje spory frankowe w 3 dni zamiast w 15 miesięcy!",
     images: [
       {
-        url: "https://e-porozumienie.pl/images/og-image.png",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/images/og-image.png`,
         width: 1200,
         height: 630,
       },

@@ -26,7 +26,7 @@ export default function Rules() {
 
                         <p>1.1. Niniejszy Regulamin określa zasady świadczenia usług drogą elektroniczną za pośrednictwem platformy dostępnej pod adresem eporozumienie.pl (dalej jako: &bdquo;Serwis&rdquo;).</p>
 
-                        <p>1.2. Usługodawcą i Administratorem danych są Organizatorzy narzędzia e-porozumienie (dalej jako: &bdquo;Usługodawca&rdquo;). Kontakt z Usługodawcą odbywa się pod adresem e-mail: kontakt@e-porozumienie.pl.</p>
+                        <p>1.2. Usługodawcą i Administratorem danych są Organizatorzy narzędzia e-porozumienie (dalej jako: &bdquo;Usługodawca&rdquo;). Kontakt z Usługodawcą odbywa się pod adresem e-mail: eporozumienie@gmail.com</p>
 
                         <p>1.3. Regulamin określa w szczególności:</p>
                         <ul className="list-disc pl-6 space-y-2 mb-4">
@@ -137,7 +137,7 @@ export default function Rules() {
 
                         <p>10.1. Użytkownik ma prawo złożyć reklamację dotyczącą działania Serwisu.</p>
 
-                        <p>10.2. Reklamacje należy składać drogą elektroniczną na adres: kontakt@e-porozumienie.pl.</p>
+                        <p>10.2. Reklamacje należy składać drogą elektroniczną na adres: eporozumienie@gmail.com.</p>
 
                         <p>10.3. Reklamacja powinna zawierać opis problemu oraz dane umożliwiające identyfikację Konta Użytkownika. Usługodawca rozpatruje reklamacje w terminie 14 dni od ich otrzymania.</p>
 
