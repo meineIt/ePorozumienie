@@ -79,7 +79,7 @@ export async function sendBrevoEmail(options: EmailOptions): Promise<{ success: 
             body: JSON.stringify({
                 sender: {
                   name: "Zespół e-Porozumienie",
-                  email: "eporozumienie@gmail.com"
+                  email: "kontakt@mail.eporozumienie.pl"
                 },
                 to: [
                   {
