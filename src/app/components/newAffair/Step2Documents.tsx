@@ -4,7 +4,10 @@ import { useState, useRef } from 'react';
 import { Document, Step2DocumentsProps } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-import { apiUpload } from '@/lib/api/client';
+import { apiUpload, ApiClientError } from '@/lib/api/client';
+import { DOCUMENT_LIMITS } from '@/lib/utils/constants';
+import { ALLOWED_EXTENSIONS } from '@/lib/utils/fileValidation';
+import { validateFile } from '@/lib/utils/fileValidation';
 
 export default function Step2Documents({
     formData,
@@ -26,6 +29,23 @@ export default function Step2Documents({
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = e.target.files;
       if (!files) return;
+
+      // Sprawwdź limit plików
+      const currentCount = formData.documents.length;
+      const newCount = currentCount + files.length;
+      if (newCount > DOCUMENT_LIMITS.AFFAIR_CREATION) {
+        alert(`Mozna dodać maksymalnie ${DOCUMENT_LIMITS.AFFAIR_CREATION} dokumentów.`)
+        return;
+      }
+
+      // Sprawdź rozmiar i roszczerzenie pliku
+      for (const file of files) {
+        const validation = validateFile(file);
+        if (!validation.isValid) {
+          alert(validation.error);
+          return;
+        }
+      }
 
       setUploading(true);
       
@@ -52,7 +72,13 @@ export default function Step2Documents({
           });
       } catch (error) {
           console.error('Error uploading documents:', error);
-          alert('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
+
+          // Wyświetl specyficzny komunikat błędu jeśli to błąd walidacji
+          if (error instanceof ApiClientError) {
+              alert(error.message);
+          } else {
+              alert('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
+          }
       } finally {
           setUploading(false);
           // Reset input
@@ -120,8 +146,11 @@ export default function Step2Documents({
                   <svg className="w-12 h-12 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Przeciągnij i upuść pliki tutaj</h4>
-                  <p className="text-gray-500 mb-4">lub kliknij, aby wybrać pliki z dysku</p>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Upuść pliki tutaj</h4>
+                    <p className="text-gray-500 mb-4">
+                      Limit: {DOCUMENT_LIMITS.AFFAIR_CREATION} dokumenty<br />
+                      Dozwolone formaty: {ALLOWED_EXTENSIONS.join(', ').toUpperCase()}
+                    </p>
                   <button
                     type="button"
                     className="px-6 py-2 border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors"

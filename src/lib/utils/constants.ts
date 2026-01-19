@@ -33,3 +33,7 @@ export function getCategoryColor(category: string): string {
   return CATEGORY_COLORS[category] || CATEGORY_COLORS['Inne'];
 }
 
+export const DOCUMENT_LIMITS = {
+  AFFAIR_CREATION: 3,
+  PARTY_POSITION: 3,
+} as const;

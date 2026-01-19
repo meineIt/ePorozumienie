@@ -61,6 +61,4 @@ Your objective is to:
 - Reason step by step before assigning to categories;
 - Return a JSON object (in Polish) summarizing all disputed, negotiable, and agreed points, each with clear justification and references;
 - Propose a concrete, detailed settlement agreement that can serve as a basis for negotiation.
-
-# Chat input
 `;

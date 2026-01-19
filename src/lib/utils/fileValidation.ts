@@ -8,10 +8,6 @@ const ALLOWED_MIME_TYPES = [
     'image/jpeg',
     'image/jpg',
     'image/png',
-    'image/gif',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-    'text/plain',
 ];
 
 // Dozwolone rozszerzenia
@@ -20,17 +16,13 @@ const ALLOWED_EXTENSIONS = [
     'jpg',
     'jpeg',
     'png',
-    'gif',
-    'doc',
-    'docx',
-    'txt',
 ];
 
-// Maksymalny rozmiar pliku: 10MB
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+// Maksymalny rozmiar pliku: 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 // Maksymalna liczba plików na request
-const MAX_FILES = 10;
+const MAX_FILES = 6;
 
 export interface FileValidationResult {
     isValid: boolean;
@@ -115,15 +107,6 @@ export async function validateFileMagicBytes(buffer: Buffer, expectedExtension: 
         const header = buffer.slice(0, 4);
         return header[0] === 0x89 && header[1] === 0x50 && header[2] === 0x4E && header[3] === 0x47;
     }
-    
-    if (extension === 'gif') {
-        // GIF zaczyna się od GIF87a lub GIF89a
-        const header = buffer.slice(0, 6).toString();
-        return header === 'GIF87a' || header === 'GIF89a';
-    }
-    
-    // Dla innych typów (doc, docx, txt) nie sprawdzamy magic bytes
-    // ponieważ są bardziej złożone lub mogą być w różnych formatach
     return true;
 }
 

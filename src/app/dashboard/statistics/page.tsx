@@ -14,14 +14,9 @@ export default function StatisticsPage() {
         {/* Info Card - używamy klas .card z globals.css */}
         <div className="card card-padding text-center">
 
-          {/* Title */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#212121] mb-4">
-            Statystyki pojawią się niebawem
-          </h2>
-
           {/* Description */}
           <p className="text-[#616161] text-base sm:text-lg leading-relaxed mb-8 max-w-md mx-auto">
-            Platforma gromadzi informacje dotyczące twoich preferencji. Co będziesz mógł zobaczyć:
+            Statystyki pojawią się niebawem.<br /> Co będziesz mógł zobaczyć:
           </p>
 
           {/* Features List */}
@@ -56,7 +51,7 @@ export default function StatisticsPage() {
 
           {/* Additional Info */}
           <p className="text-sm text-[#616161]">
-            Ciągle pracujemy nad udoskonaleniem platformy. Wkrótce będziesz mógł zobaczyć swoje statystyki.
+            Ciągle pracujemy nad udoskonaleniem platformy.
           </p>
         </div>
       </div>

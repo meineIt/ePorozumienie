@@ -75,20 +75,24 @@ export default function Step1BasicInfo({
                   }`}
                 >
                   <option value="">Wybierz kategorię</option>
-                  <option value="business">Sprawy biznesowe</option>
-                  <option value="contract">Umowy cywilnoprawne</option>
-                  <option value="consumer">Sprawy konsumenckie</option>
-                  <option value="employment">Sprawy pracownicze</option>
-                  <option value="property">Sprawy majątkowe</option>
-                  <option value="other">Inne</option>
+                  <option value="Sprawy biznesowe">Sprawy biznesowe</option>
+                  <option value="Umowy cywilnoprawne">Umowy cywilnoprawne</option>
+                  <option value="Sprawy konsumenckie">Sprawy konsumenckie</option>
+                  <option value="Sprawy pracownicze">Sprawy pracownicze</option>
+                  <option value="Sprawy majątkowe">Sprawy majątkowe</option>
+                  <option value="Inne">Inne</option>
                 </select>
                 {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
               </div>
             </div>
                 <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                Opis sprawy *
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                    Opis sprawy *
                 </label>
+                <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                    Ten opis będzie widoczny dla drugiej strony i posłuży do wygenerowania projektu porozumienia.< br />
+                    Opisz dokładnie: <strong>co się wydarzyło</strong> oraz <strong>co chcesz osiągnąć</strong> w związku z tym zdarzeniem.
+                </p>
                 <textarea
                 value={formData.description}
                 onChange={(e) => updateFormData({ description: e.target.value })}
@@ -96,7 +100,7 @@ export default function Step1BasicInfo({
                 className={`w-full px-4 py-2 border-[1.5px] rounded-xl focus:outline-none focus:border-[#0A2463] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(10,36,99,0.25)] ${
                     errors.description ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Opisz czego dotyczy sprawa, co jest przedmiotem sporu..."
+                placeholder="Opisz co dokładnie się wydarzyło oraz jakie są Twoje oczekiwania w tej sprawie. Ten opis będzie widoczny dla drugiej strony..."
                 />
                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>

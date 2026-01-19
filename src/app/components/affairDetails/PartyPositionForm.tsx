@@ -4,8 +4,11 @@ import { useState, useRef } from 'react';
 import { Document } from '@/lib/types';
 import { formatFileSize } from '@/lib/utils/format';
 import DocumentIcon from '../shared/icons/DocumentIcon';
-import { apiUpload, apiRequest } from '@/lib/api/client';
+import { apiUpload, apiRequest, ApiClientError } from '@/lib/api/client';
 import { PartyPositionFormProps } from '@/lib/types';
+import { DOCUMENT_LIMITS } from '@/lib/utils/constants';
+import { ALLOWED_EXTENSIONS } from '@/lib/utils/fileValidation';
+import { validateFile } from '@/lib/utils/fileValidation';
 
 export default function PartyPositionForm({ affairId, onSave }: PartyPositionFormProps) {
     const [description, setDescription] = useState('');
@@ -26,6 +29,23 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files) return;
+
+        // Sprawwdź limit plików
+        const currentCount = documents.length;
+        const newCount = currentCount + files.length;
+        if (newCount > DOCUMENT_LIMITS.PARTY_POSITION) {
+            alert(`Mozna dodać maksymalnie ${DOCUMENT_LIMITS.PARTY_POSITION} dokumentów.`)
+            return;
+        }
+
+        // Sprawdź rozmiar i roszczerzenie pliku
+        for (const file of files) {
+            const validation = validateFile(file);
+            if (!validation.isValid) {
+            alert(validation.error);
+            return;
+            }
+        }
 
         setUploading(true);
         setError(null);
@@ -52,7 +72,13 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
             setDocuments([...documents, ...newDocuments]);
         } catch (error) {
             console.error('Error uploading files:', error);
-            setError('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
+
+            // Wyświetl specyficzny komunikat błędu jeśli to błąd walidacji
+            if (error instanceof ApiClientError) {
+                setError(error.message);
+            } else {
+                setError('Wystąpił błąd podczas przesyłania plików. Spróbuj ponownie.');
+            }
         } finally {
             setUploading(false);
             if (fileInputRef.current) {
@@ -102,6 +128,9 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                 <h2 className="heading-section mb-2" style={{ fontSize: '1.25rem' }}>Dodaj swoje stanowisko</h2>
                 <p className="text-gray-600">
                     Przedstaw swoje stanowisko w sprawie. Dodaj opis sytuacji z Twojej perspektywy oraz dokumenty, które mogą być pomocne.
+                    <span className="block mt-2 text-sm text-blue-600 font-medium">
+                        Limit dokumentów: maksymalnie {DOCUMENT_LIMITS.PARTY_POSITION}
+                    </span>
                 </p>
             </div>
 
@@ -152,8 +181,11 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                                 <svg className="w-12 h-12 text-blue-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
-                                <h4 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontSize: '1.5rem' }}>Przeciągnij i upuść pliki tutaj</h4>
-                                <p className="text-gray-500 mb-4">lub kliknij, aby wybrać pliki z dysku</p>
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontSize: '1.5rem' }}>Upuść pliki tutaj</h4>
+                                    <p className="text-gray-500 mb-4">
+                                        Limit: {DOCUMENT_LIMITS.AFFAIR_CREATION} dokumenty <br />
+                                        Dozwolone formaty: {ALLOWED_EXTENSIONS.join(', ').toUpperCase()}
+                                    </p>
                                 <button
                                     type="button"
                                     className="px-6 py-2 border-2 border-[#0A2463]/30 text-blue-700 rounded-full font-semibold hover:bg-[#0A2463]/10 transition-colors"

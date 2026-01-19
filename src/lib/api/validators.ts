@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { badRequest } from './response';
+import { DOCUMENT_LIMITS } from '../utils/constants';
 
 /**
  * System walidacji z wykorzystaniem Zod
@@ -73,7 +74,7 @@ export const createAffairSchema = z.object({
     type: z.string().optional(),
     category: z.string().optional(),
     path: z.string().nullable().optional(),
-  })).optional(),
+  })).max(DOCUMENT_LIMITS.AFFAIR_CREATION),
   otherPartyEmail: emailSchema,
   otherPartyType: z.string().optional(),
   otherPartyPerson: z.object({
@@ -109,7 +110,7 @@ export const updatePartyPositionSchema = z.object({
     type: z.string().optional(),
     category: z.string().optional(),
     path: z.string().nullable().optional(),
-  })).optional(),
+  })).max(DOCUMENT_LIMITS.PARTY_POSITION),
 });
 
 // Contact form
