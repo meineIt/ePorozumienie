@@ -10,6 +10,12 @@
   --accent: #1E88E5;
   --accent-light: #BBDEFB;
   --accent-dark: #0D47A1;
+
+  /* Colors - Turquoise */
+  --turquoise: #00B4D8;
+  --turquoise-light: #90E0EF;
+  --turquoise-dark: #0077B6;
+  --turquoise-accent: #48CAE4;
   
   /* Colors - Neutral (iOS-inspired) */
   --light: #F5F5F7;
@@ -39,6 +45,11 @@
   --glass-bg-dark: rgba(0, 0, 0, 0.3);
   --glass-border: rgba(255, 255, 255, 0.18);
   --blur-backdrop: rgba(0, 0, 0, 0.4);
+
+  /* Colors - Glass with Turquoise accents */
+  --glass-turquoise-bg: rgba(0, 180, 216, 0.05);
+  --glass-turquoise-border: rgba(0, 180, 216, 0.15);
+  --glass-turquoise-accent: rgba(72, 202, 228, 0.08);
   
   /* Shadows (iOS-inspired - subtle with larger blur) */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);

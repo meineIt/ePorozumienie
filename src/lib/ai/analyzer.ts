@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import { prismaWithTimeout } from '@/lib/prisma';
-import { promptFile } from './promptFile';
+import { instructionPrompt } from './instructionPrompt';
 import { AIAnalysis, AffairWithParticipants } from '@/lib/types';
 
 function getOpenAIApiKey(): string {
@@ -54,7 +54,7 @@ async function withTimeout<T>(
 }
 
 /**
- * Przygotowuje prompt dla OpenAI na podstawie stanowisk stron
+ * Przygotowuje userPrompt dla OpenAI na podstawie stanowisk stron
  */
 function preparePrompt(affair: AffairWithParticipants, modificationRequests?: string[]): string {
   const creatorParticipant = affair.participants.find(p => p.userId === affair.creatorId);
@@ -64,15 +64,15 @@ function preparePrompt(affair: AffairWithParticipants, modificationRequests?: st
     throw new Error('Brak danych uczestników');
   }
 
-  let prompt = promptFile;
+  let userPrompt = "";
 
   // Dodaj umowę jeśli jest dostępna
   if (affair.files) {
     try {
       const documents = JSON.parse(affair.files);
       if (Array.isArray(documents) && documents.length > 0) {
-        prompt += `[Umowa]\n`;
-        prompt += `Dokumenty umowy zostały przesłane. W analizie uwzględnij treść umowy na podstawie dostępnych dokumentów.\n\n`;
+        userPrompt += `[Umowa]\n`;
+        userPrompt += `Dokumenty umowy zostały przesłane. W analizie uwzględnij treść umowy na podstawie dostępnych dokumentów.\n\n`;
       }
     } catch (error) {
       console.error('Error parsing affair files for AI analysis:', error);
@@ -80,36 +80,40 @@ function preparePrompt(affair: AffairWithParticipants, modificationRequests?: st
   }
 
   if (affair.description) {
-    prompt += `[Opis sprawy]\n${affair.description}\n\n`;
+    userPrompt += `[Opis sprawy]\n${affair.description}\n\n`;
   }
 
-  prompt += `[Stanowiska stron]\n\n`;
+  userPrompt += `[Stanowiska stron]\n\n`;
 
-  prompt += `Stanowisko Strony A (${affair.creatorId === creatorParticipant.userId ? 'Twórca sprawy' : 'Druga strona'}):\n`;
+  userPrompt += `Stanowisko Strony A (${affair.creatorId === creatorParticipant.userId ? 'Twórca sprawy' : 'Druga strona'}):\n`;
   if (creatorParticipant.description) {
-    prompt += `${creatorParticipant.description}\n`;
+    userPrompt += `${creatorParticipant.description}\n`;
   }
   if (creatorParticipant.files) {
-    prompt += `\n[Dokumenty przesłane przez Stronę A]\n`;
+    userPrompt += `\n[Dokumenty przesłane przez Stronę A]\n`;
   }
 
-  prompt += `\nStanowisko Strony B (${affair.involvedUserId === involvedParticipant.userId ? 'Druga strona' : 'Twórca sprawy'}):\n`;
+  // dodaj ładowanie dokumentów strona A
+
+  userPrompt += `\nStanowisko Strony B (${affair.involvedUserId === involvedParticipant.userId ? 'Druga strona' : 'Twórca sprawy'}):\n`;
   if (involvedParticipant.description) {
-    prompt += `${involvedParticipant.description}\n`;
+    userPrompt += `${involvedParticipant.description}\n`;
   }
   if (involvedParticipant.files) {
-    prompt += `\n[Dokumenty przesłane przez Stronę B]\n`;
+    userPrompt += `\n[Dokumenty przesłane przez Stronę B]\n`;
   }
+
+  // dodaj ładowanie wylistowanie dokumentów strona B
 
   if (modificationRequests && modificationRequests.length > 0) {
-    prompt += `\n[Propozycje zmian do poprzedniej wersji porozumienia]\n`;
+    userPrompt += `\n[Propozycje zmian do poprzedniej wersji porozumienia]\n`;
     modificationRequests.forEach((request, index) => {
-      prompt += `Propozycja zmiany ${index + 1}:\n${request}\n\n`;
+      userPrompt += `Propozycja zmiany ${index + 1}:\n${request}\n\n`;
     });
-    prompt += `Uwzględnij powyższe propozycje zmian przy przygotowaniu nowej wersji porozumienia.\n`;
+    userPrompt += `Uwzględnij powyższe propozycje zmian przy przygotowaniu nowej wersji porozumienia.\n`;
   }
 
-  return prompt;
+  return userPrompt;
 }
 
 export async function analyzeAffairPositions(affairId: string, modificationRequests?: string[]): Promise<AIAnalysis> {
@@ -136,30 +140,22 @@ export async function analyzeAffairPositions(affairId: string, modificationReque
     throw new Error('Obie strony muszą mieć zapisane stanowiska');
   }
 
-  const prompt = preparePrompt(affair, modificationRequests);
+  const userPrompt = preparePrompt(affair, modificationRequests);
 
   try {
-    const completion = await withTimeout(
-      () => openai.chat.completions.create({
-        model: process.env.OPENAI_MODEL || 'gpt-4-turbo-preview',
-        messages: [
-          {
-            role: 'system',
-            content: 'Jesteś ekspertem prawnym specjalizującym się w analizie umów i mediacji. Analizujesz stanowiska stron i przygotowujesz szczegółową analizę oraz propozycję porozumienia. Zawsze zwracasz poprawny JSON w języku polskim.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.3,
+    const response = await withTimeout(
+      () => openai.responses.create({
+        model: process.env.OPENAI_MODEL || 'gpt-5.1',
+        instructions: instructionPrompt,
+        input: `Zwróć wynik jako JSON.\n\n${userPrompt}`,
+        text: { format: { type: "json_object" } },
+        reasoning: { effort: "medium" }
       }),
-      60000,
-      'Timeout: Analiza AI przekroczyła dozwolony czas (60 sekund)'
-    );
+    500000,
+    'Timeout: Analiza AI przekroczyła dozwolony czas (5 minut)'
+  );
 
-    const content = completion.choices[0]?.message?.content;
+    const content = response.output_text;
     if (!content) {
       throw new Error('Brak odpowiedzi z OpenAI');
     }

@@ -126,11 +126,9 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
             <div className="mb-6">
                 <h2 className="heading-section mb-2" style={{ fontSize: '1.25rem' }}>Dodaj swoje stanowisko</h2>
-                <p className="text-gray-600">
-                    Przedstaw swoje stanowisko w sprawie. Dodaj opis sytuacji z Twojej perspektywy oraz dokumenty, które mogą być pomocne.
-                    <span className="block mt-2 text-sm text-blue-600 font-medium">
-                        Limit dokumentów: maksymalnie {DOCUMENT_LIMITS.PARTY_POSITION}
-                    </span>
+                <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                    Ten opis będzie widoczny dla drugiej strony i posłuży do wygenerowania projektu porozumienia.< br />
+                    Opisz dokładnie: <strong>co się wydarzyło</strong> oraz <strong>co chcesz osiągnąć</strong> w związku z tym zdarzeniem.
                 </p>
             </div>
 

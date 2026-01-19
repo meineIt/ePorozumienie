@@ -7,11 +7,11 @@ import { RateLimitConfig } from '@/lib/types';
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
   // Auth endpoints
   'login': {
-    limit: 2,
+    limit: 8,
     interval: 1 * 60 * 1000, // 1 minuta
   },
   'register': {
-    limit: 2,
+    limit: 5,
     interval: 5 * 60 * 1000, // 5 minut
   },
   
@@ -22,7 +22,7 @@ export const RATE_LIMITS: Record<string, RateLimitConfig> = {
   },
   'profile-update': {
     limit: 5,
-    interval: 5 * 60 * 1000, // 5 minut
+    interval: 1 * 60 * 1000, // 1 minut
   },
   
   // Affair endpoints
@@ -52,13 +52,13 @@ export const RATE_LIMITS: Record<string, RateLimitConfig> = {
   // Contact endpoints
   'contact': {
     limit: 5,
-    interval: 5 * 60 * 1000, // 5 minut
+    interval: 1 * 60 * 1000, // 1 minut
   },
   
   // Discount endpoints
   'discount': {
     limit: 3,
-    interval: 60 * 60 * 1000, // 60 minut
+    interval: 60 * 60 * 1000, // 5 minut
   },
 };
 

@@ -1,12 +1,17 @@
 export default function BenefitsSection() {
   return (
-    <section id="korzysci" className="py-20 md:py-24 bg-linear-to-b from-white to-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="korzysci" className="py-8 md:py-12 relative">
+      {/* Background with glass effect and turquoise accents */}
+      <div className="absolute inset-0 bg-linear-to-b from-white to-gray-50">
+        <div className="absolute inset-0 bg-[var(--glass-turquoise-bg)] opacity-30"></div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 md:mb-20 text-gray-900 tracking-tight">
-          Dlaczego e-Porozumienie?
+          Dlaczego <span className="text-[var(--turquoise)] drop-shadow-sm">e-Porozumienie</span>?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-          <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-200/50 hover:shadow-2xl transition-all duration-300">
+          <div className="backdrop-blur-md bg-white/80 p-8 md:p-10 rounded-3xl shadow-xl border border-[var(--glass-turquoise-border)] hover:shadow-2xl hover:border-[var(--turquoise)]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-white/90">
             <h3 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900 border-b-2 border-red-200 pb-4">
               Tradycyjny sąd
             </h3>
@@ -97,10 +102,11 @@ export default function BenefitsSection() {
               </li>
             </ul>
           </div>
-          <div className="bg-linear-to-br from-[#0A2463] to-[#051740] p-8 md:p-10 rounded-3xl shadow-2xl border border-[#0A2463]/30 hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-br from-[#0A2463]/15 to-transparent"></div>
+          <div className="bg-linear-to-br from-[#0A2463] to-[#051740] p-8 md:p-10 rounded-3xl shadow-2xl border border-[var(--turquoise)]/20 hover:shadow-3xl hover:border-[var(--turquoise)]/40 transition-all duration-300 relative overflow-hidden backdrop-blur-sm">
+            <div className="absolute inset-0 bg-linear-to-br from-[var(--glass-turquoise-accent)] to-transparent"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,var(--turquoise),transparent_70%)] opacity-10"></div>
             <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-bold mb-8 text-white border-b-2 border-[#0A2463]/40 pb-4">
+              <h3 className="text-2xl md:text-3xl font-bold mb-8 text-white border-b-2 border-[var(--turquoise)]/40 pb-4">
                 e-Porozumienie
               </h3>
               <ul className="space-y-5">

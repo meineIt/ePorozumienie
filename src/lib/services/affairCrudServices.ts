@@ -6,6 +6,23 @@ import { sanitizeString, sanitizeText } from '@/lib/utils/sanitize';
 import { sendAffairInviteEmail } from '@/lib/utils/email';
 import crypto from 'crypto'
 
+
+/**
+ * Liczy liczbę spraw utworzonych przez użytkownika
+ * Softlimiter dla tworzenia nowych spraw do czasu gdy nie mamy własnego serwera
+ */
+export async function countUserCreatedAffairs(userId: string): Promise<number> {
+  const count = await prismaWithTimeout(async (client) => {
+    return client.affair.count({
+      where: {
+        creatorId: userId
+      }
+    });
+  }, 30000);
+
+  return count;
+}
+
 /**
  * Tworzy nową sprawę
  */

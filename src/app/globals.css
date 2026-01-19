@@ -183,7 +183,7 @@ p {
 /* Pattern with plus signs */
 .element-with-pattern {
   position: relative;
-  background: #0A2463;
+  background: linear-gradient(to bottom right, #0A2463, #051740);
 }
 
 .element-with-pattern::before {

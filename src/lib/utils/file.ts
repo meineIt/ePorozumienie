@@ -17,7 +17,7 @@ export function isImageFile(filename: string, mimeType?: string): boolean {
   if (mimeType) {
     return mimeType.startsWith('image/');
   }
-  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+  const imageExtensions = ['jpg', 'jpeg', 'png'];
   return imageExtensions.includes(getFileExtension(filename));
 }
 

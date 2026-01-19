@@ -196,7 +196,7 @@ function RegisterFormContent() {
           />
           <button
             type="button"
-            className="absolute right-4 top-14 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-4 top-12 text-gray-400 hover:text-gray-600 transition-colors"
             onClick={() => setShowPassword(!showPassword)}
             tabIndex={-1}
           >
