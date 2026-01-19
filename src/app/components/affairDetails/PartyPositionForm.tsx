@@ -83,7 +83,7 @@ export default function PartyPositionForm({ affairId, onSave }: PartyPositionFor
                 method: 'PUT',
                 body: JSON.stringify({
                     description: description || null,
-                    documents: documents.length > 0 ? documents : null
+                    documents: documents
                 }),
             });
 
